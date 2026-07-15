@@ -1,0 +1,232 @@
+.sip-container {
+  padding: 40px 50px;
+  min-height: 100vh;
+}
+
+.sip-container h1 {
+  text-align: center;
+  font-size: 42px;
+  margin-bottom: 35px;
+  color: #111827;
+}
+
+/* ===== Layout ===== */
+.sip-top-section,
+.sip-bottom-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+/* ===== Shared Card Style ===== */
+.sip-input-card,
+.sip-result-card,
+.sip-chart-card,
+.sip-insights-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  border-radius: 28px;
+  padding: 30px;
+  box-shadow:
+    0 20px 40px rgba(37, 99, 235, 0.08),
+    0 8px 16px rgba(0, 0, 0, 0.04);
+}
+
+.sip-input-card h2,
+.sip-result-card h2,
+.sip-chart-card h2,
+.sip-insights-card h2 {
+  margin-top: 0;
+  margin-bottom: 22px;
+}
+
+/* ===== Card Accent Colors ===== */
+.sip-input-card {
+  border-top: 6px solid #2563eb;
+}
+
+.sip-result-card {
+  border-top: 6px solid #06b6d4;
+}
+
+.sip-chart-card {
+  border-top: 6px solid #10b981;
+}
+
+.sip-insights-card {
+  border-top: 6px solid #14b8a6;
+}
+
+/* ===== Inputs ===== */
+.sip-input-card label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.sip-input-card input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px;
+  font-size: 16px;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  margin-bottom: 16px;
+  background: #f8fbff;
+}
+
+.sip-input-card input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.error-message {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 12px;
+  border-radius: 10px;
+  margin: 15px 0;
+  text-align: center;
+}
+
+/* ===== Buttons ===== */
+.calculate-btn,
+.clear-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Primary Button */
+.calculate-btn {
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  color: white;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+}
+
+.calculate-btn:hover,
+.clear-btn:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+/* Secondary Button */
+.clear-btn {
+  margin-top: 14px;
+  background: linear-gradient(135deg, #ef4444, #f87171);
+  color: white;
+  border: none;
+}
+
+
+/* ===== Results ===== */
+.sip-results-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.sip-result-card .empty-state {
+  text-align: center;
+  color: #6b7280;
+  padding: 60px 20px;
+}
+
+.result-box {
+  padding: 22px;
+  border-radius: 20px;
+  color: white;
+}
+
+.invested-card {
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+}
+
+.returns-card {
+  background: linear-gradient(135deg, #10b981, #34d399);
+}
+
+.total-card {
+  background: linear-gradient(135deg, #8b5cf6, #c084fc);
+}
+
+.result-box h4 {
+  margin: 0 0 12px 0;
+}
+
+.result-box h3 {
+  margin: 0;
+  font-size: 28px;
+}
+
+/* ===== Insights ===== */
+.mini-sip-card {
+  background: #f8fafc;
+  padding: 18px;
+  border-radius: 18px;
+  margin-bottom: 16px;
+  border-left: 5px solid #10b981;
+}
+
+.mini-sip-card h4 {
+  margin: 0 0 10px 0;
+}
+
+.mini-sip-card p {
+  margin: 0;
+  color: #374151;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 900px) {
+  .sip-top-section,
+  .sip-bottom-section {
+    grid-template-columns: 1fr;
+  }
+
+  .sip-container {
+    padding: 20px;
+  }
+}
+
+/* ===== Dark Mode ===== */
+.app.dark .sip-input-card,
+.app.dark .sip-result-card,
+.app.dark .sip-chart-card,
+.app.dark .sip-insights-card {
+  background: #1f2937;
+  color: white;
+}
+
+.app.dark .sip-container h1{
+  color: white;
+}
+
+.app.dark .sip-input-card input
+ {
+  background: #374151;
+  color: white;
+  border: 1px solid #4b5563;
+}
+
+.app.dark .sip-input-card label{
+  color:white;
+}
+
+.app.dark .mini-sip-card {
+  background: #374151;
+}
+
+.app.dark .mini-sip-card p {
+  color: #e5e7eb;
+}
+

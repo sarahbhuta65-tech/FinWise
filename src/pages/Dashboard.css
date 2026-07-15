@@ -1,0 +1,264 @@
+.dashboard {
+  min-height: 100vh;
+  padding: 30px;
+  background: linear-gradient(135deg, #eef4ff 0%, #ece8ff 100%);
+}
+
+/* HERO */
+.hero-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 35px 40px;
+  border-radius: 28px;
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: white;
+  box-shadow: 0 18px 45px rgba(37, 99, 235, 0.25);
+}
+
+.hero-left h1 {
+  margin: 0;
+  font-size: 38px;
+  font-weight: 700;
+}
+
+.hero-left p {
+  margin-top: 8px;
+  opacity: 0.9;
+}
+
+.health-box {
+  text-align: center;
+  background: rgba(255,255,255,0.15);
+  padding: 20px 28px;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+}
+
+.health-box span {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.health-box p {
+  margin: 0;
+}
+
+/* STAT CARDS */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(18px);
+  padding: 28px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(99,102,241,0.18);
+}
+
+.stat-card h3 {
+  margin: 0 0 15px;
+  font-size: 18px;
+  color: #64748b;
+}
+
+.stat-card p {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* MAIN ANALYTICS */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.main-chart-card {
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(18px);
+  border-radius: 28px;
+  padding: 30px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.main-chart-card h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* DONUT + LEGEND */
+.chart-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.donut-wrapper {
+  position: relative;
+}
+
+.center-text {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.center-text h3 {
+  margin: 0;
+  font-size: 34px;
+  color: #0f172a;
+}
+
+.center-text p {
+  margin: 0;
+  color: gray;
+}
+
+.custom-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 300px;
+}
+
+.legend-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  padding: 14px 18px;
+  border-radius: 16px;
+}
+
+.legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.legend-item span {
+  flex: 1;
+  margin-left: 10px;
+}
+
+/* SIDE PANEL */
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.transactions-card,
+.ai-card {
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(18px);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.transactions-card h3,
+.ai-card h3 {
+  margin-top: 0;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: #f8fafc;
+  margin-top: 12px;
+  border-radius: 14px;
+   transition: 0.3s ease;
+}
+
+.transaction-item:hover {
+  transform: translateX(6px);
+  background: #eef2ff;
+}
+
+.comparison-subtitle{
+  color:#64748b;
+  margin-top:-8px;
+  margin-bottom:20px;
+}
+
+.ai-card p {
+  color: #475569;
+  line-height: 1.7;
+}
+
+/* BOTTOM CHART */
+.bottom-chart {
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(18px);
+  border-radius: 28px;
+  padding: 30px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.bottom-chart h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* MOBILE */
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-wrapper {
+    flex-direction: column;
+  }
+}
+.comparison-chart {
+  background: white;
+  border-radius: 30px;
+  padding: 35px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.comparison-chart h3 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #0f172a;
+}
+@media (max-width: 768px) {
+  .hero-banner {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
