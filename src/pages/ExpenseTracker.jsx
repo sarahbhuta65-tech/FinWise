@@ -14,6 +14,7 @@ import {
   Cell,
   Legend,
 } from "recharts";
+import axios from "axios";
 
 function ExpenseTracker({darkMode}) {
   const [expenseName, setExpenseName] = useState("");
@@ -24,7 +25,7 @@ function ExpenseTracker({darkMode}) {
   const [error, setError] = useState("");
   const [chartView, setChartView] = useState("daily");
 
-  const addExpense = () => {
+  const addExpense = async () => {
     if (!expenseName || !amount) {
       setError("Please fill all fields");
       return;
@@ -42,23 +43,51 @@ function ExpenseTracker({darkMode}) {
 
     setError("");
 
-    const newExpense = {
-      id: Date.now(),
-      name: expenseName,
-      amount: Number(amount),
-      category,
-      date: new Date().toISOString(),
-    };
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const userId = user?.id || user?._id;
 
-    setExpenses([...expenses, newExpense]);
+      if (!userId) {
+        setError("Please log in again to continue.");
+        return;
+      }
 
-    setExpenseName("");
-    setAmount("");
-    setCategory("Food");
+      const res = await axios.post(
+        "http://localhost:5000/api/expenses",
+        {
+          user: userId,
+          name: expenseName,
+          amount: Number(amount),
+          category,
+        }
+      );
+
+      setExpenses([res.data, ...expenses]);
+
+      setExpenseName("");
+      setAmount("");
+      setCategory("Food");
+
+    } catch (error) {
+      console.error(error);
+      setError("Failed to add expense.");
+    }
   };
 
-  const deleteExpense = (id) => {
-    setExpenses(expenses.filter((expense) => expense.id !== id));
+  const deleteExpense = async (id) => {
+      try {
+          await axios.delete(
+              `http://localhost:5000/api/expenses/${id}`
+          );
+
+          setExpenses((prevExpenses) =>
+              prevExpenses.filter((expense) => (expense._id || expense.id) !== id)
+          );
+
+      } catch (error) {
+          console.error(error);
+          setError("Failed to delete expense.");
+      }
   };
 
   const totalExpenses = expenses.reduce(
@@ -208,21 +237,25 @@ function ExpenseTracker({darkMode}) {
   ];
 
   useEffect(() => {
-    const savedExpenses = localStorage.getItem("expenses");
-
-    if (savedExpenses) {
+    const fetchExpenses = async () => {
       try {
-        setExpenses(JSON.parse(savedExpenses));
-      } catch (error) {
-        console.error("Invalid localStorage data:", error);
-        localStorage.removeItem("expenses");
-      }
-    }
-  }, []);
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userId = user?.id || user?._id;
 
-  useEffect(() => {
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-  }, [expenses]);
+        if (!userId) return;
+
+        const res = await axios.get(
+          `http://localhost:5000/api/expenses/${userId}`
+        );
+
+        setExpenses(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchExpenses();
+  }, []);
   
   return (
     <div className={`expense-page ${darkMode ? "dark" : ""}`}>
@@ -430,7 +463,7 @@ function ExpenseTracker({darkMode}) {
 
         <div className="expense-list">
           {expenses.map((expense) => (
-            <div key={expense.id} className="expense-item">
+            <div key={expense._id || expense.id} className="expense-item">
               <div className="expense-name-block">
                 <strong>{expense.name}</strong>
                 <small>{expense.category}</small>
@@ -444,7 +477,7 @@ function ExpenseTracker({darkMode}) {
 
               <button
                 className="delete-btn"
-                onClick={() => deleteExpense(expense.id)}
+                onClick={() => deleteExpense(expense._id || expense.id)}
               >
                 Delete
               </button>
