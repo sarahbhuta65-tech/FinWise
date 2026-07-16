@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function Navbar() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -7,23 +7,53 @@ function Navbar() {
     <nav className="navbar">
       {/* Logo */}
       <div className="logo">
-        <Link to="/">FinWise</Link>
+        <Link to="/">💰 FinWise</Link>
       </div>
 
       {/* Nav Links */}
       <div className="nav-links">
-        <Link to="/">Home</Link>
+        <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? "nav-item active-link" : "nav-item"
+              }
+        >Home</NavLink>
 
         {user ? (
           <>
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/sip">SIP</Link>
-            <Link to="/emi">EMI</Link>
-            <Link to="/expense">Expense</Link>
-            <Link to="/goal">Goal</Link>
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                isActive ? "nav-item active-link" : "nav-item"
+              }
+            >Dashboard</NavLink>
+            <NavLink
+              to="/sip"
+              className={({ isActive }) =>
+                isActive ? "nav-item active-link" : "nav-item"
+              }
+            >SIP</NavLink>
+            <NavLink
+              to="/emi"
+              className={({ isActive }) =>
+                isActive ? "nav-item active-link" : "nav-item"
+              }
+            >EMI</NavLink>
+            <NavLink
+              to="/expense"
+              className={({ isActive }) =>
+                isActive ? "nav-item active-link" : "nav-item"
+              }
+            >Expense</NavLink>
+            <NavLink
+              to="/goal"
+              className={({ isActive }) =>
+                isActive ? "nav-item active-link" : "nav-item"
+              }
+            >Goal</NavLink>
 
             <Link to="/profile" className="profile-btn">
-              👤
+              👤 Profile
             </Link>
           </>
         ) : (
