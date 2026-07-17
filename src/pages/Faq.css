@@ -127,3 +127,40 @@
     color:#1e293b;
     margin-bottom:15px;
 }
+
+.app.dark .faq-page {
+    background: linear-gradient(135deg, #020617 0%, #111827 45%, #1f2937 100%);
+    color: #f9fafb;
+}
+
+.app.dark .faq-page h1,
+.app.dark .faq-hero h1,
+.app.dark .empty-faq h2,
+.app.dark .faq-question h3 {
+    color: #f9fafb;
+}
+
+.app.dark .faq-page p,
+.app.dark .faq-hero p,
+.app.dark .faq-answer,
+.app.dark .empty-faq {
+    color: #cbd5e1;
+}
+
+.app.dark .faq-card {
+    background: #111827;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+}
+
+.app.dark .faq-answer {
+    border-top-color: #374151;
+}
+
+.app.dark .faq-search {
+    background: #374151;
+    color: #f9fafb;
+}
+
+.app.dark .faq-search::placeholder {
+    color: #9ca3af;
+}

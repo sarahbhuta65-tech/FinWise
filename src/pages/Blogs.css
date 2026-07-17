@@ -239,3 +239,52 @@ box-shadow:0 20px 40px rgba(0,0,0,.12);
 .blog-card:hover .blog-title{
     color:#2563eb;
 }
+
+.app.dark .blogs-page {
+    background: #020617;
+    color: #f8fafc;
+}
+
+.app.dark .blogs-header h1,
+.app.dark .blog-preview-content h2,
+.app.dark .blog-details-page h1,
+.app.dark .blog-rich-content h1,
+.app.dark .blog-rich-content h2,
+.app.dark .blog-content h1,
+.app.dark .blog-content h2 {
+    color: #f8fafc;
+}
+
+.app.dark .blogs-header p,
+.app.dark .blog-preview-content p,
+.app.dark .blog-short-desc,
+.app.dark .blog-rich-content,
+.app.dark .blog-description,
+.app.dark .blog-content p,
+.app.dark .blog-content blockquote,
+.app.dark .blog-meta {
+    color: #cbd5e1;
+}
+
+.app.dark .blog-preview-card,
+.app.dark .blog-details-page,
+.app.dark .blog-content blockquote {
+    background: #111827;
+    border-color: #374151;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.28);
+}
+
+.app.dark .category-badge {
+    background: #1e3a8a;
+    color: #dbeafe;
+}
+
+.app.dark .blog-preview-content button {
+    background: #2563eb;
+}
+
+.app.dark .blog-rich-content pre,
+.app.dark .blog-content pre {
+    background: #0f172a;
+    color: #f8fafc;
+}

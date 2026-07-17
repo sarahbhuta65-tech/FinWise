@@ -257,8 +257,49 @@
     gap: 20px;
     text-align: center;
   }
+}
 
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
+.app.dark .dashboard {
+  background: linear-gradient(135deg, #020617 0%, #111827 45%, #1f2937 100%);
+  color: #f9fafb;
+}
+
+.app.dark .hero-banner {
+  background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+}
+
+.app.dark .stat-card,
+.app.dark .main-chart-card,
+.app.dark .transactions-card,
+.app.dark .ai-card,
+.app.dark .bottom-chart,
+.app.dark .comparison-chart {
+  background: rgba(31, 41, 55, 0.9);
+  color: #f9fafb;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+}
+
+.app.dark .stat-card h3,
+.app.dark .comparison-subtitle,
+.app.dark .ai-card p,
+.app.dark .center-text p {
+  color: #cbd5e1;
+}
+
+.app.dark .stat-card p,
+.app.dark .center-text h3,
+.app.dark .comparison-chart h3 {
+  color: #f9fafb;
+}
+
+.app.dark .legend-item,
+.app.dark .transaction-item {
+  background: #374151;
+  color: #f9fafb;
+}
+
+.app.dark .transaction-item:hover {
+  background: #4b5563;
+}
+
 }

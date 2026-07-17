@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./SavingsGoal.css";
+import axios from "axios";
 
 function SavingsGoal() {
   const [goalName, setGoalName] = useState("");
@@ -10,7 +11,7 @@ function SavingsGoal() {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState("");
 
-  const calculateProgress = () => {
+  const calculateProgress = async () => {
     const goal = Number(goalAmount);
     const saved = Number(savedAmount);
 
@@ -28,28 +29,68 @@ function SavingsGoal() {
     const percentage = Math.min((saved / goal) * 100, 100);
     setProgress(percentage);
 
-    const goalData = { goalName, goalAmount, savedAmount, progress: percentage };
-    localStorage.setItem("goalData", JSON.stringify(goalData));
+    try{
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      await axios.post("http://localhost:5000/api/goals", {
+        user: user.id,
+        goalName,
+        goalAmount: goal,
+        savedAmount: saved,
+        progress: percentage,
+      });
+
+      alert("Goal saved successfully");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to save goal");
+    }
   };
 
-  useEffect(() => {
-    const savedGoal = localStorage.getItem("goalData");
-    if (savedGoal) {
-      const parsedData = JSON.parse(savedGoal);
-      setGoalName(parsedData.goalName);
-      setGoalAmount(parsedData.goalAmount);
-      setSavedAmount(parsedData.savedAmount);
-      setProgress(parsedData.progress);
-    }
+ useEffect(() => {
+    const fetchGoal = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        if (!user) return;
+
+        const res = await axios.get(
+          `http://localhost:5000/api/goals/${user.id}`
+        );
+
+        if (res.data) {
+          setGoalName(res.data.goalName);
+          setGoalAmount(res.data.goalAmount);
+          setSavedAmount(res.data.savedAmount);
+          setProgress(res.data.progress);
+        }
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchGoal();
   }, []);
 
-  const clearGoal = () => {
-    setGoalName("");
-    setGoalAmount("");
-    setSavedAmount("");
-    setProgress(0);
-    setError("");
-    localStorage.removeItem("goalData");
+  const clearGoal = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      await axios.delete(
+        `http://localhost:5000/api/goals/${user.id}`
+      );
+
+      setGoalName("");
+      setGoalAmount("");
+      setSavedAmount("");
+      setProgress(0);
+      setError("");
+
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete goal");
+    }
   };
 
   const remainingAmount = Math.max(Number(goalAmount) - Number(savedAmount), 0);

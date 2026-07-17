@@ -206,3 +206,56 @@
     background:#1d4ed8;
     color:white;
 }
+
+.app.dark .home {
+    background: linear-gradient(135deg, #0f172a 0%, #111827 45%, #1f2937 100%);
+    color: #f9fafb;
+}
+
+.app.dark .hero-section-home {
+    background: linear-gradient(135deg, #1d4ed8, #6d28d9);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+}
+
+.app.dark .card,
+.app.dark .why-card,
+.app.dark .preview-card {
+    background: #1f2937;
+    color: #f9fafb;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.app.dark .card p,
+.app.dark .why-card p,
+.app.dark .preview-card p,
+.app.dark .footer p,
+.app.dark .copyright {
+    color: #cbd5e1;
+}
+
+.app.dark .features-section h2,
+.app.dark .why-section h2,
+.app.dark .preview-card h2,
+.app.dark .footer h3,
+.app.dark .footer h4 {
+    color: #f9fafb;
+}
+
+.app.dark .secondary-btn {
+    background: #f9fafb;
+    color: #4338ca;
+}
+
+.app.dark .nav-item {
+    color: #e5e7eb;
+}
+
+.app.dark .nav-item:hover {
+    background: rgba(59, 130, 246, 0.2);
+    color: #bfdbfe;
+}
+
+.app.dark .active-link {
+    background: #2563eb;
+    color: white !important;
+}

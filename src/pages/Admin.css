@@ -213,6 +213,85 @@
 .logout-item:hover{
     background:#fee2e2;
 }
+
+.app.dark .admin-layout {
+    background: linear-gradient(135deg, #020617 0%, #111827 45%, #1f2937 100%);
+    color: #f9fafb;
+}
+
+.app.dark .admin-topbar {
+    background: #111827;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+}
+
+.app.dark .topbar-left h1,
+.app.dark .activity-content h4,
+.app.dark .page-layout h2,
+.app.dark .page-header h1 {
+    color: #f9fafb;
+}
+
+.app.dark .topbar-left p,
+.app.dark .activity-content span,
+.app.dark .form-page p,
+.app.dark .blog-meta {
+    color: #cbd5e1;
+}
+
+.app.dark .notification,
+.app.dark .profile-dropdown,
+.app.dark .notification-dropdown,
+.app.dark .admin-card,
+.app.dark .activity-card,
+.app.dark .quick-actions,
+.app.dark .chart-card,
+.app.dark .form-page,
+.app.dark .page-layout {
+    background: #111827;
+    color: #f9fafb;
+}
+
+.app.dark .admin-card h3,
+.app.dark .admin-card h1,
+.app.dark .activity-content p,
+.app.dark .form-page label {
+    color: #f9fafb;
+}
+
+.app.dark .activity-item,
+.app.dark .notification-item,
+.app.dark .profile-item,
+.app.dark .blog-container {
+    background: #1f2937;
+    color: #f9fafb;
+}
+
+.app.dark .activity-item:hover,
+.app.dark .notification-item:hover,
+.app.dark .profile-item:hover {
+    background: #374151;
+}
+
+.app.dark .form-page input,
+.app.dark .form-page select,
+.app.dark .form-page textarea {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+}
+
+.app.dark .back-btn,
+.app.dark .secondary-btn {
+    background: #374151;
+    color: #f9fafb;
+}
+
+.app.dark .primary-btn,
+.app.dark .draft-btn,
+.app.dark .action-buttons button {
+    background: #2563eb;
+}
+
 /*admindashboard*/
 
 .admin-cards{

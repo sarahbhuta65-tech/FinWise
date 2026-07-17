@@ -150,3 +150,44 @@
   }
 }
 
+.app.dark .auth-page {
+  background: linear-gradient(135deg, #020617, #111827 55%, #1f2937);
+}
+
+.app.dark .auth-left h1 {
+  color: #bfdbfe;
+}
+
+.app.dark .auth-left p,
+.app.dark .auth-features {
+  color: #cbd5e1;
+}
+
+.app.dark .auth-card {
+  background: rgba(17, 24, 39, 0.95);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.app.dark .auth-card h2,
+.app.dark .auth-card span {
+  color: #f9fafb;
+}
+
+.app.dark .auth-card p {
+  color: #cbd5e1;
+}
+
+.app.dark .auth-card input {
+  background: #374151;
+  color: #f9fafb;
+  border-color: #4b5563;
+}
+
+.app.dark .auth-card input::placeholder {
+  color: #9ca3af;
+}
+
+.app.dark .auth-card button {
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+}
+

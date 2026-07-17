@@ -159,3 +159,42 @@
   border-radius: 10px;
   cursor: pointer;
 }
+
+.app.dark .profile-page {
+  background: linear-gradient(135deg, #020617 0%, #111827 45%, #1f2937 100%);
+  color: #f9fafb;
+}
+
+.app.dark .profile-page h1,
+.app.dark .profile-card h2 {
+  color: #f9fafb;
+}
+
+.app.dark .profile-page p,
+.app.dark .profile-card p,
+.app.dark .profile-header p {
+  color: #cbd5e1;
+}
+
+.app.dark .profile-card {
+  background: #111827;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.26);
+}
+
+.app.dark .profile-card input {
+  background: #374151;
+  color: #f9fafb;
+  border-color: #4b5563;
+}
+
+.app.dark .cancel-btn {
+  background: #4b5563;
+  color: #f9fafb;
+}
+
+.app.dark .theme-btn,
+.app.dark .edit-btn,
+.app.dark .save-btn,
+.app.dark .password-btn {
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+}
