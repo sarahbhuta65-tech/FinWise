@@ -30,7 +30,7 @@ function CreateFAQs() {
                 alert("FAQ updated successfully!");
             } else {
                 await axios.post(
-                    "${import.meta.env.VITE_API_URL}/api/faqs",
+                    `${import.meta.env.VITE_API_URL}/api/faqs`,
                     faqData
                 );
                 alert("FAQ created successfully!");

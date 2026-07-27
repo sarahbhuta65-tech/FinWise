@@ -42,7 +42,7 @@ function CreateBlog() {
             } else {
 
                await axios.post(
-                    "${import.meta.env.VITE_API_URL}/api/blogs",
+                    `${import.meta.env.VITE_API_URL}/api/blogs`,
                     {
                         title,
                         category,

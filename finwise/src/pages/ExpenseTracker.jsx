@@ -53,7 +53,7 @@ function ExpenseTracker({darkMode}) {
       }
 
       const res = await axios.post(
-        "${import.meta.env.VITE_API_URL}/api/expenses",
+        `${import.meta.env.VITE_API_URL}/api/expenses`,
         {
           user: userId,
           name: expenseName,

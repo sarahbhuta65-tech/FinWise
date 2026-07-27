@@ -37,7 +37,7 @@ function SavingsGoal() {
         return;
       }
 
-      await axios.post("${import.meta.env.VITE_API_URL}/api/goals", {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/goals`, {
         user: user._id,
         goalName,
         goalAmount: goal,
