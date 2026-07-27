@@ -19,7 +19,7 @@ function EditProfileModal({ user, onClose }) {
               localStorage.getItem("user")
           );
           const res = await axios.put(
-              `http://${import.meta.env.VITE_API_URL}/api/auth/profile/${currentUser._id}`,
+              `${import.meta.env.VITE_API_URL}/api/auth/profile/${currentUser._id}`,
               {
                   name,
                   email,

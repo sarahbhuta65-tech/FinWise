@@ -37,7 +37,7 @@ function SavingsGoal() {
         return;
       }
 
-      await axios.post("http://${import.meta.env.VITE_API_URL}/api/goals", {
+      await axios.post("${import.meta.env.VITE_API_URL}/api/goals", {
         user: user._id,
         goalName,
         goalAmount: goal,
@@ -83,7 +83,7 @@ function SavingsGoal() {
       const user = JSON.parse(localStorage.getItem("user"));
 
       await axios.delete(
-        `http://${import.meta.env.VITE_API_URL}/api/goals/${user._id}`
+        `${import.meta.env.VITE_API_URL}/api/goals/${user._id}`
       );
 
       setGoalName("");

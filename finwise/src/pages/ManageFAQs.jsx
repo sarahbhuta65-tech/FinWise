@@ -27,7 +27,7 @@ function ManageFAQs() {
     const handleDelete = async () => {
         try {
             await axios.delete(
-                `http://${import.meta.env.VITE_API_URL}/api/faqs/${selectedFaq._id}`
+                `${import.meta.env.VITE_API_URL}/api/faqs/${selectedFaq._id}`
             );
             setFaqs(
                 faqs.filter(

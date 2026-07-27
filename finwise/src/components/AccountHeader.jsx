@@ -40,7 +40,7 @@ function AccountHeader() {
       formData.append("profilePicture", file);
       try {
           const res = await axios.put(
-              `http://${import.meta.env.VITE_API_URL}/api/auth/profile-picture/${user._id}`,
+              `${import.meta.env.VITE_API_URL}/api/auth/profile-picture/${user._id}`,
               formData,
               {
                   headers: {
@@ -72,7 +72,7 @@ function AccountHeader() {
             <img
                 src={
                     user.profilePicture
-                        ? `http://${import.meta.env.VITE_API_URL}${user.profilePicture}`
+                        ? `${import.meta.env.VITE_API_URL}${user.profilePicture}`
                         : "/660513.jpg"
                 }
                 alt="Profile"

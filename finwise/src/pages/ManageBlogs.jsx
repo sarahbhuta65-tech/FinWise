@@ -28,7 +28,7 @@ function ManageBlogs() {
     const handleDelete = async () => {
         try {
             await axios.delete(
-                `http://${import.meta.env.VITE_API_URL}/api/blogs/${selectedBlog._id}`
+                `${import.meta.env.VITE_API_URL}/api/blogs/${selectedBlog._id}`
             );
             setBlogs(
                 blogs.filter(

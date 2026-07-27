@@ -65,7 +65,7 @@ const calculateSIP = async () => {
     return;
   }
 
-  await axios.post("http://${import.meta.env.VITE_API_URL}/api/sip", {
+  await axios.post("${import.meta.env.VITE_API_URL}/api/sip", {
     user: user._id,
     monthlyInvestment: Number(monthlyInvestment),
     interestRate: Number(interestRate),

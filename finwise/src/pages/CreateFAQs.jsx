@@ -24,13 +24,13 @@ function CreateFAQs() {
             };
             if (id) {
                 await axios.put(
-                    `http://${import.meta.env.VITE_API_URL}/api/faqs/${id}`,
+                    `${import.meta.env.VITE_API_URL}/api/faqs/${id}`,
                     faqData
                 );
                 alert("FAQ updated successfully!");
             } else {
                 await axios.post(
-                    "http://${import.meta.env.VITE_API_URL}/api/faqs",
+                    "${import.meta.env.VITE_API_URL}/api/faqs",
                     faqData
                 );
                 alert("FAQ created successfully!");

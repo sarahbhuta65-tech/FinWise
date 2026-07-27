@@ -58,7 +58,7 @@ const calculateEMI = async () => {
     return;
   }
 
-  await axios.post("http://${import.meta.env.VITE_API_URL}/api/emi", {
+  await axios.post("${import.meta.env.VITE_API_URL}/api/emi", {
     user: user._id,
     loanAmount: Number(loanAmount),
     interestRate: Number(interestRate),

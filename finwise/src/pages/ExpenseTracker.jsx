@@ -53,7 +53,7 @@ function ExpenseTracker({darkMode}) {
       }
 
       const res = await axios.post(
-        "http://${import.meta.env.VITE_API_URL}/api/expenses",
+        "${import.meta.env.VITE_API_URL}/api/expenses",
         {
           user: userId,
           name: expenseName,
@@ -77,7 +77,7 @@ function ExpenseTracker({darkMode}) {
   const deleteExpense = async (id) => {
       try {
           await axios.delete(
-              `http://${import.meta.env.VITE_API_URL}/api/expenses/${id}`
+              `${import.meta.env.VITE_API_URL}/api/expenses/${id}`
           );
 
           setExpenses((prevExpenses) =>
