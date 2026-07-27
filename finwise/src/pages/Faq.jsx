@@ -16,7 +16,7 @@ function Faq() {
       const fetchFaqs = async () => {
           try {
               const res = await axios.get(
-                  "http://localhost:5000/api/faqs"
+                  `${import.meta.env.VITE_API_URL}/api/faqs/${user._id}`
               );
               setFaqs(res.data);
           } catch (error) {

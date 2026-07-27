@@ -47,7 +47,7 @@ function Dashboard(){
 
             // Fetch Expenses
             const expenseRes = await axios.get(
-            `http://localhost:5000/api/expenses/${user._id}`
+            `${import.meta.env.VITE_API_URL}/api/expenses/${user._id}`
             );
 
             const savedExpenses = expenseRes.data;
@@ -64,7 +64,7 @@ function Dashboard(){
         // Fetch SIP data from API
         try {
             const sipRes = await axios.get(
-                `http://localhost:5000/api/sip/${user._id}`
+                `${import.meta.env.VITE_API_URL}/api/sip/${user._id}`
             );
             if (sipRes.data) {
                 setSipValue(Number(sipRes.data.totalValue || 0).toFixed(2));
@@ -76,7 +76,7 @@ function Dashboard(){
         // Fetch EMI data from API
         try {
             const emiRes = await axios.get(
-                `http://localhost:5000/api/emi/${user._id}`
+                `${import.meta.env.VITE_API_URL}/api/expenses/${user._id}`
             );
             if (emiRes.data) {
                 setMonthlyEmi(Number(emiRes.data.emi || 0).toFixed(2));
@@ -86,7 +86,7 @@ function Dashboard(){
         }
 
         const goalRes = await axios.get(
-        `http://localhost:5000/api/goals/${user._id}`
+        `${import.meta.env.VITE_API_URL}/api/goals/${user._id}`
         );
 
         const savedGoal = goalRes.data;
@@ -97,7 +97,7 @@ function Dashboard(){
         let emiAmount = 0;
         try {
             const emiRes = await axios.get(
-                `http://localhost:5000/api/emi/${user._id}`
+                `${import.meta.env.VITE_API_URL}/api/emi/${user._id}`
             );
             if (emiRes.data) {
                 emiAmount = emiRes.data.emi || 0;
@@ -127,7 +127,7 @@ function Dashboard(){
         let hasSip = false;
         try {
             const sipRes = await axios.get(
-                `http://localhost:5000/api/sip/${user._id}`
+                `${import.meta.env.VITE_API_URL}/api/sip/${user._id}`
             );
             if (sipRes.data) hasSip = true;
         } catch (error) {

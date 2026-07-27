@@ -65,7 +65,7 @@ const calculateSIP = async () => {
     return;
   }
 
-  await axios.post("http://localhost:5000/api/sip", {
+  await axios.post("http://${import.meta.env.VITE_API_URL}/api/sip", {
     user: user._id,
     monthlyInvestment: Number(monthlyInvestment),
     interestRate: Number(interestRate),
@@ -84,7 +84,7 @@ const calculateSIP = async () => {
           if(!user || !user._id) return;
 
           const res = await axios.get(
-            `http://localhost:5000/api/sip/${user._id}`
+            `${import.meta.env.VITE_API_URL}/api/sip/${user._id}`
           );
 
           console.log(res.data);

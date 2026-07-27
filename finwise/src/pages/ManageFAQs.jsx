@@ -14,7 +14,7 @@ function ManageFAQs() {
         const fetchFaqs = async () => {
             try {
                 const res = await axios.get(
-                    "http://localhost:5000/api/faqs"
+                    `${import.meta.env.VITE_API_URL}/api/faqs/${user._id}`
                 );
                 setFaqs(res.data);
             } catch (error) {
@@ -27,7 +27,7 @@ function ManageFAQs() {
     const handleDelete = async () => {
         try {
             await axios.delete(
-                `http://localhost:5000/api/faqs/${selectedFaq._id}`
+                `http://${import.meta.env.VITE_API_URL}/api/faqs/${selectedFaq._id}`
             );
             setFaqs(
                 faqs.filter(

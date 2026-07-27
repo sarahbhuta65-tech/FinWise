@@ -24,7 +24,7 @@ function CreateBlog() {
             if (id) {
 
                 await axios.put(
-                    `http://localhost:5000/api/blogs/${id}`,
+                    `http://${import.meta.env.VITE_API_URL}/api/blogs/${id}`,
                     {
                         title,
                         category,
@@ -42,7 +42,7 @@ function CreateBlog() {
             } else {
 
                await axios.post(
-                    "http://localhost:5000/api/blogs",
+                    "http://${import.meta.env.VITE_API_URL}/api/blogs",
                     {
                         title,
                         category,
@@ -72,7 +72,7 @@ function CreateBlog() {
             try {
 
                 const res = await axios.get(
-                    `http://localhost:5000/api/blogs/${id}`
+                    `${import.meta.env.VITE_API_URL}/api/blogs/${user._id}`
                 );
 
                 const blog = res.data;

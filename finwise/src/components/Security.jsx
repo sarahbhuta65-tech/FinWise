@@ -34,7 +34,7 @@ function Security() {
 
             const res = await axios.put(
 
-                `http://localhost:5000/api/auth/change-password/${user._id}`,
+                `http://${import.meta.env.VITE_API_URL}/api/auth/change-password/${user._id}`,
 
                 {
                     currentPassword,

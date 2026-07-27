@@ -24,13 +24,13 @@ function CreateFAQs() {
             };
             if (id) {
                 await axios.put(
-                    `http://localhost:5000/api/faqs/${id}`,
+                    `http://${import.meta.env.VITE_API_URL}/api/faqs/${id}`,
                     faqData
                 );
                 alert("FAQ updated successfully!");
             } else {
                 await axios.post(
-                    "http://localhost:5000/api/faqs",
+                    "http://${import.meta.env.VITE_API_URL}/api/faqs",
                     faqData
                 );
                 alert("FAQ created successfully!");
@@ -47,7 +47,7 @@ function CreateFAQs() {
         const fetchFaq = async () => {
             try {
                 const res = await axios.get(
-                    `http://localhost:5000/api/faqs/${id}`
+                    `${import.meta.env.VITE_API_URL}/api/faqs/${user._id}`
                 );
                 setQuestion(res.data.question);
                 setCategory(res.data.category);

@@ -58,7 +58,7 @@ const calculateEMI = async () => {
     return;
   }
 
-  await axios.post("http://localhost:5000/api/emi", {
+  await axios.post("http://${import.meta.env.VITE_API_URL}/api/emi", {
     user: user._id,
     loanAmount: Number(loanAmount),
     interestRate: Number(interestRate),
@@ -77,7 +77,7 @@ useEffect(() => {
       if (!user || !user._id) return;
 
       const res = await axios.get(
-        `http://localhost:5000/api/emi/${user._id}`
+        `${import.meta.env.VITE_API_URL}/api/emi/${user._id}`
       );
 
       if (!res.data) return;

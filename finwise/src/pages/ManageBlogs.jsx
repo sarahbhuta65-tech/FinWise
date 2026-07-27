@@ -14,7 +14,7 @@ function ManageBlogs() {
         const fetchBlogs = async () => {
             try {
                 const res = await axios.get(
-                    "http://localhost:5000/api/blogs"
+                    `${import.meta.env.VITE_API_URL}/api/blogs/${user._id}`
                 );
                 setBlogs(res.data);
                 console.log(blogs);
@@ -28,7 +28,7 @@ function ManageBlogs() {
     const handleDelete = async () => {
         try {
             await axios.delete(
-                `http://localhost:5000/api/blogs/${selectedBlog._id}`
+                `http://${import.meta.env.VITE_API_URL}/api/blogs/${selectedBlog._id}`
             );
             setBlogs(
                 blogs.filter(
