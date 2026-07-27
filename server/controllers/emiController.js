@@ -1,4 +1,4 @@
-const Emi = require("../models/Emi");
+const Emi = require("../models/emi");
 
 // Save / Update EMI
 const saveEmi = async (req, res) => {
