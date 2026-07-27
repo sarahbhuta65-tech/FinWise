@@ -1,4 +1,4 @@
-const Sip = require("../models/Sip");
+const Sip = require("../models/sip");
 
 // Add or Update SIP
 const saveSip = async (req, res) => {
