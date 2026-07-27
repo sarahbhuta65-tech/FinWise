@@ -1,0 +1,239 @@
+.emi-container {
+  padding: 40px 50px;
+  min-height: 100vh;
+}
+
+.emi-container h1 {
+  text-align: center;
+  font-size: 42px;
+  margin-bottom: 35px;
+  color: #111827;
+}
+
+/* ===== Layout ===== */
+.emi-top-section,
+.emi-bottom-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+/* ===== Shared Card Style ===== */
+.emi-input-card,
+.emi-result-card,
+.emi-chart-card,
+.emi-insights-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  border-radius: 28px;
+  padding: 30px;
+  box-shadow:
+    0 20px 40px rgba(37, 99, 235, 0.08),
+    0 8px 16px rgba(0, 0, 0, 0.04);
+}
+
+.emi-input-card h2,
+.emi-result-card h2,
+.emi-chart-card h2,
+.emi-insights-card h2 {
+  margin-top: 0;
+  margin-bottom: 22px;
+}
+
+.emi-input-card {
+  border-top: 6px solid #2563eb;
+}
+
+.emi-result-card {
+  border-top: 6px solid #f59e0b;
+}
+
+.emi-chart-card {
+  border-top: 6px solid #ef4444;
+}
+
+.emi-insights-card {
+  border-top: 6px solid #8b5cf6;
+}
+
+.emi-input-card label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.emi-input-card input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px;
+  font-size: 16px;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  margin-bottom: 16px;
+  background: #f8fbff;
+}
+
+.emi-input-card input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.error-message {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 12px;
+  border-radius: 10px;
+  margin: 15px 0;
+  text-align: center;
+}
+
+/* Buttons */
+.calculate-btn,
+.clear-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.calculate-btn {
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  color: white;
+  margin-top: 10px;
+}
+
+.clear-btn {
+  margin-top: 14px;
+  background: linear-gradient(135deg, #ef4444, #f87171);
+  color: white;
+  border: none;
+}
+
+.calculate-btn:hover,
+.clear-btn:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.emi-results-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.result-box {
+  padding: 22px;
+  border-radius: 20px;
+  color: white;
+}
+
+.emi-box {
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+}
+
+.interest-box {
+  background: linear-gradient(135deg, #ef4444, #f87171);
+}
+
+.payment-box {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+}
+
+.result-box h4 {
+  margin: 0 0 12px 0;
+}
+
+.result-box h3 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.empty-state {
+  text-align: center;
+  color: #6b7280;
+  padding: 80px 20px;
+}
+
+.mini-emi-card {
+  background: #f8fafc;
+  padding: 18px;
+  border-radius: 18px;
+  margin-bottom: 16px;
+  border-left: 5px solid #8b5cf6;
+}
+
+.mini-emi-card h4 {
+  margin: 0 0 10px 0;
+}
+
+.mini-emi-card p {
+  margin: 0;
+  color: #374151;
+}
+
+/* ===== Chart polish ===== */
+.emi-chart-card {
+  min-height: 430px;
+}
+
+.emi-chart-card .recharts-wrapper {
+  margin: 0 auto;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 900px) {
+  .emi-top-section,
+  .emi-bottom-section {
+    grid-template-columns: 1fr;
+  }
+
+  .emi-container {
+    padding: 20px;
+  }
+
+  .result-box h3 {
+    font-size: 24px;
+  }
+
+  .emi-container h1 {
+    font-size: 32px;
+  }
+}
+
+.app.dark .emi-input-card,
+.app.dark .emi-result-card,
+.app.dark .emi-chart-card,
+.app.dark .emi-insights-card {
+  background: #1f2937;
+  color: white;
+}
+
+.app.dark .emi-container h1{
+  color: white;
+}
+
+.app.dark .emi-input-card input {
+  background: #374151;
+  color: white;
+  border: 1px solid #4b5563;
+}
+
+.app.dark .mini-emi-card {
+  background: #374151;
+}
+
+.app.dark .mini-emi-card p,
+.app.dark .emi-input-card label {
+  color: #e5e7eb;
+}
+
+.app.dark .empty-state {
+  color: #cbd5e1;
+}
