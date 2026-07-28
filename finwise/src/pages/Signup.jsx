@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../firebase";
 import "./Auth.css";
 
 function Signup() {
@@ -7,6 +10,7 @@ function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
     const Navigate = useNavigate();
 
     const handleSignup = async (e) => {
@@ -24,15 +28,58 @@ function Signup() {
             const data = await res.json();
             if (res.ok) {
                localStorage.setItem("user", JSON.stringify(data.user));
-                alert("Account Created");
+                toast.success("Account Created");
                 Navigate("/login");
             } else {
-                alert(data.message);
+                toast.error(data.message);
             }
          } catch(error) {
-            alert("Something went wrong");
+            toast.error("Something went wrong");
             console.log(error);
+         } finally {
+            setLoading(false);
          }
+        };
+
+        const handleGoogleSignup = async () => {
+          setLoading(true);
+          try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const googleUser = result.user;
+            const apiBase = import.meta.env.VITE_API_URL;
+
+            if (!apiBase) {
+              toast.error("VITE_API_URL is not set. Please set it in your .env file.");
+              return;
+            }
+
+            const res = await fetch(`${apiBase}/api/auth/google-login`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: googleUser.displayName,
+                email: googleUser.email,
+                photo: googleUser.photoURL,
+              }),
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+              toast.error(data.message || "Google Signup Failed");
+              return;
+            }
+
+            localStorage.setItem("user", JSON.stringify(data.user));
+            toast.success(`Welcome ${data.user.name} 👋`);
+            Navigate("/dashboard");
+          } catch (error) {
+            console.error(error);
+            toast.error("Google Signup Failed");
+          } finally {
+            setLoading(false);
+          }
         };
 
         return (
@@ -84,7 +131,22 @@ function Signup() {
                         </span> 
                         </div> 
                         
-                        <button type="submit">Signup</button>
+                        <button type="submit" disabled={loading}>
+                          {loading ? "Creating account..." : "Signup"}
+                        </button>
+
+                        <div className="divider">
+                          <span>OR</span>
+                        </div>
+
+                        <button type="button" className="google-btn" onClick={handleGoogleSignup}>
+                          <img
+                            src="https://www.svgrepo.com/show/475656/google-color.svg"
+                            alt="Google"
+                            width="20"
+                          />
+                          Continue with Google
+                        </button>
                     </form>
 
                     <span>

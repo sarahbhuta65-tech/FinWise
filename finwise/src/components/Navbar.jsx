@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Navbar({ darkMode, setDarkMode, user, setUser }){
 

@@ -19,6 +19,7 @@ import Signup from "./pages/Signup";
 import MyAccount from "./pages/MyAccount";
 import Blogs from "./pages/Blogs";
 import BlogDetails from "./pages/BlogDetails";
+import {Toaster} from "react-hot-toast";
 import "./App.css";
 
 function App() {
@@ -46,6 +47,31 @@ function App() {
         user={user}
         setUser={setUser}
       />
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          duration: 3000,
+          style: {
+            borderRadius: "12px",
+            background: "#1f2937",
+            color: "#fff",
+          },
+          success: {
+            iconTheme: {
+              primary: "#10B981",
+              secondary: "#fff",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#EF4444",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
+      
       <Routes>
 
         <Route path="/" element={<Home darkMode={darkMode} />} />

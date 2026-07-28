@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import "./MyAccount.css";
+import toast from "react-hot-toast";
 
 function Security() {
 
@@ -21,12 +22,12 @@ function Security() {
             !newPassword ||
             !confirmPassword
         ) {
-            alert("Please fill all fields.");
+            toast.error("Please fill all fields.");
             return;
         }
 
         if (newPassword !== confirmPassword) {
-            alert("Passwords do not match.");
+            toast.error("Passwords do not match.");
             return;
         }
 
@@ -43,7 +44,7 @@ function Security() {
 
             );
 
-            alert(res.data.message);
+            toast.success(res.data.message);
 
             setCurrentPassword("");
             setNewPassword("");
@@ -51,7 +52,7 @@ function Security() {
 
         } catch (error) {
 
-            alert(error.response?.data?.message);
+            toast.error(error.response?.data?.message);
 
         }
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {FaWallet} from "react-icons/fa";
 import { PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid, } from "recharts";
 import axios from "axios";
+import toast from "react-hot-toast";
 import "./Dashboard.css";
 
 function Dashboard(){
@@ -76,7 +77,7 @@ function Dashboard(){
         // Fetch EMI data from API
         try {
             const emiRes = await axios.get(
-                `${import.meta.env.VITE_API_URL}/api/expenses/${user._id}`
+                `${import.meta.env.VITE_API_URL}/api/emi/${user._id}`
             );
             if (emiRes.data) {
                 setMonthlyEmi(Number(emiRes.data.emi || 0).toFixed(2));

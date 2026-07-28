@@ -3,6 +3,7 @@ import InputField from "../components/InputField";
 import CalculatorCard from "../components/CalculatorCard";
 import "./emiCalculator.css";
 import axios from "axios";
+import toast from "react-hot-toast";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer,} from "recharts";
 
 function EmiCalculator(){
@@ -17,31 +18,35 @@ const calculateEMI = async () => {
   const annualRate = Number(interestRate);
   const time = Number(years);
 
-  if (!P || !annualRate || !time){
+  if (!P || !annualRate || !time) {
+    toast.error("Please fill all fields");
     setError("Please fill all fields");
     return;
   }
 
-  if (P <= 0){
+  if (P <= 0) {
+    toast.error("Loan amount must be greater than 0");
     setError("Loan amount must be greater than 0");
     return;
   }
 
   if (annualRate <= 0 || annualRate > 30) {
+    toast.error("Interest rate must be between 1 and 30");
     setError("Interest rate must be between 1 and 30");
     return;
   }
 
   if (time <= 0 || time > 40) {
+    toast.error("Loan years must be between 1 and 40 years");
     setError("Loan years must be between 1 and 40 years");
     return;
   }
+
   setError("");
   const r = annualRate / 12 / 100;
   const n = time * 12;
 
-  const emi =(P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-
+  const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
   const totalPayment = emi * n;
   const totalInterest = totalPayment - P;
 
@@ -49,24 +54,30 @@ const calculateEMI = async () => {
     emi: emi.toFixed(2),
     totalPayment: totalPayment.toFixed(2),
     totalInterest: totalInterest.toFixed(2),
- });
+  });
 
- const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user"));
 
   if (!user || !user._id) {
-    alert("Please login first");
+    toast.error("Please login first");
     return;
   }
 
-  await axios.post(`${import.meta.env.VITE_API_URL}/api/emi`, {
-    user: user._id,
-    loanAmount: Number(loanAmount),
-    interestRate: Number(interestRate),
-    years: Number(years),
-    emi,
-    totalPayment,
-    totalInterest,
-  });
+  try {
+    await axios.post(`${import.meta.env.VITE_API_URL}/api/emi`, {
+      user: user._id,
+      loanAmount: Number(loanAmount),
+      interestRate: Number(interestRate),
+      years: Number(years),
+      emi,
+      totalPayment,
+      totalInterest,
+    });
+    toast.success("EMI saved successfully");
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to save EMI");
+  }
 };
 
 useEffect(() => {

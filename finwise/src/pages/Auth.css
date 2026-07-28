@@ -108,6 +108,29 @@
   transform: translateY(-2px);
 }
 
+.auth-card button.loading {
+  cursor: wait;
+  opacity: 0.92;
+}
+
+.auth-card button .spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.65);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 10px;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .auth-card span {
   display: block;
   margin-top: 18px;
@@ -191,3 +214,40 @@
   background: linear-gradient(135deg, #2563eb, #4f46e5);
 }
 
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #ddd;
+}
+
+.divider span {
+    margin: 0 10px;
+    color: gray;
+    font-size: 14px;
+}
+
+.google-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.google-btn:hover {
+    background: #f5f5f5;
+}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import InputField from "../components/InputField";
 import "./ExpenseTracker.css";
+import toast from "react-hot-toast";
 import {
   LineChart,
   Line,
@@ -27,16 +28,19 @@ function ExpenseTracker({darkMode}) {
 
   const addExpense = async () => {
     if (!expenseName || !amount) {
+      toast.error("Please fill all fields");
       setError("Please fill all fields");
       return;
     }
 
     if (Number(amount) <= 0) {
+      toast.error("Expense amount must be greater than 0");
       setError("Expense amount must be greater than 0");
       return;
     }
 
     if (Number(amount) >= 10000000) {
+      toast.error("Expense amount is too large");
       setError("Expense amount is too large");
       return;
     }
@@ -48,6 +52,7 @@ function ExpenseTracker({darkMode}) {
       const userId = user?.id || user?._id;
 
       if (!userId) {
+        toast.error("Please log in again to continue.");
         setError("Please log in again to continue.");
         return;
       }
@@ -83,9 +88,11 @@ function ExpenseTracker({darkMode}) {
           setExpenses((prevExpenses) =>
               prevExpenses.filter((expense) => (expense._id || expense.id) !== id)
           );
+          toast.success("Expense deleted successfully");
 
       } catch (error) {
           console.error(error);
+          toast.error("Failed to delete expense.");
           setError("Failed to delete expense.");
       }
   };

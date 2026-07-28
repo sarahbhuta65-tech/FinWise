@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 import "./MyAccount.css";
 
 function EditProfileModal({ user, onClose }) {
@@ -35,11 +36,11 @@ function EditProfileModal({ user, onClose }) {
               "user",
               JSON.stringify(res.data.user)
           );
-          alert("Profile updated successfully!");
+          toast.success("Profile updated successfully!");
           window.location.reload();
       } catch (error) {
           console.error(error);
-          alert("Something went wrong");
+          toast.error("Something went wrong");
       }
   };
 

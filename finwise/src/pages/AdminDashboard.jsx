@@ -4,6 +4,7 @@ import ManageBlogs from "./ManageBlogs";
 import ManageFAQs from "./ManageFAQs";
 import CreateBlog from "./CreateBlog";
 import CreateFAQs from "./CreateFAQs";
+import toast from "react-hot-toast";
 import "./Admin.css";
 import DashboardChart from "./DashboardChart";
 import { useState, useEffect } from "react";

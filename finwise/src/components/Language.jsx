@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./MyAccount.css";
+import toast from "react-hot-toast";
 
 function Language() {
 
@@ -19,7 +20,7 @@ function Language() {
 
         localStorage.setItem("language", language);
 
-        alert("Language preferences saved!");
+        toast.success("Language preferences saved!");
 
     };
 

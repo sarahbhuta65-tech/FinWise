@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./Admin.css";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 function CreateFAQs() {
     const [question, setQuestion] = useState("");
@@ -12,7 +13,7 @@ function CreateFAQs() {
 
     const handleSave = async (status) => {
         if (!question || !category || !answer) {
-            alert("Please fill all required fields");
+            toast.error("Please fill all required fields");
             return;
         }
         try {
@@ -27,18 +28,18 @@ function CreateFAQs() {
                     `${import.meta.env.VITE_API_URL}/api/faqs/${id}`,
                     faqData
                 );
-                alert("FAQ updated successfully!");
+                toast.success("FAQ updated successfully!");
             } else {
                 await axios.post(
                     `${import.meta.env.VITE_API_URL}/api/faqs`,
                     faqData
                 );
-                alert("FAQ created successfully!");
+                toast.success("FAQ created successfully!");
             }
             navigate("/admin/faqs");
         } catch (error) {
             console.error(error);
-            alert("Something went wrong.");
+            toast.error("Something went wrong.");
         }
     };
 

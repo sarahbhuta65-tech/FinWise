@@ -1,5 +1,6 @@
 import "./MyAccount.css";
 import { useRef } from "react";
+import toast from "react-hot-toast";
 import axios from "axios";
 
 function AccountHeader({ setUser }) {
@@ -56,7 +57,7 @@ function AccountHeader({ setUser }) {
           console.log(error.response?.data);
           console.log(error.response?.status);
           console.error(error);
-          alert("Image upload failed.");
+          toast.error("Image upload failed.");
       }
 
   };

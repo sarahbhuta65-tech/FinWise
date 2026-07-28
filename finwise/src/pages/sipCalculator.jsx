@@ -2,6 +2,7 @@ import {useState, useEffect} from "react";
 import InputField from "../components/InputField";
 import "./sipCalculator.css";
 import axios from "axios";
+import toast from "react-hot-toast";
 import {
   PieChart,
   Pie,
@@ -24,22 +25,26 @@ const calculateSIP = async () => {
   const time = Number(years);
   
   if (!P || !annualRate || !time){
+    toast.error("Please fill all fields");
     setError("Please fill all fields");
     return;
   }
 
   if (P <= 0) {
+    toast.error("Monthly investment must be greater than 0");
     setError("Monthly investment must be greater than 0");
     return;
   }
 
   if (annualRate <= 0 || annualRate > 50) {
-    setError("Tnterest rate must be between 1 and 50");
+    toast.error("Interest rate must be between 1 and 50");
+    setError("Interest rate must be between 1 and 50");
     return;
 
   }
 
   if(time <= 0 || time > 50){
+    toast.error("Investment period must be between 1 and 50 years");
     setError("Investment period must be between 1 and 50 years");
     return;
   }
@@ -61,19 +66,25 @@ const calculateSIP = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   if (!user || !user._id) {
-    alert("Please login first");
+    toast.error("Please login first");
     return;
   }
 
-  await axios.post(`${import.meta.env.VITE_API_URL}/api/sip`, {
-    user: user._id,
-    monthlyInvestment: Number(monthlyInvestment),
-    interestRate: Number(interestRate),
-    years: Number(years),
-    investedAmount,
-    estimatedReturns,
-    totalValue: maturityAmount, 
-  });
+  try {
+    await axios.post(`${import.meta.env.VITE_API_URL}/api/sip`, {
+      user: user._id,
+      monthlyInvestment: Number(monthlyInvestment),
+      interestRate: Number(interestRate),
+      years: Number(years),
+      investedAmount,
+      estimatedReturns,
+      totalValue: maturityAmount, 
+    });
+    toast.success("SIP saved successfully");
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to save SIP");
+  }
 };
 
     useEffect(() => {

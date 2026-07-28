@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./SavingsGoal.css";
+import toast from "react-hot-toast";
 import axios from "axios";
 
 function SavingsGoal() {
@@ -16,11 +17,13 @@ function SavingsGoal() {
     const saved = Number(savedAmount);
 
     if (!goalName || !goalAmount || savedAmount === "") {
+      toast.error("Please fill all fields");
       setError("Please fill all fields");
       return;
     }
 
     if (goal <= 0 || saved < 0) {
+      toast.error("Invalid amounts");
       setError("Invalid amounts");
       return;
     }
@@ -33,7 +36,7 @@ function SavingsGoal() {
       const user = JSON.parse(localStorage.getItem("user"));
 
       if (!user || !user._id) {
-        alert("Please login first");
+        toast.error("Please login first");
         return;
       }
 
@@ -45,10 +48,10 @@ function SavingsGoal() {
         progress: percentage,
       });
 
-      alert("Goal saved successfully");
+      toast.success("Goal saved successfully");
     } catch (error) {
       console.error(error);
-      alert("Failed to save goal");
+      toast.error("Failed to save goal");
     }
   };
 
@@ -94,7 +97,7 @@ function SavingsGoal() {
 
     } catch (error) {
       console.error(error);
-      alert("Failed to delete goal");
+      toast.error("Failed to delete goal");
     }
   };
 

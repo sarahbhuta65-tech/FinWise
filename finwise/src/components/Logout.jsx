@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./MyAccount.css";
 
+
 function Logout({ setUser }) {
 
     const navigate = useNavigate();

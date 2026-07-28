@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Faq.css";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 import axios from "axios";
 
 function Faq() {

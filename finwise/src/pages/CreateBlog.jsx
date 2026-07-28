@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import RichTextEditor from "../components/RichTextEditor";
 import "./Admin.css";
+import toast from "react-hot-toast";
 import axios from "axios";
 
 function CreateBlog() {
@@ -17,7 +18,7 @@ function CreateBlog() {
     const handleSave = async (status) => {
 
         if (!title || !category || !description || !content) {
-            alert("Please fill all required fields.");
+            toast.error("Please fill all required fields.");
             return;
         }
         try {
@@ -37,7 +38,7 @@ function CreateBlog() {
                     }
                 );
 
-                alert("Blog updated successfully");
+                toast.success("Blog updated successfully");
 
             } else {
 
@@ -55,14 +56,14 @@ function CreateBlog() {
                     }
                 );
 
-                alert("Blog created successfully");
+                toast.success("Blog created successfully");
             }
 
             navigate("/admin/blogs");
 
         } catch (error) {
             console.error(error);
-            alert("Something went wrong");
+            toast.error("Something went wrong");
         }
     };
 
