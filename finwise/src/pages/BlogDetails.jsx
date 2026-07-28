@@ -9,14 +9,14 @@ function BlogDetails() {
 
     const [blog, setBlog] = useState(null);
 
-   useEffect(() => {
+    useEffect(() => {
         if (!id || id === "undefined") {
             return;
         }
         const fetchBlog = async () => {
             try {
                 const res = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/api/blogs/${user._id}`
+                    `${import.meta.env.VITE_API_URL}/api/blogs/${id}`
                 );
                 setBlog(res.data);
             } catch (error) {

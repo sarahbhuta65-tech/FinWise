@@ -14,10 +14,9 @@ function ManageBlogs() {
         const fetchBlogs = async () => {
             try {
                 const res = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/api/blogs/${user._id}`
+                    `${import.meta.env.VITE_API_URL}/api/blogs`
                 );
                 setBlogs(res.data);
-                console.log(blogs);
             } catch (error) {
                 console.error(error);
             }

@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import "./MyAccount.css";
 
-function Logout() {
+function Logout({ setUser }) {
 
     const navigate = useNavigate();
 
     const handleLogout = () => {
 
         localStorage.removeItem("user");
+        if (setUser) setUser(null);
 
         navigate("/login");
 

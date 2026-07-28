@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 
-function Login() {
+function Login({ setUser }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const Navigate = useNavigate();
@@ -12,7 +12,13 @@ function Login() {
         e.preventDefault();
 
         try{
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+            const apiBase = import.meta.env.VITE_API_URL;
+            if (!apiBase) {
+                alert("VITE_API_URL is not set. Please set it in your .env file.");
+                return;
+            }
+
+            const res = await fetch(`${apiBase}/api/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -20,13 +26,28 @@ function Login() {
                 body: JSON.stringify({ email, password })
             });
 
-            const data = await res.json();
+            // Safely parse JSON (handle empty or non-JSON responses)
+            let data = null;
+            const text = await res.text();
+            try {
+                data = text ? JSON.parse(text) : null;
+            } catch (parseErr) {
+                console.warn("Failed to parse JSON from login response:", parseErr);
+            }
+
             if (res.ok) {
-                localStorage.setItem("user", JSON.stringify(data.user));
+                if (data && data.user) {
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    if (setUser) setUser(data.user);
+                } else {
+                    // Successful status but no user payload
+                    console.warn("Login returned no user payload", { status: res.status, data });
+                }
                 alert("Login successful");
                 Navigate("/dashboard");
             } else {
-                alert(data.message);
+                const message = data && data.message ? data.message : `Login failed (status ${res.status})`;
+                alert(message);
             }
          } catch(error) {
             alert("Something went wrong");

@@ -7,6 +7,8 @@ function Faq() {
   const [faqs, setFaqs] = useState([]);
   const [search, setSearch] = useState("");
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const [openFaq, setOpenFaq] = useState(null);
   const toggleFaq = (id) => {
       setOpenFaq(openFaq === id ? null : id);
@@ -15,9 +17,9 @@ function Faq() {
   useEffect(() => {
       const fetchFaqs = async () => {
           try {
-              const res = await axios.get(
-                  `${import.meta.env.VITE_API_URL}/api/faqs/${user._id}`
-              );
+                const res = await axios.get(
+                  `${import.meta.env.VITE_API_URL}/api/faqs`
+                );
               setFaqs(res.data);
           } catch (error) {
               console.error(error);

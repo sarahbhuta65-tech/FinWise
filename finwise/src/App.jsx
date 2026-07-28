@@ -23,6 +23,9 @@ import "./App.css";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user"))
+  );
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("darkMode");
@@ -37,12 +40,16 @@ function App() {
 
   return (
     <div className={darkMode ? "app dark" : "app"}>
-      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-
+      <Navbar
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+        user={user}
+        setUser={setUser}
+      />
       <Routes>
 
         <Route path="/" element={<Home darkMode={darkMode} />} />
-        <Route path="/login" element={<Login darkMode={darkMode} />} />
+        <Route path="/login" element={<Login darkMode={darkMode} setUser={setUser} />} />
         <Route path="/signup" element={<Signup darkMode={darkMode} />} />
         <Route path="/faq" element={<Faq darkMode={darkMode} />} />
         {/* Protected Routes */}
@@ -103,6 +110,7 @@ function App() {
               <MyAccount
                   darkMode={darkMode}
                   setDarkMode={setDarkMode}
+                  setUser={setUser}
               />
             </ProtectedRoute>
           }

@@ -1,7 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 
-function Navbar() {
-  const user = JSON.parse(localStorage.getItem("user"));
+function Navbar({ darkMode, setDarkMode, user, setUser }){
 
   return (
     <nav className="navbar">

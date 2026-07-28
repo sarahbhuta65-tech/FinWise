@@ -12,12 +12,12 @@ import Logout from "../components/Logout";
 import Language from "../components/Language";
 import "../components/MyAccount.css";
 
-function MyAccount({ darkMode, setDarkMode }) {
+function MyAccount({ darkMode, setDarkMode, setUser }) {
     const [activeSection, setActiveSection] = useState("personal");
 
     return(
         <div className="account-page">
-            <AccountHeader />
+            <AccountHeader setUser={setUser} />
             <ProfileStats/>
 
             <div className="account-body">
@@ -50,7 +50,7 @@ function MyAccount({ darkMode, setDarkMode }) {
 
                     {activeSection === "about" && <About />}
                     {activeSection === "logout" && (
-                        <Logout />
+                        <Logout setUser={setUser} />
                     )}
                 </div>  
             </div>

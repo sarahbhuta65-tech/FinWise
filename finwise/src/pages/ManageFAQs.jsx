@@ -14,7 +14,7 @@ function ManageFAQs() {
         const fetchFaqs = async () => {
             try {
                 const res = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/api/faqs/${user._id}`
+                    `${import.meta.env.VITE_API_URL}/api/faqs`
                 );
                 setFaqs(res.data);
             } catch (error) {

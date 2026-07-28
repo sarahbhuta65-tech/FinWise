@@ -47,7 +47,7 @@ function CreateFAQs() {
         const fetchFaq = async () => {
             try {
                 const res = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/api/faqs/${user._id}`
+                    `${import.meta.env.VITE_API_URL}/api/faqs/${id}`
                 );
                 setQuestion(res.data.question);
                 setCategory(res.data.category);

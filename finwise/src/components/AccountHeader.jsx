@@ -2,7 +2,7 @@ import "./MyAccount.css";
 import { useRef } from "react";
 import axios from "axios";
 
-function AccountHeader() {
+function AccountHeader({ setUser }) {
     const fileInputRef = useRef(null);
     const user = JSON.parse(localStorage.getItem("user"));
     const profileFields = [
@@ -49,12 +49,8 @@ function AccountHeader() {
               }
           );
 
-          localStorage.setItem(
-              "user",
-              JSON.stringify(res.data.user)
-          );
-
-          setUser(res.data.user);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
+            if (setUser) setUser(res.data.user);
 
       } catch (error) {
           console.log(error.response?.data);
