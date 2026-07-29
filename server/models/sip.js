@@ -43,4 +43,6 @@ const sipSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Sip", sipSchema);
+module.exports =
+  mongoose.models.Sip ||
+  mongoose.model("Sip", sipSchema);

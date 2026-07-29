@@ -52,6 +52,15 @@ function Navbar({ darkMode, setDarkMode, user, setUser }){
               }
             >Goal</NavLink>
 
+            <NavLink
+              to="/ai"
+              className={({ isActive }) =>
+                isActive ? "nav-item active-link" : "nav-item"
+              }
+            >
+              AI
+            </NavLink>
+
             <Link to="/profile" className="profile-btn">
               👤 
             </Link>

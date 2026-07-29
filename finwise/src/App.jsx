@@ -20,6 +20,7 @@ import MyAccount from "./pages/MyAccount";
 import Blogs from "./pages/Blogs";
 import BlogDetails from "./pages/BlogDetails";
 import {Toaster} from "react-hot-toast";
+import AIAssistant from "./pages/AIAssistant";
 import "./App.css";
 
 function App() {
@@ -138,6 +139,15 @@ function App() {
                   setDarkMode={setDarkMode}
                   setUser={setUser}
               />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/ai"
+          element={
+            <ProtectedRoute>
+              <AIAssistant />
             </ProtectedRoute>
           }
         />
