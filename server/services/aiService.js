@@ -7,6 +7,7 @@ const ai = new GoogleGenAI({
   apiVersion: "v1alpha",
 });
 
+
 console.log("Gemini API key loaded:", !!process.env.GEMINI_API_KEY);
 console.log("Gemini model selected:", MODEL_NAME);
 
