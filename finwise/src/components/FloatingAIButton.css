@@ -1,0 +1,110 @@
+.floating-ai{
+    position:fixed;
+
+    right:30px;
+    bottom:30px;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:16px 22px;
+
+    border:none;
+
+    border-radius:50px;
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    color:white;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.25);
+
+    transition:.35s;
+
+    z-index:9999;
+}
+
+.floating-ai:hover{
+
+    transform:translateY(-5px) scale(1.04);
+
+}
+
+.floating-ai-icon{
+
+    font-size:22px;
+
+}
+
+.floating-ai-text{
+
+    font-size:16px;
+    font-weight:700;
+
+}
+
+.floating-tooltip{
+
+    position:absolute;
+
+    right:0;
+    bottom:95px;
+    width:270px;
+    padding:18px;
+    border-radius:18px;
+    background:white;
+    color:#111827;
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.18);
+    opacity:0;
+    transform:
+        translateY(20px)
+        scale(.95);
+    transition:.3s;
+    pointer-events:none;
+    font-size:14px;
+    line-height:1.6;
+}
+
+.floating-ai:hover .floating-tooltip{
+
+    opacity:1;
+
+    transform:translateY(0) scale(1);
+
+}
+
+.floating-tooltip::after{
+    content:"";
+    position:absolute;
+    bottom:-10px;
+    right:45px;
+    width:20px;
+    height:20px;
+    background:white;
+    transform:rotate(45deg);
+}
+
+.floating-ai{
+    animation:pulse 3s infinite;
+}
+
+@keyframes pulse{
+0%{
+box-shadow:0 0 0 0 rgba(99,102,241,.5);
+}
+70%{
+box-shadow:0 0 0 18px rgba(99,102,241,0);
+}
+100%{
+box-shadow:0 0 0 0 rgba(99,102,241,0);
+}
+}

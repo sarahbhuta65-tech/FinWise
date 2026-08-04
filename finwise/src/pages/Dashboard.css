@@ -5,16 +5,23 @@
 }
 
 /* HERO */
-.hero-banner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 35px 40px;
-  border-radius: 28px;
-  margin-bottom: 30px;
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
-  color: white;
-  box-shadow: 0 18px 45px rgba(37, 99, 235, 0.25);
+.hero-banner{
+    display:grid;
+    grid-template-columns:1.4fr 1.1fr 0.8fr;
+    gap:24px;
+    align-items:stretch;
+    background:linear-gradient(90deg,#2563eb,#7c3aed);
+    padding:22px 30px;
+    border-radius:28px;
+    color:white;
+    min-height: 200px;
+    margin-bottom: 30px;
+}
+
+.hero-left{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
 }
 
 .hero-left h1 {
@@ -28,12 +35,14 @@
   opacity: 0.9;
 }
 
-.health-box {
-  text-align: center;
-  background: rgba(255,255,255,0.15);
-  padding: 20px 28px;
-  border-radius: 20px;
-  backdrop-filter: blur(8px);
+.health-box{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:rgba(255,255,255,.15);
+    border-radius:22px;
+    padding:20px;
 }
 
 .health-box span {
@@ -44,7 +53,19 @@
 .health-box p {
   margin: 0;
 }
+.health-box h4{
+    margin:8px 0 4px;
+    font-size:16px;
+    font-weight:700;
+}
 
+.health-box small{
+    display:block;
+    margin-top:8px;
+    font-size:12px;
+    line-height:1.5;
+    color:#e2e8f0;
+}
 /* STAT CARDS */
 .stats-grid {
   display: grid;
@@ -59,12 +80,12 @@
   padding: 28px;
   border-radius: 24px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  transition: 0.3s;
+  transition: 0.35s;
 }
 
 .stat-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(99,102,241,0.18);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 18px 40px rgba(79,70,229,0.18);
 }
 
 .stat-card h3 {
@@ -159,6 +180,21 @@
   margin-left: 10px;
 }
 
+.dashboard-card
+.main-chart-card
+.ai-card
+.health-box{
+  transition: 0.35s;
+}
+
+.dashboard-card :hover
+.main-chart-card :hover
+.ai-card :hover
+.health-box :hover{
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(99,102,241,0.18);
+}
+
 /* SIDE PANEL */
 .side-panel {
   display: flex;
@@ -207,19 +243,82 @@
 }
 
 /* BOTTOM CHART */
-.bottom-chart {
-  background: rgba(255,255,255,0.8);
-  backdrop-filter: blur(18px);
-  border-radius: 28px;
-  padding: 30px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+.comparison-chart{
+  background: linear-gradient(180deg, #fff7ed 0%, #eef2ff 100%);
+  border-radius:24px;
+  padding:30px 40px;
+  margin-top:30px;
+  box-shadow:0 12px 40px rgba(18,24,44,0.06);
+  transition:.3s;
+  color: #0f172a;
 }
 
-.bottom-chart h2 {
-  text-align: center;
-  margin-bottom: 25px;
+.comparison-chart:hover{
+    transform:translateY(-4px);
+    box-shadow:0 18px 45px rgba(0,0,0,.12);
 }
 
+.comparison-chart h2{
+  text-align:center;
+  margin-bottom:8px;
+  color:#0f172a;
+  font-size:30px;
+  font-weight:800;
+}
+
+.comparison-subtitle{
+  text-align:left;
+  color:#475569;
+  margin:0;
+  font-size:13px;
+}
+
+.change-badge{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:10px 18px;
+    border-radius:30px;
+    font-weight:700;
+    animation:pulseBadge 2s infinite;
+}
+
+.change-badge.up{
+    background:#dcfce7;
+    color:#16a34a;
+}
+
+.change-badge.down{
+    background:#ffe4e6;
+    color:#ef4444;
+}
+
+.comparison-wrapper .recharts-wrapper .recharts-cartesian-grid line{
+  stroke: rgba(255,255,255,0.06) !important;
+}
+
+/* subtle drop shadow behind bars */
+.comparison-wrapper .recharts-wrapper .recharts-bar-rectangle{
+  filter: drop-shadow(0 8px 18px rgba(3,7,18,0.6));
+}
+
+.comparison-wrapper{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+@keyframes pulseBadge{
+    0%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.05);
+    }
+    100%{
+        transform:scale(1);
+    }
+}
 /* MOBILE */
 @media (max-width: 1200px) {
   .stats-grid {
@@ -288,7 +387,8 @@
 
 .app.dark .stat-card p,
 .app.dark .center-text h3,
-.app.dark .comparison-chart h3 {
+.app.dark .comparison-chart h3,
+.app.dark .comparison-chart h2 {
   color: #f9fafb;
 }
 
@@ -300,5 +400,226 @@
 
 .app.dark .transaction-item:hover {
   background: #4b5563;
+}
+
+/* ===========================
+   Dashboard Animations
+=========================== */
+
+.animate{
+    opacity:0;
+    transform:translateY(30px);
+    animation:fadeUp .8s ease forwards;
+}
+
+.hero-delay{
+    animation-delay:.1s;
+}
+
+.stats-delay{
+    animation-delay:.35s;
+}
+
+.analytics-delay{
+    animation-delay:.6s;
+}
+
+.chart-delay{
+    animation-delay:.9s;
+}
+
+@keyframes fadeUp{
+
+from{
+    opacity:0;
+    transform:translateY(35px);
+}
+
+to{
+    opacity:1;
+    transform:translateY(0);
+}
+
+}
+
+
+.stat-card{
+
+    transition:.35s;
+}
+
+.stat-card:hover{
+
+    transform:
+        translateY(-8px)
+        scale(1.03);
+
+    box-shadow:
+        0 18px 45px rgba(79,70,229,.18);
+
+}
+
+.pie-animation{
+
+    animation:rotateChart 1.2s ease;
+
+}
+
+@keyframes rotateChart{
+
+from{
+
+opacity:0;
+transform:
+scale(.8)
+rotate(-180deg);
+
+}
+
+to{
+
+opacity:1;
+transform:
+scale(1)
+rotate(0deg);
+
+}
+
+}
+
+.legend-item{
+
+    opacity:0;
+
+    transform:translateX(20px);
+
+    animation:legendFade .6s forwards;
+
+}
+
+.legend-item:nth-child(1){
+
+animation-delay:.2s;
+
+}
+
+.legend-item:nth-child(2){
+
+animation-delay:.3s;
+
+}
+
+.legend-item:nth-child(3){
+
+animation-delay:.4s;
+
+}
+
+.legend-item:nth-child(4){
+
+animation-delay:.5s;
+
+}
+
+.legend-item:nth-child(5){
+
+animation-delay:.6s;
+
+}
+
+@keyframes legendFade{
+
+to{
+
+opacity:1;
+transform:translateX(0);
+
+}
+
+}
+
+.legend-item{
+
+    opacity:0;
+
+    transform:translateX(20px);
+
+    animation:legendFade .6s forwards;
+
+}
+
+.legend-item:nth-child(1){
+
+animation-delay:.2s;
+
+}
+
+.legend-item:nth-child(2){
+
+animation-delay:.3s;
+
+}
+
+.legend-item:nth-child(3){
+
+animation-delay:.4s;
+
+}
+
+.legend-item:nth-child(4){
+
+animation-delay:.5s;
+
+}
+
+.legend-item:nth-child(5){
+
+animation-delay:.6s;
+
+}
+
+@keyframes legendFade{
+
+to{
+
+opacity:1;
+transform:translateX(0);
+
+}
+
+}
+
+.transaction-item{
+
+transition:.3s;
+
+}
+
+.transaction-item:hover{
+
+transform:translateX(8px);
+
+background:#eef2ff;
+
+border-radius:12px;
+
+padding-left:10px;
+
+}
+
+.comparison-chart{
+
+transition:.4s;
+
+}
+
+.comparison-chart:hover{
+
+transform:translateY(-5px);
+
+box-shadow:
+
+0 18px 40px rgba(0,0,0,.12);
+
 }
 

@@ -20,6 +20,8 @@ import MyAccount from "./pages/MyAccount";
 import Blogs from "./pages/Blogs";
 import BlogDetails from "./pages/BlogDetails";
 import {Toaster} from "react-hot-toast";
+import FloatingAIButton from "./components/FloatingAIButton";
+import AIDrawer from "./components/AIDrawer";
 import AIAssistant from "./pages/AIAssistant";
 import "./App.css";
 
@@ -28,6 +30,7 @@ function App() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user"))
   );
+  const [openAI, setOpenAI] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("darkMode");
@@ -143,15 +146,6 @@ function App() {
           }
         />
 
-        <Route
-          path="/ai"
-          element={
-            <ProtectedRoute>
-              <AIAssistant />
-            </ProtectedRoute>
-          }
-        />
-
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/admin/blogs" element={<ManageBlogs />} />
         <Route path="/admin/blogs/create" element={<CreateBlog />} />
@@ -160,6 +154,19 @@ function App() {
         <Route path="/admin/faqs/create" element={<CreateFAQs />} />
         <Route path="/admin/faqs/edit/:id" element={<CreateFAQs />} />
       </Routes>
+      {user && (
+        <>
+          <FloatingAIButton
+            onClick={() => setOpenAI(true)}
+          />
+
+          <AIDrawer
+              open={openAI}
+              onClose={() => setOpenAI(false)}
+          />
+        </>
+      )}
+
     </div>
   );
 }
