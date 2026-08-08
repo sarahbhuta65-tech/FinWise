@@ -1,135 +1,173 @@
-import { useNavigate } from "react-router-dom";
+﻿import { useNavigate } from "react-router-dom";
 import "./Home.css";
 
-function Home() {
+function Home({ darkMode }) {
   const navigate = useNavigate();
 
-  return (
-    <div className="home">
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    section?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
-      {/* HERO */}
-      <section className="hero-section-home">
-        <div className="hero-content">
-          <h1>Manage Money Smarter 💰</h1>
+  return (
+    <div className={`home-page${darkMode ? " dark" : ""}`}>
+      <section className="hero-panel">
+        <div className="hero-copy">
+          <span className="hero-pill">✨ AI-powered personal finance</span>
+          <h1>
+            Manage your money with <strong>clarity</strong> and <strong>confidence</strong>.
+          </h1>
           <p>
-            Track expenses, calculate investments, and achieve financial goals
-            with FinWise.
+            FinWise brings smart expense tracking, savings goals, and investment guidance together in a clean, modern experience.
           </p>
 
-          <div className="hero-buttons">
-            <button onClick={() => navigate("/dashboard")}>
-              Get Started
+          <div className="hero-actions">
+            <button className="btn-primary" onClick={() => navigate("/dashboard")}>
+              Start saving
             </button>
-
-            <button className="secondary-btn">
-              Learn More
+            <button className="btn-secondary" onClick={() => scrollToSection("benefits")}>
+              Explore features
             </button>
           </div>
+
+          <div className="hero-highlights">
+            <div>
+              <strong>24/7</strong>
+              <span>AI insights</span>
+            </div>
+            <div>
+              <strong>3+</strong>
+              <span>core tools</span>
+            </div>
+            <div>
+              <strong>Secure</strong>
+              <span>by design</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="hero-visual">
+          <div className="glass-card pulse-card">
+            <div className="card-heading">
+              <span>Portfolio</span>
+              <strong>₹45,000</strong>
+            </div>
+            <div className="card-chart">
+              <div className="bar bar-1" />
+              <div className="bar bar-2" />
+              <div className="bar bar-3" />
+              <div className="bar bar-4" />
+              <div className="bar bar-5" />
+            </div>
+            <div className="card-footer">
+              <span>+18.2% this month</span>
+              <span>Goal progress 82%</span>
+            </div>
+          </div>
+
+          <div className="hero-mini-grid">
+            <div className="mini-chip">
+              <span>💰</span>
+              <p>Savings vault</p>
+            </div>
+            <div className="mini-chip">
+              <span>💳</span>
+              <p>EMI planner</p>
+            </div>
+            <div className="mini-chip">
+              <span>📊</span>
+              <p>Expense view</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* FEATURES */}
-      <section className="features-section">
-        <h2>Our Features</h2>
+      <section className="benefits-panel" id="benefits">
+        <div className="benefits-intro">
+          <span>Designed for your best financial self</span>
+          <h2>Simple, smart tools that feel premium.</h2>
+        </div>
 
-        <div className="card-container">
-          <div className="card" onClick={() => navigate("/sip")}>
-            <h2>📈 SIP Calculator</h2>
-            <p>Calculate investment returns</p>
-          </div>
+        <div className="benefit-cards">
+          <article className="benefit-card">
+            <h3>Personalized guidance</h3>
+            <p>AI-powered insights help you make better savings and spending decisions.</p>
+          </article>
+          <article className="benefit-card">
+            <h3>Modern dashboards</h3>
+            <p>Beautiful visual summaries keep your financial picture clear.</p>
+          </article>
+          <article className="benefit-card">
+            <h3>Goal-centered planning</h3>
+            <p>Set targets and track progress with confidence.</p>
+          </article>
+        </div>
+      </section>
 
-          <div className="card" onClick={() => navigate("/emi")}>
-            <h2>💳 EMI Calculator</h2>
-            <p>Calculate monthly EMI</p>
-          </div>
+      <section className="process-panel">
+        <div className="process-intro">
+          <span>How it works</span>
+          <h2>Get started fast with 3 easy money steps.</h2>
+        </div>
 
-          <div className="card" onClick={() => navigate("/expense")}>
-            <h2>💸 Expense Tracker</h2>
-            <p>Track spending habits</p>
-          </div>
+        <div className="process-cards">
+          <article className="process-step">
+            <div className="step-icon">1</div>
+            <h3>Connect your goals</h3>
+            <p>Add your savings targets and choose the milestones that matter most.</p>
+          </article>
+          <article className="process-step">
+            <div className="step-icon">2</div>
+            <h3>Track spending</h3>
+            <p>See your cash flow, recurring expenses, and habits in one sleek dashboard.</p>
+          </article>
+          <article className="process-step">
+            <div className="step-icon">3</div>
+            <h3>Save smarter</h3>
+            <p>Use AI insights, calculators, and progress tracking to stay ahead.</p>
+          </article>
+        </div>
+      </section>
 
-          <div className="card" onClick={() => navigate("/goal")}>
-            <h2>🎯 Savings Goal</h2>
-            <p>Track savings progress</p>
+      <section className="quick-links-panel">
+        <div className="quick-link" onClick={() => navigate("/sip")}>
+          <p>SIP Calculator</p>
+          <span>Forecast your investment growth.</span>
+        </div>
+        <div className="quick-link" onClick={() => navigate("/emi")}>
+          <p>EMI Calculator</p>
+          <span>Compare monthly payment options.</span>
+        </div>
+        <div className="quick-link" onClick={() => navigate("/expense")}>
+          <p>Expense Tracker</p>
+          <span>Review spending habits instantly.</span>
+        </div>
+      </section>
+
+      <section className="spotlight-panel">
+        <div className="spotlight-card">
+          <div className="spotlight-badge">All your planning in one place</div>
+          <h3>One hub for smarter money decisions.</h3>
+          <p>FinWise connects your goals, calculators, and spending insights in a sleek dashboard that feels polished and powerful.</p>
+          <div className="spotlight-items">
+            <span>Live goal progress</span>
+            <span>Custom savings guidance</span>
+            <span>Built-in expense review</span>
           </div>
         </div>
       </section>
 
-      {/* WHY FINWISE */}
-      <section className="why-section">
-        <h2>Why Choose FinWise?</h2>
-
-        <div className="why-grid">
-          <div className="why-card">
-            <h3>🤖 AI Insights</h3>
-            <p>Get smart suggestions based on spending patterns.</p>
-          </div>
-
-          <div className="why-card">
-            <h3>📊 Analytics</h3>
-            <p>Visual charts help understand finances clearly.</p>
-          </div>
-
-          <div className="why-card">
-            <h3>✨ Easy UI</h3>
-            <p>Simple and beginner-friendly financial management.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* BLOG PREVIEW */}
-      <section className="preview-section">
-        <div className="preview-card">
-            <h2>📚 Financial Blogs</h2>
-            <p>
-            Read useful finance articles about SIP, EMI, savings and investing.
-            </p>
-            <button>Read Blogs</button>
-        </div>
-
-        <div className="preview-card">
-            <h2>❓ FAQs</h2>
-            <p>
-            Have questions? Explore frequently asked questions about FinWise.
-            </p>
-            <button onClick={() => navigate("/faq")}>
-            View FAQs
-           </button>
-        </div>
-        </section>
-
-      {/* FOOTER */}
-      <footer className="footer">
+      <section className="footer-panel">
         <div>
           <h3>FinWise</h3>
-          <p>Smart finance for everyone.</p>
+          <p>Modern finance tools for everyday goals.</p>
         </div>
-
-        <div>
-          <h4>Quick Links</h4>
-          
-          <span onClick={() => navigate("/blogs")} className="footer-link">
-              Blogs
-          </span>
-          <br></br>
-
-          <span onClick={() => navigate("/faq")} className="footer-link">
-              FAQs
-          </span>
-
-          <p>About Us</p>
+        <div className="footer-links">
+          <button onClick={() => navigate("/blogs")}>Blogs</button>
+          <button onClick={() => navigate("/faq")}>FAQs</button>
+          <button onClick={() => scrollToSection("benefits")}>Features</button>
         </div>
-
-        <div>
-          <h4>Contact</h4>
-          <p>finwise@gmail.com</p>
-          <p>+91 XXXXX XXXXX</p>
-        </div>
-
-        <div className="copyright">
-          © 2026 FinWise. All rights reserved.
-        </div>
-      </footer>
+      </section>
     </div>
   );
 }

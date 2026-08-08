@@ -1,0 +1,352 @@
+.financial-summary-page{
+    min-height:100vh;
+    padding:40px;
+    background:linear-gradient(135deg,#eef2ff,#dbeafe);
+}
+
+/* ================= HEADER ================= */
+
+.financial-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+    gap:20px;
+}
+
+.financial-title{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.summary-icon{
+    font-size:42px;
+}
+
+.financial-header h1{
+    font-size:40px;
+    color:#1e293b;
+    margin-bottom:6px;
+}
+
+.financial-header p{
+    color:#64748b;
+    font-size:17px;
+}
+
+.add-btn{
+    padding:14px 28px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.add-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 25px rgba(37,99,235,.25);
+}
+
+/* ================= SUMMARY ================= */
+
+.summary-cards{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(220px,1fr));
+    gap:22px;
+    margin-bottom:40px;
+}
+
+.summary-card{
+    background:white;
+    padding:28px;
+    border-radius:22px;
+    box-shadow:0 12px 30px rgba(0,0,0,.06);
+    transition:.3s;
+}
+
+.summary-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 15px 35px rgba(0,0,0,.12);
+}
+
+.summary-card h4{
+    color:#64748b;
+    margin-bottom:12px;
+    font-size:15px;
+}
+
+.summary-card span{
+    display:inline-block;
+    font-size:32px;
+    font-weight:700;
+    color:#0f172a;
+    margin-bottom:14px;
+}
+
+.summary-card h2{
+    font-size:30px;
+    color:#111827;
+}
+
+/* ================= PROGRESS ================= */
+
+.progress-card,
+.ai-summary-card{
+    background:white;
+    padding:28px;
+    border-radius:22px;
+    box-shadow:0 12px 30px rgba(0,0,0,.06);
+    margin-bottom:40px;
+}
+
+.progress-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.progress-header h3{
+    font-size:22px;
+    color:#111827;
+}
+
+.progress-header span{
+    color:#111827;
+    font-weight:700;
+}
+
+.progress-bar{
+    height:16px;
+    background:#e2e8f0;
+    border-radius:999px;
+    overflow:hidden;
+    margin-bottom:16px;
+}
+
+.progress-fill{
+    height:100%;
+    background:linear-gradient(135deg,#34d399,#22c55e);
+    transition:width .4s ease;
+}
+
+.ai-summary-card h3{
+    font-size:22px;
+    margin-bottom:14px;
+}
+
+.ai-summary-card p{
+    color:#475569;
+    line-height:1.7;
+}
+
+/* ================= LIST ================= */
+
+.commitment-list{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+
+.commitment-card{
+    background:white;
+    border-radius:22px;
+    padding:28px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:24px;
+    box-shadow:0 12px 30px rgba(0,0,0,.06);
+    transition:.3s;
+}
+
+.commitment-card:hover{
+    transform:translateY(-5px);
+}
+
+.card-left{
+    max-width:65%;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.card-left .tag{
+    display:inline-block;
+    padding:8px 16px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+}
+
+.card-left .tag.income{background:#dbeafe;color:#2563eb;}
+.card-left .tag.emi{background:#f3e8ff;color:#7c3aed;}
+.card-left .tag.sip{background:#ecfdf5;color:#16a34a;}
+.card-left .tag.bill{background:#fef3c7;color:#b45309;}
+.card-left .tag.savings{background:#e0f2fe;color:#0284c7;}
+
+.card-left h3{
+    font-size:25px;
+    color:#111827;
+    margin:0;
+}
+
+.card-left p,
+.card-left .notes{
+    color:#64748b;
+    margin:0;
+    line-height:1.6;
+}
+
+.card-right{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:12px;
+    min-width:180px;
+}
+
+.card-right h2{
+    color:#111827;
+    font-size:30px;
+    margin:0;
+}
+
+.status{
+    padding:8px 18px;
+    border-radius:40px;
+    font-size:14px;
+    font-weight:700;
+}
+
+.paid{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.pending{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.commitment-actions{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.primary-btn,
+.delete-btn,
+.card-right button{
+    padding:10px 20px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    color:white;
+    font-weight:700;
+    transition:.3s;
+}
+
+.primary-btn{
+    background:linear-gradient(135deg,#3b82f6,#06b6d4);
+}
+
+.primary-btn:hover{
+    transform:scale(1.03);
+}
+
+.primary-btn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+.delete-btn{
+    background:#ef4444;
+}
+
+.delete-btn:hover{
+    transform:scale(1.03);
+}
+
+/* ================= EMPTY ================= */
+
+.empty-state{
+    background:white;
+    border-radius:22px;
+    padding:70px;
+    text-align:center;
+    color:#64748b;
+    font-size:20px;
+    box-shadow:0 12px 30px rgba(0,0,0,.06);
+}
+
+.empty-state h2{
+    margin-bottom:16px;
+    color:#111827;
+}
+
+.empty-btn{
+    margin-top:24px;
+    padding:14px 28px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.empty-btn:hover{
+    transform:translateY(-3px);
+}
+
+/* ================= DARK MODE ================= */
+
+.app.dark .financial-summary-page{
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+}
+
+.app.dark .financial-header h1{
+    color:white;
+}
+
+.app.dark .financial-header p{
+    color:#cbd5e1;
+}
+
+.app.dark .summary-card,
+.app.dark .commitment-card,
+.app.dark .progress-card,
+.app.dark .ai-summary-card,
+.app.dark .empty-state{
+    background:#1f2937;
+}
+
+.app.dark .summary-card span,
+.app.dark .card-right h2,
+.app.dark .card-left h3,
+.app.dark .progress-header h3,
+.app.dark .progress-header span,
+.app.dark .ai-summary-card h3{
+    color:white;
+}
+
+.app.dark .card-left p,
+.app.dark .card-left .notes,
+.app.dark .ai-summary-card p,
+.app.dark .financial-header p{
+    color:#94a3b8;
+}
+
+.app.dark .primary-btn,
+.app.dark .delete-btn,
+.app.dark .empty-btn,
+.app.dark .add-btn{
+    box-shadow: none;
+}

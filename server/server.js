@@ -13,7 +13,7 @@ const emiRoutes = require("./routes/emiRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const faqRoutes = require("./routes/faqRoutes");
 const aiRoutes = require("./routes/aiRoutes");
-
+const financialSummaryRoutes = require("./routes/financialSummaryRoutes");
 const path = require("path");
 console.log("Mongo URI:", process.env.MONGO_URI);
 connectDB();
@@ -37,6 +37,7 @@ app.use("/api/emi", emiRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/faqs", faqRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/financial-summary", financialSummaryRoutes);
 
 //Test route
 app.get("/", (req, res) => {

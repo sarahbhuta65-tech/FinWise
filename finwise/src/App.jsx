@@ -18,6 +18,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MyAccount from "./pages/MyAccount";
 import Blogs from "./pages/Blogs";
+import FinancialSummary from "./pages/FinancialSummary";
 import BlogDetails from "./pages/BlogDetails";
 import {Toaster} from "react-hot-toast";
 import FloatingAIButton from "./components/FloatingAIButton";
@@ -127,6 +128,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/financial-summary" element={<FinancialSummary darkMode={darkMode} />} />
 
         <Route path="/blogs" element={<Blogs darkMode={darkMode} />} />
 

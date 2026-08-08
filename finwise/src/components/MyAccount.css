@@ -318,6 +318,32 @@
     color:#666;
 }
 
+.stat-icon{
+    font-size:42px;
+    margin-bottom:12px;
+    transition:.3s;
+}
+
+.savings{
+    color:#16a34a;
+}
+
+.expenses{
+    color:#ef4444;
+}
+
+.investment{
+    color:#2563eb;
+}
+
+.streak{
+    color:#f97316;
+}
+
+.stat-card:hover .stat-icon{
+    transform:scale(1.15) rotate(-8deg);
+}
+
 .modal-overlay{
     position:fixed;
     inset:0;
