@@ -1,199 +1,542 @@
-/* Drawer */
-.ai-drawer{
+/* =========================================================
+   FINWISE AI DRAWER
+   ========================================================= */
+
+.ai-drawer {
     position: fixed;
+
     top: 0;
     right: -520px;
+
     width: 500px;
     height: 100vh;
-    background: white;
-    box-shadow: -10px 0 40px rgba(0,0,0,.15);
-    transition: .35s ease;
+
+    background: #f8f6ef;
+
+    box-shadow: -12px 0 40px rgba(23, 32, 51, 0.15);
+
+    transition: right 0.35s ease;
+
     display: flex;
     flex-direction: column;
+
     z-index: 9999;
+
+    overflow: hidden;
 }
 
-.ai-drawer.open{
+.ai-drawer.open {
     right: 0;
 }
-/* Background */
-.drawer-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.35);
-    backdrop-filter:blur(4px);
-    opacity:0;
-    visibility:hidden;
-    transition:.35s;
-    z-index:9998;
+
+
+/* =========================================================
+   OVERLAY
+   ========================================================= */
+
+.drawer-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(23, 32, 51, 0.28);
+
+    backdrop-filter: blur(4px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.35s;
+
+    z-index: 9998;
 }
 
-.drawer-overlay.show{
-    opacity:1;
-    visibility:visible;
+.drawer-overlay.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 
-/* Header */
+/* =========================================================
+   HEADER
+   ========================================================= */
 
-.drawer-header{
-padding:16px 18px;
-border-bottom:1px solid #e5e7eb;
-background:#4f46e5;
+.drawer-header {
+    padding: 15px 18px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #ddd9ce;
+
+    flex-shrink: 0;
 }
 
-.drawer-title{
-display:flex;
-justify-content:space-between;
-align-items:center;
+.drawer-title {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
 }
 
-.title-left{
-display:flex;
-gap:12px;
-align-items:center;
+.title-left {
+    display: flex;
+
+    gap: 11px;
+
+    align-items: center;
 }
 
-.ai-logo{
-width:42px;
-height:42px;
-background:#EEF2FF;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
+
+/* AI logo */
+
+.ai-logo {
+    width: 40px;
+    height: 40px;
+
+    background: #f4f1e8;
+
+    border: 1px solid #ded9cc;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
 }
 
-.title-left h2{
-margin:0;
-font-size:18px;
-font-weight:700;
+
+/* Title */
+
+.title-left h2 {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 18px;
+
+    font-weight: 700;
 }
 
-.title-left span{
-font-size:12px;
-color:#b1bfdb;
+.title-left span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #77786f;
+
+    font-size: 11px;
 }
 
-.title-actions{
-display:flex;
-gap:8px;
+
+/* =========================================================
+   HEADER BUTTONS
+   ========================================================= */
+
+.title-actions {
+    display: flex;
+    gap: 7px;
 }
 
 .history-btn,
-.close-btn{
-width:36px;
-height:36px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-background:#F3F4F6;
-transition:.25s;
+.close-btn {
+    width: 36px;
+    height: 36px;
+
+    border: 1px solid #ddd9ce;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    background: #f8f6ef;
+
+    color: #172033;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.25s;
 }
 
 .history-btn:hover,
-.close-btn:hover{
-background:#E5E7EB;
+.close-btn:hover {
+    background: #172033;
+    color: #ffffff;
+
+    border-color: #172033;
 }
 
-/* Body */
 
-.drawer-content{
-    flex:1;
-    overflow-y:auto;
-    padding:20px;
-    background:#f8fafc;
-}
+/* =========================================================
+   DRAWER CONTENT
+   ========================================================= */
 
-.history-page{
-    display:flex;
-    flex-direction:column;
-    height:100%;
-}
+.drawer-content {
+    flex: 1;
+    min-height: 0;
 
-.history-top{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-bottom:20px;
-}
+    overflow: hidden;
 
-.history-top h3{
-    margin:0;
-    font-size:18px;
-}
+    background: #f8f6ef;
 
-.back-btn{
-    border:none;
-    background:#eef2ff;
-    padding:8px 14px;
-    border-radius:10px;
-    cursor:pointer;
-}
-
-.back-btn:hover{
-    background:#dbe4ff;
-}
-
-.history-list{
-    flex:1;
-    overflow-y:auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
+}
+
+.drawer-content::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+
+/* =========================================================
+   HISTORY
+   ========================================================= */
+
+.history-page {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+}
+
+.history-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+.history-header h2 {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 22px;
+}
+
+.back-btn {
+    width: 36px;
+    height: 36px;
+
+    border: 1px solid #ddd9ce;
+
+    background: #ffffff;
+
+    color: #172033;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-btn:hover {
+    background: #172033;
+    color: #ffffff;
+}
+
+
+/* New chat */
+
+.new-chat-btn {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    margin-bottom: 18px;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #172033;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    transition: 0.25s;
+}
+
+.new-chat-btn:hover {
+    background: #26334d;
+}
+
+
+/* History list */
+
+.history-list {
+    flex: 1;
+
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .history-list::-webkit-scrollbar {
     display: none;
 }
 
-.history-card{
-    background:white;
-    border-radius:14px;
-    padding:14px;
-    cursor:pointer;
-    transition:.25s;
-    box-shadow:0 3px 10px rgba(0,0,0,.05);
-    width:100%;
-    max-width:none;
-    box-sizing:border-box;
+
+/* History card */
+
+.history-card {
+    background: #ffffff;
+
+    border: 1px solid #e1ddd2;
+
+    border-radius: 13px;
+
+    padding: 14px;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+
+    box-sizing: border-box;
 }
 
-.history-card:hover{
-    transform:translateY(-2px);
-    background:#eef2ff;
+.history-card:hover {
+    background: #f3f0e7;
+
+    border-color: #cfc9ba;
+
+    transform: translateY(-1px);
 }
 
-.history-card h4{
-    margin:0;
-    font-size:15px;
+.history-card h4 {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 14px;
 }
 
-.history-card span{
-    font-size:12px;
-    color:#6b7280;
+.history-card span {
+    font-size: 12px;
+
+    color: #77786f;
 }
 
-.empty-history{
-    text-align:center;
-    color:#9ca3af;
-    margin-top:50px;
+
+/* Empty */
+
+.empty-history {
+    text-align: center;
+
+    color: #85857e;
+
+    margin-top: 50px;
 }
 
-.new-chat-btn{
-    margin-top:18px;
-    padding:12px;
-    border:none;
-    border-radius:12px;
-    background:#4f46e5;
-    color:white;
-    cursor:pointer;
-    font-weight:600;
+.empty-history svg {
+    margin-bottom: 10px;
 }
 
-.new-chat-btn:hover{
-    background:#3730a3;
+.empty-history h3 {
+    color: #172033;
+
+    margin-bottom: 5px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .ai-drawer {
+        width: 100%;
+        right: -100%;
+    }
+
+    .ai-drawer.open {
+        right: 0;
+    }
+
+}
+
+/* =========================================================
+   AI DRAWER — DARK MODE
+========================================================= */
+
+.app.dark .ai-drawer {
+    background: #1a1d24;
+    box-shadow: -12px 0 40px rgba(0, 0, 0, 0.35);
+}
+
+/* Overlay */
+
+.app.dark .drawer-overlay {
+    background: rgba(0, 0, 0, 0.48);
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.app.dark .drawer-header {
+    background: #1f2937;
+    border-bottom-color: #374151;
+}
+
+/* AI Logo */
+
+.app.dark .ai-logo {
+    background: #252f3d;
+    border-color: #414b5a;
+}
+
+/* Title */
+
+.app.dark .title-left h2 {
+    color: #f8fafc;
+}
+
+.app.dark .title-left span {
+    color: #9ca3af;
+}
+
+/* =========================================================
+   HEADER BUTTONS
+========================================================= */
+
+.app.dark .history-btn,
+.app.dark .close-btn {
+    background: #252f3d;
+    border-color: #414b5a;
+    color: #d1d5db;
+}
+
+.app.dark .history-btn:hover,
+.app.dark .close-btn:hover {
+    background: #315eea;
+    color: #ffffff;
+    border-color: #315eea;
+}
+
+/* =========================================================
+   DRAWER CONTENT
+========================================================= */
+
+.app.dark .drawer-content {
+    background: #1a1d24;
+}
+
+/* =========================================================
+   HISTORY PAGE
+========================================================= */
+
+.app.dark .history-header h2 {
+    color: #f8fafc;
+}
+
+/* Back Button */
+
+.app.dark .back-btn {
+    background: #252f3d;
+    border-color: #414b5a;
+    color: #d1d5db;
+}
+
+.app.dark .back-btn:hover {
+    background: #315eea;
+    color: #ffffff;
+    border-color: #315eea;
+}
+
+/* =========================================================
+   NEW CHAT BUTTON
+========================================================= */
+
+.app.dark .new-chat-btn {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.app.dark .new-chat-btn:hover {
+    background: #315eea;
+    color: #ffffff;
+}
+
+/* =========================================================
+   HISTORY CARDS
+========================================================= */
+
+.app.dark .history-card {
+    background: #252932;
+    border-color: #3f4652;
+}
+
+.app.dark .history-card:hover {
+    background: #2d3440;
+    border-color: #53617a;
+}
+
+.app.dark .history-card h4 {
+    color: #f1f5f9;
+}
+
+.app.dark .history-card span {
+    color: #9ca3af;
+}
+
+/* =========================================================
+   EMPTY HISTORY
+========================================================= */
+
+.app.dark .empty-history {
+    color: #9ca3af;
+}
+
+.app.dark .empty-history h3 {
+    color: #f1f5f9;
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.app.dark .history-list {
+    scrollbar-color: #4b5563 transparent;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .app.dark .ai-drawer {
+        background: #1a1d24;
+    }
+
 }

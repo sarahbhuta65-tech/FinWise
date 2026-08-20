@@ -13,12 +13,12 @@ function Home({ darkMode }) {
     <div className={`home-page${darkMode ? " dark" : ""}`}>
       <section className="hero-panel">
         <div className="hero-copy">
-          <span className="hero-pill">✨ AI-powered personal finance</span>
+          <span className="hero-pill">AI-powered personal finance</span>
           <h1>
             Manage your money with <strong>clarity</strong> and <strong>confidence</strong>.
           </h1>
           <p>
-            FinWise brings smart expense tracking, savings goals, and investment guidance together in a clean, modern experience.
+            FinWise brings smart expense tracking, savings goals, and investment guidance together in one clear, connected ledger.
           </p>
 
           <div className="hero-actions">
@@ -32,16 +32,16 @@ function Home({ darkMode }) {
 
           <div className="hero-highlights">
             <div>
-              <strong>24/7</strong>
+              <strong className="mono-figure">24/7</strong>
               <span>AI insights</span>
             </div>
             <div>
-              <strong>3+</strong>
-              <span>core tools</span>
+              <strong className="mono-figure">3+</strong>
+              <span>Core tools</span>
             </div>
             <div>
               <strong>Secure</strong>
-              <span>by design</span>
+              <span>By design</span>
             </div>
           </div>
         </div>
@@ -50,7 +50,7 @@ function Home({ darkMode }) {
           <div className="glass-card pulse-card">
             <div className="card-heading">
               <span>Portfolio</span>
-              <strong>₹45,000</strong>
+              <strong className="mono-figure">₹45,000</strong>
             </div>
             <div className="card-chart">
               <div className="bar bar-1" />
@@ -60,8 +60,8 @@ function Home({ darkMode }) {
               <div className="bar bar-5" />
             </div>
             <div className="card-footer">
-              <span>+18.2% this month</span>
-              <span>Goal progress 82%</span>
+              <span className="mono-figure">+18.2% this month</span>
+              <span className="mono-figure">Goal progress 82%</span>
             </div>
           </div>
 
@@ -95,7 +95,7 @@ function Home({ darkMode }) {
           </article>
           <article className="benefit-card">
             <h3>Modern dashboards</h3>
-            <p>Beautiful visual summaries keep your financial picture clear.</p>
+            <p>Clear visual summaries keep your financial picture organized.</p>
           </article>
           <article className="benefit-card">
             <h3>Goal-centered planning</h3>
@@ -112,17 +112,17 @@ function Home({ darkMode }) {
 
         <div className="process-cards">
           <article className="process-step">
-            <div className="step-icon">1</div>
+            <div className="step-icon">01</div>
             <h3>Connect your goals</h3>
             <p>Add your savings targets and choose the milestones that matter most.</p>
           </article>
           <article className="process-step">
-            <div className="step-icon">2</div>
+            <div className="step-icon">02</div>
             <h3>Track spending</h3>
-            <p>See your cash flow, recurring expenses, and habits in one sleek dashboard.</p>
+            <p>See your cash flow, recurring expenses, and habits in one clear ledger.</p>
           </article>
           <article className="process-step">
-            <div className="step-icon">3</div>
+            <div className="step-icon">03</div>
             <h3>Save smarter</h3>
             <p>Use AI insights, calculators, and progress tracking to stay ahead.</p>
           </article>
@@ -148,7 +148,7 @@ function Home({ darkMode }) {
         <div className="spotlight-card">
           <div className="spotlight-badge">All your planning in one place</div>
           <h3>One hub for smarter money decisions.</h3>
-          <p>FinWise connects your goals, calculators, and spending insights in a sleek dashboard that feels polished and powerful.</p>
+          <p>FinWise connects your goals, calculators, and spending insights in a single, connected ledger that feels clear and dependable.</p>
           <div className="spotlight-items">
             <span>Live goal progress</span>
             <span>Custom savings guidance</span>

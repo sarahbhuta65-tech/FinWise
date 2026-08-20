@@ -1,110 +1,140 @@
-.floating-ai{
-    position:fixed;
+.floating-ai {
+  --paper: #f6f4ec;
+  --surface: #ffffff;
+  --ink-900: #14181f;
+  --ink-600: #5b6472;
+  --line: #263140;
+  --accent: #1f6d4c;
 
-    right:30px;
-    bottom:30px;
-
-    display:flex;
-    align-items:center;
-    gap:12px;
-
-    padding:16px 22px;
-
-    border:none;
-
-    border-radius:50px;
-
-    background:linear-gradient(
-        135deg,
-        #2563eb,
-        #7c3aed
-    );
-
-    color:white;
-
-    cursor:pointer;
-
-    box-shadow:
-        0 10px 30px rgba(0,0,0,.25);
-
-    transition:.35s;
-
-    z-index:9999;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
-.floating-ai:hover{
+.floating-ai {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
 
-    transform:translateY(-5px) scale(1.04);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
+  padding: 13px 20px;
+
+  border: 1px solid var(--ink-900);
+  border-radius: 3px;
+
+  background: var(--ink-900);
+  color: var(--paper);
+
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(20, 24, 31, 0.22);
+  transition: transform 0.25s ease, opacity 0.25s ease;
+
+  z-index: 9999;
 }
 
-.floating-ai-icon{
-
-    font-size:22px;
-
+.floating-ai:hover {
+  transform: translateY(-3px);
+  opacity: 0.92;
 }
 
-.floating-ai-text{
-
-    font-size:16px;
-    font-weight:700;
-
+.floating-ai-icon {
+  font-size: 16px;
+  color: var(--accent);
 }
 
-.floating-tooltip{
-
-    position:absolute;
-
-    right:0;
-    bottom:95px;
-    width:270px;
-    padding:18px;
-    border-radius:18px;
-    background:white;
-    color:#111827;
-    box-shadow:
-        0 12px 30px rgba(0,0,0,.18);
-    opacity:0;
-    transform:
-        translateY(20px)
-        scale(.95);
-    transition:.3s;
-    pointer-events:none;
-    font-size:14px;
-    line-height:1.6;
+.floating-ai-text {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.floating-ai:hover .floating-tooltip{
-
-    opacity:1;
-
-    transform:translateY(0) scale(1);
-
+/* ===== Tooltip: a small statement note, not a speech bubble ===== */
+.floating-tooltip {
+  position: absolute;
+  right: 0;
+  bottom: 66px;
+  width: 250px;
+  padding: 18px 20px;
+  border-radius: 4px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink-900);
+  box-shadow: 0 16px 40px rgba(20, 24, 31, 0.16);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.65;
+  text-align: left;
 }
 
-.floating-tooltip::after{
-    content:"";
-    position:absolute;
-    bottom:-10px;
-    right:45px;
-    width:20px;
-    height:20px;
-    background:white;
-    transform:rotate(45deg);
+.floating-ai:hover .floating-tooltip {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.floating-ai{
-    animation:pulse 3s infinite;
+.floating-tooltip::before {
+  content: "AI Note";
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
 }
 
-@keyframes pulse{
-0%{
-box-shadow:0 0 0 0 rgba(99,102,241,.5);
+.floating-tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: -7px;
+  right: 28px;
+  width: 12px;
+  height: 12px;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  transform: rotate(45deg);
 }
-70%{
-box-shadow:0 0 0 18px rgba(99,102,241,0);
+
+@media (max-width: 640px) {
+  .floating-ai {
+    right: 18px;
+    bottom: 18px;
+    padding: 12px 16px;
+  }
+
+  .floating-ai-text {
+    display: none;
+  }
+
+  .floating-tooltip {
+    width: 210px;
+  }
 }
-100%{
-box-shadow:0 0 0 0 rgba(99,102,241,0);
+
+/* ===== Dark mode ===== */
+.app.dark .floating-ai {
+  --paper: #0d1218;
+  --surface: #151b23;
+  --ink-900: #f2f0e8;
+  --ink-600: #9aa3b0;
+  --line: #303c4c;
+  --accent: #3fa980;
+
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0d1218;
 }
+
+.app.dark .floating-ai-icon {
+  color: #0d1218;
 }

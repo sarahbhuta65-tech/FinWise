@@ -1,79 +1,263 @@
-.modal-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.45);
+/* =========================
+   COMMITMENT MODAL
+========================= */
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.modal-overlay {
+    position: fixed;
+    inset: 0;
 
-    z-index:999;
+    background: rgba(35, 32, 25, 0.42);
+    backdrop-filter: blur(5px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    z-index: 999;
 }
 
-.modal-box{
 
-    width:430px;
+/* =========================
+   MODAL BOX
+========================= */
 
-    background:white;
+.modal-box {
+    width: 100%;
+    max-width: 460px;
 
-    padding:30px;
+    background: #fffdf8;
 
-    border-radius:20px;
+    border: 1px solid #e5dfd2;
 
-    display:flex;
-    flex-direction:column;
-    gap:18px;
+    border-radius: 22px;
 
+    padding: 30px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 25px 70px rgba(48, 43, 34, 0.18);
+
+    animation: modalAppear 0.25s ease;
 }
 
-.modal-box h2{
-    text-align:center;
+.modal-box h2 {
+    margin: 0 0 5px;
+
+    text-align: left;
+
+    font-size: 25px;
+
+    color: #24231f;
 }
+
+.modal-box h2::after {
+    content: "Manage your upcoming financial commitment";
+
+    display: block;
+
+    margin-top: 6px;
+
+    font-size: 13px;
+    font-weight: 400;
+
+    color: #817a6d;
+}
+
+
+/* =========================
+   INPUTS
+========================= */
 
 .modal-box input,
 .modal-box select,
-.modal-box textarea{
+.modal-box textarea {
+    width: 100%;
 
-    padding:12px;
+    box-sizing: border-box;
 
-    border-radius:10px;
+    padding: 13px 14px;
 
-    border:1px solid #ddd;
+    border: 1px solid #ddd7ca;
 
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    color: #292823;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.2s;
 }
 
-.modal-buttons{
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:15px;
-
+.modal-box input::placeholder,
+.modal-box textarea::placeholder {
+    color: #aaa397;
 }
 
-.cancel-btn{
+.modal-box input:focus,
+.modal-box select:focus,
+.modal-box textarea:focus {
+    border-color: #aaa18f;
 
-    background:#e5e7eb;
-
-    border:none;
-
-    padding:12px 20px;
-
-    border-radius:10px;
-
+    box-shadow: 0 0 0 3px rgba(166, 156, 137, 0.14);
 }
 
-.save-btn{
+.modal-box textarea {
+    min-height: 90px;
 
-    background:#2563eb;
+    resize: vertical;
+}
 
-    color:white;
 
-    border:none;
+/* =========================
+   BUTTONS
+========================= */
 
-    padding:12px 20px;
+.modal-buttons {
+    display: flex;
 
-    border-radius:10px;
+    justify-content: flex-end;
 
+    gap: 10px;
+
+    margin-top: 5px;
+}
+
+.cancel-btn,
+.save-btn {
+    border: none;
+
+    padding: 12px 22px;
+
+    border-radius: 11px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.cancel-btn {
+    background: #eeeae1;
+
+    color: #514d44;
+}
+
+.cancel-btn:hover {
+    background: #e2ddd2;
+}
+
+.save-btn {
+    background: #30302c;
+
+    color: #ffffff;
+}
+
+.save-btn:hover {
+    background: #1f1f1c;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   ANIMATION
+========================= */
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+.app.dark .modal-overlay {
+    background: rgba(0, 0, 0, 0.65);
+}
+
+.app.dark .modal-box {
+    background: #181815;
+
+    border-color: #37352f;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.5);
+}
+
+.app.dark .modal-box h2 {
+    color: #f4f1e9;
+}
+
+.app.dark .modal-box h2::after {
+    color: #a9a398;
+}
+
+.app.dark .modal-box input,
+.app.dark .modal-box select,
+.app.dark .modal-box textarea {
+    background: #22221e;
+
+    border-color: #3d3b34;
+
+    color: #f4f1e9;
+}
+
+.app.dark .modal-box input::placeholder,
+.app.dark .modal-box textarea::placeholder {
+    color: #858176;
+}
+
+.app.dark .modal-box input:focus,
+.app.dark .modal-box select:focus,
+.app.dark .modal-box textarea:focus {
+    border-color: #8d8779;
+
+    box-shadow: 0 0 0 3px rgba(141, 135, 121, 0.12);
+}
+
+.app.dark .cancel-btn {
+    background: #302f2a;
+
+    color: #ddd8cd;
+}
+
+.app.dark .cancel-btn:hover {
+    background: #3a3832;
+}
+
+.app.dark .save-btn {
+    background: #e7e1d5;
+
+    color: #292823;
+}
+
+.app.dark .save-btn:hover {
+    background: #f0eadf;
 }

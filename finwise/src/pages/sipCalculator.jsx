@@ -18,6 +18,13 @@ const [interestRate, setInterestRate] = useState("");
 const [years, setYears] = useState("");
 const [result, setResult] = useState(null);
 const [error, setError] = useState("");
+const [dueDay, setDueDay] = useState(1);
+const [startDate, setStartDate] = useState(new Date());
+const [paidMonths, setPaidMonths] = useState(0);
+const [totalMonths, setTotalMonths] = useState(0);
+const [monthsRemaining, setMonthsRemaining] = useState(0);
+const [investedSoFar, setInvestedSoFar] = useState(0);
+const [remainingInvestment, setRemainingInvestment] = useState(0);
 
 const calculateSIP = async () => {
   const P = Number(monthlyInvestment);
@@ -79,6 +86,8 @@ const calculateSIP = async () => {
       investedAmount,
       estimatedReturns,
       totalValue: maturityAmount, 
+      dueDay: Number(dueDay),
+      startDate: new Date(),
     });
     toast.success("SIP saved successfully");
   } catch (error) {
@@ -105,6 +114,28 @@ const calculateSIP = async () => {
           setMonthlyInvestment(res.data.monthlyInvestment);
           setInterestRate(res.data.interestRate);
           setYears(res.data.years);
+          setDueDay(res.data.dueDay);
+          setStartDate(res.data.startDate);
+          
+          setPaidMonths(
+            Number(res.data.paidMonths || 0)
+          );
+
+          setTotalMonths(
+            Number(res.data.totalMonths || 0)
+          );
+
+          setMonthsRemaining(
+            Number(res.data.monthsRemaining || 0)
+          );
+
+          setInvestedSoFar(
+            Number(res.data.investedSoFar || 0)
+          );
+
+          setRemainingInvestment(
+            Number(res.data.remainingInvestment || 0)
+          );
 
           setResult({
             investedAmount: Number(res.data.investedAmount).toFixed(2),
@@ -126,6 +157,12 @@ const calculateSIP = async () => {
         setYears("");
         setResult(null);
 
+        setPaidMonths(0);
+        setTotalMonths(0);
+        setMonthsRemaining(0);
+        setInvestedSoFar(0);
+        setRemainingInvestment(0);
+
         //localStorage.removeItem("sipData");
       }
       const pieData = result
@@ -141,7 +178,7 @@ const calculateSIP = async () => {
           ]
         : [];
 
-      const COLORS = ["#2563eb", "#10b981"];
+      const COLORS = ["#3B5A73", "#1F6D4C"];
 
       const growthMultiple = result
       ?(
@@ -176,7 +213,7 @@ const calculateSIP = async () => {
 
               <label>Monthly Investment (₹)</label>
               <InputField
-             placeholder="MonthlyInvestment (₹)"
+             placeholder="Monthly Investment (₹)"
              value={monthlyInvestment}
              onChange={(e) =>setMonthlyInvestment(e.target.value) }
             />
@@ -194,7 +231,14 @@ const calculateSIP = async () => {
              value={years}
              onChange={(e) =>setYears(e.target.value) }
             />
-            {error && <p className="error-message">⚠ {error}</p>}
+
+            <label>SIP Due Date</label>
+            <InputField
+             placeholder="SIP Due Date"
+             value={dueDay}
+             onChange={(e) =>setDueDay(e.target.value) }
+            />
+            {error && <p className="error-message">{error}</p>}
 
             <button className="calculate-btn" onClick={calculateSIP}>
               Calculate
@@ -206,24 +250,26 @@ const calculateSIP = async () => {
 
             <div className="sip-result-card">
               <h2>Investment Summary</h2>
-              {result && (
+              {result ? (
             <div className="sip-results-grid">
              <div className="result-box invested-card">
-                <h4>💵 Invested Amount</h4>
-                <h3>₹{result.investedAmount}</h3>
+                <h4>Invested Amount</h4>
+                <h3 className="mono-figure">₹{result.investedAmount}</h3>
              </div>
 
              <div className="result-box returns-card">
-                <h4>📈 Estimated Returns</h4>
-                <h3>₹{result.estimatedReturns}</h3>
+                <h4>Estimated Returns</h4>
+                <h3 className="mono-figure">₹{result.estimatedReturns}</h3>
              </div>
 
              <div className="result-box total-card">
-                <h4>🏆 Total Value</h4>
-                <h3>₹{result.totalValue}</h3>
+                <h4>Total Value</h4>
+                <h3 className="mono-figure">₹{result.totalValue}</h3>
              </div>
            </div>
-            )}
+              ) : (
+                <p className="empty-state">Enter your investment details to see a summary.</p>
+              )}
             </div>
           </div>
 
@@ -246,12 +292,14 @@ const calculateSIP = async () => {
                         <Cell
                           key={`cell-${index}`}
                           fill={COLORS[index % COLORS.length]}
+                          stroke="var(--surface)"
+                          strokeWidth={2}
                         />
                       ))}
                     </Pie>
 
-                    <Tooltip />
-                    <Legend />
+                    <Tooltip contentStyle={{ borderRadius: 4, border: "1px solid #e3ddcd", fontFamily: "var(--font-mono)", fontSize: 12 }} />
+                    <Legend wrapperStyle={{ fontSize: 12, fontFamily: "var(--font-body)" }} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -261,17 +309,75 @@ const calculateSIP = async () => {
               <h2>Smart Insights</h2>
 
               <div className="mini-sip-card">
-                <h4>📈 Growth</h4>
-                <p>{growthMultiple}x wealth growth</p>
+                <h4>Invested So Far</h4>
+
+                <p>
+                  <span className="mono-figure">
+                    ₹{investedSoFar.toLocaleString("en-IN")}
+                  </span>
+                </p>
               </div>
 
               <div className="mini-sip-card">
-                <h4>💰 Profit Share</h4>
-                <p>{profitPercent}% of final value</p>
+                <h4>Remaining Investment</h4>
+
+                <p>
+                  <span className="mono-figure">
+                    ₹{remainingInvestment.toLocaleString("en-IN")}
+                  </span>
+                </p>
               </div>
 
               <div className="mini-sip-card">
-                <h4>💡 Advice</h4>
+                <h4>Monthly Investment</h4>
+
+                <p>
+                  <span className="mono-figure">
+                    ₹{Number(monthlyInvestment).toLocaleString("en-IN")}
+                  </span>
+                  /month
+                </p>
+              </div>
+
+              <div className="mini-sip-card">
+                <h4>Paid Months</h4>
+
+                <p>
+                  <span className="mono-figure">
+                    {paidMonths} / {totalMonths}
+                  </span>
+                </p>
+              </div>
+
+              <div className="mini-sip-card">
+                <h4>Months Remaining</h4>
+
+                <p>
+                  <span className="mono-figure">
+                    {monthsRemaining === 0 && totalMonths > 0
+                      ? "Completed"
+                      : monthsRemaining}
+                  </span>
+
+                  {monthsRemaining > 0 &&
+                    ` ${monthsRemaining === 1 ? "month" : "months"}`}
+                </p>
+              </div>
+
+              <div className="mini-sip-card">
+                <h4>Growth</h4>
+
+                <p>
+                  <span className="mono-figure">
+                    {growthMultiple}x
+                  </span>{" "}
+                  wealth growth
+                </p>
+              </div>
+
+              <div className="mini-sip-card">
+                <h4>Advice</h4>
+
                 <p>{sipAdvice}</p>
               </div>
             </div>

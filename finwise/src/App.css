@@ -1,180 +1,752 @@
-body{
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(
-  135deg,
-  #f8fbff 0%,
-  #c7dcff 45%,
-  #e6d9ff 100%
-);
+:root {
+    color-scheme: light;
+
+    --paper: #f6f4ec;
+    --surface: #ffffff;
+    --ink-900: #14181f;
+    --ink-600: #5b6472;
+    --ink-400: #8a92a0;
+    --line: #e3ddcd;
+    --line-strong: #d6cfba;
+    --accent: #1f6d4c;
+    --accent-soft: #e6efe6;
+    --warn: #b3541e;
+
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
-.navbar{
-  padding:20px 50px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(14px);
-  display: flex;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+html,
+body,
+#root {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
 }
 
-.logo{
-  font-size: 28px;
-  font-weight: bold;
-  color: #2563eb;
+body {
+    background: var(--paper);
+    font-family: var(--font-body);
 }
 
-.logo a{
-   text-decoration:none;
-   color:#2563eb;
-}
+/* =================================
+   SIDEBAR
+================================= */
 
-.nav-links{
-  display: flex;
-  gap: 28px;
-}
+.sidebar {
+    width: 224px;
+    height: 100vh;
 
-.nav-links a{
-  color: #374151;
-  text-decoration: none;
-  font-weight: 500;
-  transition: 0.3s;
-}
+    position: fixed;
+    left: 0;
+    top: 0;
 
-.nav-links a:hover{
-  color: #2563eb;
-}
-.profile-btn{
-   text-decoration:none;
-   font-size:28px;
-   background:white;
-   width:45px;
-   height:45px;
-   display:flex;
-   align-items:center;
-   justify-content:center;
-   border-radius:50%;
-   box-shadow:0 4px 12px rgba(0,0,0,0.12);
-}
-@media (max-width: 768px) {
-  .navbar {
-    padding: 15px 20px;
+    display: flex;
     flex-direction: column;
-  }
 
-  .nav-links {
-    flex-wrap: wrap;
+    padding: 26px 16px;
+
+    box-sizing: border-box;
+
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+
+    z-index: 1000;
+
+    transition: transform 0.3s ease;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.sidebar.closed {
+    transform: translateX(-100%);
+}
+
+/* =================================
+   BRAND
+================================= */
+
+.sidebar-brand {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+
+    border-bottom: 2px solid var(--ink-900);
+}
+
+.sidebar-brand-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    text-decoration: none;
+    color: var(--ink-900);
+}
+
+/* FinWise Logo */
+
+.brand-mark {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 12px;
-  }
 
-  .dashboard {
-    padding: 20px;
-  }
+    border-radius: 3px;
 
-  .dashboard-cards {
-    grid-template-columns: 1fr;
-  }
+    background: var(--ink-900);
+    color: var(--paper);
 
-  .sip-container,
-  .expense-container,
-  .calculator-card,
-  .goal-container {
-  width: min(1400px, 95%);
-  margin: 40px auto;
-  padding: 40px;
-  background: white;
-  border-radius: 24px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-
-  }
-
-  .chart-container {
-    padding: 15px;
-  }
-
-  .home h1 {
-    font-size: 32px;
-  }
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
 }
 
-.app.dark {
-  background: #111827;
-  color: white;
-  min-height: 100vh;
+.sidebar-title {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
-.app.dark .navbar {
-  background: rgba(31,41,55,0.85);
-  backdrop-filter: blur(14px);
+.sidebar-title span {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink-900);
 }
 
-.app.dark .logo {
-  color: #60a5fa;
+.sidebar-title small {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-400);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
-.app.dark .nav-links a {
-  color: #f3f4f6;
+/* =================================
+   CLOSE BUTTON
+================================= */
+
+.sidebar-close {
+    width: 26px;
+    height: 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--line-strong);
+
+    background: transparent;
+    color: var(--ink-600);
+
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
+
+    border-radius: 3px;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-.app.dark .card,
-.app.dark .calculator-card,
-.app.dark .expense-container,
-.app.dark .sip-container,
-.app.dark .chart-container,
-.app.dark .dashboard-card {
-  background: #1f2937;
-  color: white;
+.sidebar-close:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: var(--accent);
 }
 
-.app.dark input,
-.app.dark select {
-  background: #374151;
-  color: white;
-  border: 1px solid #4b5563;
+/* =================================
+   NAVIGATION
+================================= */
+
+.sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
-.app.dark .result-box {
-  background: #374151;
+.sidebar-item {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 11px 14px;
+
+    border-radius: 3px;
+
+    text-decoration: none;
+    color: var(--ink-600);
+
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+
+    transition: background 0.15s ease, color 0.15s ease;
 }
 
-.app.dark .category-summary {
-  background: #374151;
+/* Hover */
+
+.sidebar-item:hover {
+    background: var(--paper);
+    color: var(--ink-900);
 }
 
-.app.dark .expense-item {
-  background: #374151;
+/* Active */
+
+.sidebar-item.active-link {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 700;
 }
 
-.theme-toggle {
+.sidebar-item.active-link::before {
+    content: "";
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 3px;
+    height: 18px;
+
+    background: var(--accent);
+}
+
+/* =================================
+   FOOTER
+================================= */
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+}
+
+.profile-btn {
+    display: flex;
+    align-items: center;
+
+    padding: 11px 14px;
+
+    border-radius: 3px;
+
+    text-decoration: none;
+    color: var(--ink-600);
+
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 600;
+
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.profile-btn:hover {
+    background: var(--paper);
+    color: var(--ink-900);
+}
+
+/* =================================
+   LOGIN / SIGNUP
+================================= */
+
+.auth-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.login-btn,
+.signup-btn {
+    text-decoration: none;
+    text-align: center;
+
+    padding: 11px;
+
+    border-radius: 3px;
+
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+/* Login */
+
+.login-btn {
+    color: var(--ink-900);
+    background: transparent;
+    border: 1px solid var(--line-strong);
+}
+
+.login-btn:hover {
+    border-color: var(--ink-900);
+}
+
+/* Signup */
+
+.signup-btn {
+    color: var(--paper);
+    background: var(--ink-900);
+    border: 1px solid var(--ink-900);
+}
+
+.signup-btn:hover {
+    opacity: 0.85;
+}
+
+/* =================================
+   PAGE CONTENT
+================================= */
+
+.page-content {
+    flex: 1;
+    min-height: 100vh;
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.page-content.sidebar-open {
+    margin-left: 224px;
+}
+
+.page-content:not(.sidebar-open) {
+    margin-left: 0;
+}
+
+/* =================================
+   HAMBURGER
+================================= */
+
+.sidebar-hamburger {
+    position: fixed;
+    top: 22px;
+    left: 22px;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--ink-900);
+    border-radius: 3px;
+
+    background: var(--surface);
+    color: var(--ink-900);
+
+    font-size: 16px;
+
+    box-shadow: 0 8px 18px rgba(20, 24, 31, 0.12);
+
+    cursor: pointer;
+
+    z-index: 1100;
+
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-hamburger:hover {
+    transform: translateY(-2px);
+    background: var(--ink-900);
+    color: var(--paper);
+}
+
+/* =================================
+   OVERLAY
+================================= */
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 24, 31, 0.35);
+    z-index: 999;
+}
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 768px) {
+
+    .sidebar {
+        width: 240px;
+        box-shadow: 8px 0 30px rgba(20, 24, 31, 0.15);
+    }
+
+    .page-content {
+        margin-left: 0;
+    }
+
+    .sidebar-overlay {
+        display: block;
+    }
+}
+
+/* =========================================================
+   FINWISE — DARK MODE SIDEBAR / NAVBAR
+   ========================================================= */
+
+body.dark-mode,
+.app.dark,
+body.dark-mode #root ,
+.app.dark #root {
+    background: #0d1218;
+    color: #f2f0e8;
+}
+
+body.dark-mode .sidebar ,
+.app.dark .sidebar {
+    background: #151b23;
+    border-right: 1px solid #263140;
+    box-shadow: 8px 0 30px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .sidebar-brand ,
+.app.dark .sidebar-brand {
+    border-bottom-color: #f2f0e8;
+}
+
+body.dark-mode .sidebar-brand-link,
+.app.dark .sidebar-brand-link,
+body.dark-mode .sidebar-title span ,
+.app.dark .sidebar-title span {
+    color: #f2f0e8;
+}
+
+body.dark-mode .sidebar-title small ,
+.app.dark .sidebar-title small {
+    color: #6b7684;
+}
+
+body.dark-mode .brand-mark ,
+.app.dark .brand-mark {
+    background: #3fa980;
+    color: #0d1218;
+}
+
+body.dark-mode .sidebar-close ,
+.app.dark .sidebar-close {
+    color: #9aa3b0;
+    border-color: #303c4c;
+}
+
+body.dark-mode .sidebar-close:hover ,
+.app.dark .sidebar-close:hover {
+    background: rgba(63, 169, 128, 0.12);
+    color: #3fa980;
+    border-color: #3fa980;
+}
+
+body.dark-mode .sidebar-item ,
+.app.dark .sidebar-item {
+    color: #9aa3b0;
+}
+
+body.dark-mode .sidebar-item:hover ,
+.app.dark .sidebar-item:hover {
+    background: #0d1218;
+    color: #f2f0e8;
+}
+
+body.dark-mode .sidebar-item.active-link ,
+.app.dark .sidebar-item.active-link {
+    background: rgba(63, 169, 128, 0.12);
+    color: #3fa980;
+}
+
+body.dark-mode .sidebar-item.active-link::before ,
+.app.dark .sidebar-item.active-link::before {
+    background: #3fa980;
+}
+
+body.dark-mode .sidebar-footer ,
+.app.dark .sidebar-footer {
+    border-top: 1px solid #263140;
+}
+
+body.dark-mode .profile-btn ,
+.app.dark .profile-btn {
+    color: #9aa3b0;
+}
+
+body.dark-mode .profile-btn:hover ,
+.app.dark .profile-btn:hover {
+    background: #0d1218;
+    color: #f2f0e8;
+}
+
+body.dark-mode .login-btn ,
+.app.dark .login-btn {
+    color: #f2f0e8;
+    background: transparent;
+    border: 1px solid #303c4c;
+}
+
+body.dark-mode .login-btn:hover ,
+.app.dark .login-btn:hover {
+    border-color: #f2f0e8;
+}
+
+body.dark-mode .signup-btn ,
+.app.dark .signup-btn {
+    background: #3fa980;
+    border: 1px solid #3fa980;
+    color: #0d1218;
+}
+
+body.dark-mode .signup-btn:hover ,
+.app.dark .signup-btn:hover {
+    opacity: 0.85;
+}
+
+body.dark-mode .sidebar-hamburger ,
+.app.dark .sidebar-hamburger {
+    background: #151b23;
+    border-color: #f2f0e8;
+    color: #f2f0e8;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .sidebar-hamburger:hover ,
+.app.dark .sidebar-hamburger:hover {
+    background: #3fa980;
+    color: #0d1218;
+    border-color: #3fa980;
+}
+
+body.dark-mode .sidebar-overlay ,
+.app.dark .sidebar-overlay {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+body.dark-mode .page-content ,
+.app.dark .page-content {
+    background: #0d1218;
+}
+
+
+/* ==========================================
+   NOTIFICATIONS
+========================================== */
+
+.notification-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.notification-btn {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
   border: none;
-  padding: 10px 16px;
-  border-radius: 12px;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-body);
+  font-size: 14px;
   cursor: pointer;
-  background: #2563eb;
+  text-align: left;
+  transition: 0.2s ease;
+}
+
+.notification-btn:hover {
+  background: var(--surface-soft);
+}
+
+.notification-icon {
+  font-size: 17px;
+}
+
+.notification-badge {
+  margin-left: auto;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  background: #b3541e;
   color: white;
+  font-family: var(--font-mono);
+  font-size: 10px;
   font-weight: 600;
 }
 
-.app.dark .dashboard {
-  background: linear-gradient(135deg, #0f172a, #111827);
+
+/* ==========================================
+   NOTIFICATION PANEL
+========================================== */
+
+.notification-panel {
+  position: absolute;
+  left: calc(100% + 12px);
+  bottom: 0;
+  width: 350px;
+  max-height: 460px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
 }
 
-.app.dark .dashboard h1 {
-  color: white;
+
+/* Header */
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
 }
 
-.app.dark .card p {
-  color: #cbd5e1;
+.notification-header h3 {
+  margin: 0;
+  font-size: 16px;
 }
 
-.app.dark input::placeholder {
-  color: #9ca3af;
+.notification-header button {
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font-size: 11px;
+  cursor: pointer;
 }
 
 
+/* List */
+
+.notification-list {
+  max-height: 390px;
+  overflow-y: auto;
+}
+
+
+/* Notification */
+
+.notification-item {
+  display: flex;
+  gap: 12px;
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.notification-item:hover {
+  background: var(--paper);
+}
+
+.notification-item.unread {
+  background: var(--paper);
+}
+
+.notification-item-icon {
+  flex-shrink: 0;
+  font-size: 17px;
+}
+
+.notification-content {
+  min-width: 0;
+}
+
+.notification-content h4 {
+  margin: 0 0 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.notification-content p {
+  margin: 0 0 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-600);
+}
+
+.notification-content small {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-400);
+}
+
+
+/* Empty state */
+
+.no-notifications {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--ink-400);
+}
+
+.no-notifications span {
+  font-size: 28px;
+}
+
+.no-notifications p {
+  margin: 0;
+  font-size: 12px;
+}
+
+
+/* Dark mode — the two selectors above (--surface, --line etc.)
+   already pick up dark tokens once .app.dark or body.dark-mode
+   is present at :root, since --surface/--line/--ink-* are
+   redefined below. Only the two previously hardcoded var()
+   references that didn't exist (--surface-soft, --border) have
+   been swapped to real tokens (--paper and --line) above so
+   this panel doesn't silently fail to theme. */
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 768px) {
+
+  .notification-panel {
+    position: fixed;
+    left: 15px;
+    right: 15px;
+    bottom: 80px;
+    width: auto;
+    max-width: none;
+  }
+
+}

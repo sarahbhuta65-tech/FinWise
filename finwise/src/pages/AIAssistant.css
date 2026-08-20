@@ -1,314 +1,605 @@
-.ai-wrapper{
-    display:flex;
-    height:100%;
+/* =========================================================
+   FINWISE AI — PREMIUM THEME
+   ========================================================= */
+
+.ai-container {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: #f8f6ef;
+    color: #172033;
+    overflow: hidden;
 }
 
-.history-sidebar{
-    width:250px;
-    border-right:1px solid #e5e7eb;
-    padding:20px;
-    overflow-y:auto;
-    background:#fafafa;
-}
 
-.history-sidebar h3{
-    margin-bottom:20px;
-    color:#4f46e5;
-}
+/* =========================================================
+   CHAT AREA
+   ========================================================= */
 
-.history-item{
-    padding:12px;
-    margin-bottom:10px;
-    border-radius:10px;
-    cursor:pointer;
-    background:white;
-    transition:.3s;
-}
+.chat-box {
+    flex: 1;
+    min-height: 0;
 
-.history-item:hover{
-    background:#eef2ff;
-}
+    overflow-y: auto;
 
-.ai-container{
-    flex:1;
-}
+    padding: 24px 22px;
 
-.ai-container{
-    height:100%;
-    display:flex;
-    flex-direction:column;
-    padding:20px;
-}
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 
-.chat-box{
-    flex:1;
-    overflow-y:auto;
-    /* Firefox */
+    background: #f8f6ef;
+
     scrollbar-width: none;
-
-    /* IE/Edge */
     -ms-overflow-style: none;
-    background:#f8fafc;
-    border-radius:18px;
-    padding:8px 10px;
-    display:flex;
-    flex-direction:column;
-    gap:20px;
 }
 
 .chat-box::-webkit-scrollbar {
     display: none;
+    width: 0;
+    height: 0;
 }
 
-.hero-card{
-    background:white;
-    border-radius:20px;
-    padding:35px;
-    text-align:center;
-    box-shadow:0 12px 30px rgba(0,0,0,.08);
-    border:1px solid #edf2f7;
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+.message {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
 }
 
-.hero-card h2{
-    color:#4f46e5;
-    font-size:28px;
-    margin-bottom:8px;
+.user-message {
+    justify-content: flex-end;
 }
 
-.hero-card p{
-    color:#6b7280;
-    margin-bottom:25px;
+
+/* AI avatar */
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+    border: 1px solid #ddd9cc;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+
+    box-shadow: 0 4px 12px rgba(23, 32, 51, 0.08);
 }
 
-.hero-list{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-    margin-top:25px;
+
+/* =========================================================
+   MESSAGE BUBBLES
+   ========================================================= */
+
+.bubble {
+    max-width: 88%;
+
+    padding: 16px 18px;
+
+    border-radius: 16px;
+
+    font-size: 14px;
+    line-height: 1.7;
 }
 
-.hero-item{
-    background:#eef2ff;
-    padding:14px;
-    border-radius:14px;
-    font-weight:500;
+
+/* AI message */
+
+.ai-message .bubble {
+    background: #ffffff;
+
+    color: #293346;
+
+    border: 1px solid #e3dfd3;
+
+    border-bottom-left-radius: 5px;
+
+    box-shadow: 0 5px 18px rgba(23, 32, 51, 0.06);
 }
 
-.message{
-    display:flex;
-    gap:6px;
-    align-items:flex-start;
+
+/* User message */
+
+.user-message .bubble {
+    background: #172033;
+    color: #ffffff;
+
+    border-bottom-right-radius: 5px;
+
+    box-shadow: 0 5px 15px rgba(23, 32, 51, 0.12);
 }
 
-.user-message{
-    justify-content:flex-end;
-}
 
-.avatar{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:linear-gradient(135deg,#4f46e5,#6d5efc);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:white;
-    font-size:18px;
-    flex-shrink:0;
-    font-size: 15px;
-}
-
-.bubble{
-    max-width:90%;
-    padding:16px 18px;
-    border-radius:18px;
-    line-height:1.8;
-    font-size:15px;
-}
-
-.user-message .bubble{
-    background:linear-gradient(135deg,#4f46e5,#6d5efc);
-    color:white;
-    border-bottom-right-radius:6px;
-}
-
-.ai-message .bubble{
-    background:white;
-    color:#374151;
-    border-bottom-left-radius:6px;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-    max-width:90%;
-    width:100%;
-}
+/* =========================================================
+   MARKDOWN
+   ========================================================= */
 
 .bubble h1,
 .bubble h2,
 .bubble h3,
-.bubble h4{
-    margin:10px 0;
-    color:#111827;
+.bubble h4 {
+    color: #172033;
+    margin: 8px 0 12px;
 }
 
-.bubble p{
-    margin:10px 0;
+.bubble h1 {
+    font-size: 24px;
 }
 
-.bubble ul{
-    margin:12px 0;
-    padding-left:22px;
+.bubble h2 {
+    font-size: 20px;
 }
 
-.bubble li{
-    margin-bottom:8px;
+.bubble h3 {
+    font-size: 17px;
 }
 
-.bubble strong{
-    color:#111827;
+.bubble p {
+    margin: 9px 0;
 }
 
-.bubble table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:15px;
+.bubble ul {
+    margin: 10px 0;
+    padding-left: 20px;
 }
 
-.bubble td,
-.bubble th{
-    border:1px solid #ddd;
-    padding:10px;
+.bubble li {
+    margin-bottom: 7px;
 }
 
-.bubble th{
-    background:#eef2ff;
-}
-
-.quick-prompts{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    justify-content:center;
-    padding:15px 0;
-}
-
-.quick-prompts button{
-    border:none;
-    background:#eef2ff;
-    color:#4f46e5;
-    padding:11px 18px;
-    border-radius:30px;
-    cursor:pointer;
-    transition:.3s;
-    font-weight:600;
-}
-
-.quick-prompts button:hover{
-    background:#4f46e5;
-    color:white;
-}
-
-.chat-input{
-    display:flex;
-    gap:12px;
-    margin-top:10px;
-}
-
-.chat-input input{
-    flex:1;
-    padding:15px;
-    border-radius:12px;
-    border:1px solid #d1d5db;
-    outline:none;
-    font-size:15px;
-}
-
-.chat-input input:focus{
-    border-color:#4f46e5;
-}
-
-.chat-input button{
-    width:110px;
-    border:none;
-    border-radius:12px;
-    background:linear-gradient(135deg,#4f46e5,#6d5efc);
-    color:white;
-    cursor:pointer;
-    font-weight:600;
-    transition:.3s;
-}
-
-.chat-input button:hover{
-    transform:translateY(-2px);
+.bubble strong {
+    color: #172033;
 }
 
 
-.typing{
-    display:flex;
-    gap:6px;
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.bubble table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 13px;
 }
 
-.typing span{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background:#4f46e5;
-    animation:bounce 1.2s infinite;
+.bubble th,
+.bubble td {
+    border: 1px solid #dedbd1;
+    padding: 9px;
 }
 
-.typing span:nth-child(2){
-    animation-delay:.2s;
+.bubble th {
+    background: #f3f0e7;
+    color: #172033;
 }
 
-.typing span:nth-child(3){
-    animation-delay:.4s;
+
+/* =========================================================
+   QUICK PROMPTS
+   ========================================================= */
+
+.quick-prompts {
+    display: flex;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    padding: 12px 14px;
+
+    background: #f8f6ef;
+
+    border-top: 1px solid #e2ded3;
+
+    flex-shrink: 0;
 }
 
-@keyframes bounce{
+.quick-prompts button {
+    border: 1px solid #d7d2c5;
 
-0%,80%,100%{
-transform:scale(.7);
-opacity:.5;
+    background: #ffffff;
+
+    color: #172033;
+
+    padding: 9px 14px;
+
+    border-radius: 30px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition: all 0.25s ease;
 }
 
-40%{
-transform:scale(1.3);
-opacity:1;
+.quick-prompts button:hover {
+    background: #172033;
+
+    color: #ffffff;
+
+    border-color: #172033;
+
+    transform: translateY(-1px);
 }
 
+
+/* =========================================================
+   INPUT AREA
+   ========================================================= */
+
+.chat-input {
+    display: flex;
+
+    gap: 10px;
+
+    padding: 12px 14px 16px;
+
+    background: #f8f6ef;
+
+    flex-shrink: 0;
 }
 
-.chat-box::-webkit-scrollbar{
-    width:8px;
+
+.chat-input input {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 13px 16px;
+
+    border-radius: 12px;
+
+    border: 1px solid #d9d5ca;
+
+    background: #ffffff;
+
+    color: #172033;
+
+    outline: none;
+
+    font-size: 14px;
+
+    box-sizing: border-box;
+
+    transition: 0.25s;
 }
 
-.chat-box::-webkit-scrollbar-thumb{
-    background:#d4d4d8;
-    border-radius:20px;
+.chat-input input:focus {
+    border-color: #172033;
+
+    box-shadow: 0 0 0 3px rgba(23, 32, 51, 0.06);
 }
 
-.chat-box::-webkit-scrollbar-track{
-    background:transparent;
+.chat-input input::placeholder {
+    color: #8b8a84;
 }
 
-/* =========================
+
+/* Send button */
+
+.chat-input button {
+    width: 88px;
+
+    flex-shrink: 0;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #172033;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    transition: all 0.25s ease;
+}
+
+.chat-input button:hover {
+    background: #26334d;
+    transform: translateY(-1px);
+}
+
+.chat-input button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* =========================================================
+   TYPING INDICATOR
+   ========================================================= */
+
+.typing {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.typing span {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #172033;
+
+    animation: bounce 1.2s infinite;
+}
+
+.typing span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(0.7);
+        opacity: 0.45;
+    }
+
+    40% {
+        transform: scale(1.25);
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
    MOBILE
-========================= */
+   ========================================================= */
 
-@media(max-width:768px){
+@media (max-width: 768px) {
 
-.hero-list{
-grid-template-columns:1fr;
+    .chat-box {
+        padding: 20px 14px;
+    }
+
+    .bubble {
+        max-width: 88%;
+    }
+
+    .chat-input {
+        padding: 12px;
+    }
+
+    .quick-prompts {
+        justify-content: flex-start;
+        overflow-x: auto;
+
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .quick-prompts::-webkit-scrollbar {
+        display: none;
+    }
 }
 
-.bubble{
-max-width:90%;
+/* =========================================================
+   FINWISE AI — DARK MODE
+========================================================= */
+
+/* Main AI container */
+
+.app.dark .ai-container {
+    background: #1a1d24;
+    color: #e5e7eb;
 }
 
-.chat-input{
-flex-direction:column;
+/* =========================================================
+   CHAT AREA
+========================================================= */
+
+.app.dark .chat-box {
+    background: #1a1d24;
 }
 
-.chat-input button{
-width:100%;
+/* =========================================================
+   AI AVATAR
+========================================================= */
+
+.app.dark .avatar {
+    background: #252a33;
+    border-color: #3b414c;
+    color: #f1f5f9;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
 }
+
+/* =========================================================
+   MESSAGE BUBBLES
+========================================================= */
+
+/* AI message */
+
+.app.dark .ai-message .bubble {
+    background: #252932;
+    color: #d1d5db;
+
+    border-color: #3f4652;
+
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* User message */
+
+.app.dark .user-message .bubble {
+    background: #315eea;
+    color: #ffffff;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================================================
+   MARKDOWN
+========================================================= */
+
+.app.dark .bubble h1,
+.app.dark .bubble h2,
+.app.dark .bubble h3,
+.app.dark .bubble h4 {
+    color: #f8fafc;
+}
+
+.app.dark .bubble p {
+    color: #d1d5db;
+}
+
+.app.dark .bubble li {
+    color: #d1d5db;
+}
+
+.app.dark .bubble strong {
+    color: #f8fafc;
+}
+
+/* Links inside AI response */
+
+.app.dark .bubble a {
+    color: #60a5fa;
+}
+
+/* =========================================================
+   TABLES
+========================================================= */
+
+.app.dark .bubble table {
+    color: #d1d5db;
+}
+
+.app.dark .bubble th,
+.app.dark .bubble td {
+    border-color: #414754;
+}
+
+.app.dark .bubble th {
+    background: #303641;
+    color: #f8fafc;
+}
+
+.app.dark .bubble td {
+    background: #252932;
+}
+
+/* =========================================================
+   QUICK PROMPTS
+========================================================= */
+
+.app.dark .quick-prompts {
+    background: #1a1d24;
+    border-top-color: #30343d;
+}
+
+.app.dark .quick-prompts button {
+    background: #252932;
+    border-color: #414754;
+    color: #d1d5db;
+}
+
+.app.dark .quick-prompts button:hover {
+    background: #315eea;
+    border-color: #315eea;
+    color: #ffffff;
+}
+
+/* =========================================================
+   INPUT AREA
+========================================================= */
+
+.app.dark .chat-input {
+    background: #1a1d24;
+}
+
+/* Input */
+
+.app.dark .chat-input input {
+    background: #252932;
+    border-color: #414754;
+    color: #f8fafc;
+}
+
+.app.dark .chat-input input:focus {
+    border-color: #5b7ff0;
+
+    box-shadow:
+        0 0 0 3px rgba(49, 94, 234, 0.15);
+}
+
+.app.dark .chat-input input::placeholder {
+    color: #6b7280;
+}
+
+/* Send button */
+
+.app.dark .chat-input button {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.app.dark .chat-input button:hover {
+    background: #315eea;
+    color: #ffffff;
+}
+
+/* Disabled */
+
+.app.dark .chat-input button:disabled {
+    opacity: 0.4;
+}
+
+/* =========================================================
+   TYPING INDICATOR
+========================================================= */
+
+.app.dark .typing span {
+    background: #60a5fa;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .app.dark .chat-box {
+        background: #1a1d24;
+    }
+
+    .app.dark .quick-prompts {
+        background: #1a1d24;
+    }
+
+    .app.dark .chat-input {
+        background: #1a1d24;
+    }
 
 }

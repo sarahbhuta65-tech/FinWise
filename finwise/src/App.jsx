@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Faq from "./pages/Faq";
 import Navbar from "./components/Navbar";
@@ -24,6 +24,8 @@ import {Toaster} from "react-hot-toast";
 import FloatingAIButton from "./components/FloatingAIButton";
 import AIDrawer from "./components/AIDrawer";
 import AIAssistant from "./pages/AIAssistant";
+import SmartCalendar from "./pages/SmartCalendar";
+import BudgetPlanner from "./pages/BudgetPlanner";
 import "./App.css";
 
 function App() {
@@ -32,6 +34,7 @@ function App() {
     JSON.parse(localStorage.getItem("user"))
   );
   const [openAI, setOpenAI] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("darkMode");
@@ -51,33 +54,39 @@ function App() {
         setDarkMode={setDarkMode}
         user={user}
         setUser={setUser}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
       />
-      <Toaster
-        position="top-right"
-        reverseOrder={false}
-        toastOptions={{
-          duration: 3000,
-          style: {
-            borderRadius: "12px",
-            background: "#1f2937",
-            color: "#fff",
-          },
-          success: {
-            iconTheme: {
-              primary: "#10B981",
-              secondary: "#fff",
+
+      {/* Sidebar overlay and hamburger are handled inside Navbar to avoid duplicates */}
+
+      <main className={`page-content ${sidebarOpen ? "sidebar-open" : ""}`}>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            duration: 3000,
+            style: {
+              borderRadius: "12px",
+              background: "#1f2937",
+              color: "#fff",
             },
-          },
-          error: {
-            iconTheme: {
-              primary: "#EF4444",
-              secondary: "#fff",
+            success: {
+              iconTheme: {
+                primary: "#10B981",
+                secondary: "#fff",
+              },
             },
-          },
-        }}
-      />
-      
-      <Routes>
+            error: {
+              iconTheme: {
+                primary: "#EF4444",
+                secondary: "#fff",
+              },
+            },
+          }}
+        />
+        
+        <Routes>
 
         <Route path="/" element={<Home darkMode={darkMode} />} />
         <Route path="/login" element={<Login darkMode={darkMode} setUser={setUser} />} />
@@ -155,6 +164,22 @@ function App() {
         <Route path="/admin/faqs" element={<ManageFAQs />} />
         <Route path="/admin/faqs/create" element={<CreateFAQs />} />
         <Route path="/admin/faqs/edit/:id" element={<CreateFAQs />} />
+        <Route
+          path="/calendar"
+          element={
+            <ProtectedRoute>
+              <SmartCalendar darkMode={darkMode} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+            path="/budget"
+            element={
+                <ProtectedRoute>
+                    <BudgetPlanner darkMode={darkMode} />
+                </ProtectedRoute>
+            }
+        />
       </Routes>
       {user && (
         <>
@@ -168,7 +193,7 @@ function App() {
           />
         </>
       )}
-
+      </main>
     </div>
   );
 }

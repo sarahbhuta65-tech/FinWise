@@ -51,19 +51,16 @@ function AccountSidebar({ activeSection, setActiveSection }) {
       {menu.map((item) => (
 
         <button
-          key={item.id}
-          className={
-            activeSection === item.id
-              ? "sidebar-item active"
-              : "sidebar-item"
-          }
-          onClick={() => setActiveSection(item.id)}
+            key={item.id}
+            className={
+                activeSection === item.id
+                    ? "account-sidebar-item active"
+                    : "account-sidebar-item"
+            }
+            onClick={() => setActiveSection(item.id)}
         >
-
-          <span>{item.icon}</span>
-
-          {item.label}
-
+            <span>{item.icon}</span>
+            {item.label}
         </button>
 
       ))}

@@ -1,0 +1,351 @@
+/* =========================================
+   FINANCIAL NUDGE
+========================================= */
+
+.financial-nudge {
+    position: relative;
+
+    width: 100%;
+    padding: 22px 24px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+
+    border-radius: 6px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.financial-nudge:hover {
+    border-color: var(--line-strong);
+
+    box-shadow:
+        0 8px 24px rgba(20, 24, 31, 0.06);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   NUDGE TYPES
+========================================= */
+
+.financial-nudge.warning {
+    border-left-color: var(--warn);
+}
+
+.financial-nudge.goal {
+    border-left-color: var(--gold);
+}
+
+.financial-nudge.investment {
+    border-left-color: var(--slate);
+}
+
+.financial-nudge.category {
+    border-left-color: var(--gold);
+}
+
+.financial-nudge.positive {
+    border-left-color: var(--accent);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.nudge-header {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    margin-bottom: 17px;
+}
+
+
+/* =========================================
+   ICON
+========================================= */
+
+.nudge-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+
+    background: var(--paper);
+
+    color: var(--accent);
+
+    font-size: 17px;
+
+    font-family: var(--font-mono);
+}
+
+.financial-nudge.warning .nudge-icon {
+    color: var(--warn);
+}
+
+.financial-nudge.goal .nudge-icon {
+    color: var(--gold);
+}
+
+.financial-nudge.investment .nudge-icon {
+    color: var(--slate);
+}
+
+
+/* =========================================
+   HEADING
+========================================= */
+
+.nudge-heading {
+    min-width: 0;
+    flex: 1;
+}
+
+.nudge-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-family: var(--font-mono);
+
+    font-size: 9px;
+    font-weight: 600;
+
+    letter-spacing: 0.14em;
+
+    color: var(--ink-400);
+}
+
+.nudge-heading h3 {
+    margin: 0;
+
+    font-family: var(--font-display);
+
+    font-size: 18px;
+    font-weight: 600;
+
+    letter-spacing: -0.01em;
+
+    color: var(--ink-900);
+}
+
+
+/* =========================================
+   AI BADGE
+========================================= */
+
+.nudge-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 5px 8px;
+
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+
+    background: var(--paper);
+
+    color: var(--ink-400);
+
+    font-family: var(--font-mono);
+
+    font-size: 9px;
+    font-weight: 600;
+
+    letter-spacing: 0.08em;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================
+   BODY
+========================================= */
+
+.nudge-body {
+    padding-left: 51px;
+}
+
+.nudge-body p {
+    max-width: 520px;
+
+    margin: 0 0 17px;
+
+    color: var(--ink-600);
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================
+   ACTION BUTTON
+========================================= */
+
+.nudge-body button {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 9px 13px;
+
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+
+    background: transparent;
+
+    color: var(--ink-900);
+
+    font-family: var(--font-mono);
+
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: 0.07em;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.nudge-body button span {
+    font-size: 14px;
+
+    transition: transform 0.2s ease;
+}
+
+.nudge-body button:hover {
+    background: var(--ink-900);
+
+    border-color: var(--ink-900);
+
+    color: var(--paper);
+}
+
+.nudge-body button:hover span {
+    transform: translateX(3px);
+}
+
+
+/* =========================================
+   WARNING
+========================================= */
+
+.financial-nudge.warning .nudge-body button:hover {
+    background: var(--warn);
+
+    border-color: var(--warn);
+
+    color: white;
+}
+
+
+/* =========================================
+   GOAL
+========================================= */
+
+.financial-nudge.goal .nudge-body button:hover {
+    background: var(--gold);
+
+    border-color: var(--gold);
+
+    color: white;
+}
+
+
+/* =========================================
+   INVESTMENT
+========================================= */
+
+.financial-nudge.investment .nudge-body button:hover {
+    background: var(--slate);
+
+    border-color: var(--slate);
+
+    color: white;
+}
+
+
+/* =========================================
+   DARK MODE
+========================================= */
+
+.app.dark .financial-nudge {
+    background: var(--surface);
+
+    box-shadow: none;
+}
+
+.app.dark .financial-nudge:hover {
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+.app.dark .nudge-icon,
+.app.dark .nudge-badge {
+    background: var(--paper);
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .financial-nudge {
+        padding: 19px 18px;
+    }
+
+    .nudge-header {
+        gap: 10px;
+    }
+
+    .nudge-icon {
+        width: 34px;
+        height: 34px;
+
+        font-size: 15px;
+    }
+
+    .nudge-heading h3 {
+        font-size: 16px;
+    }
+
+    .nudge-body {
+        padding-left: 0;
+    }
+
+    .nudge-body p {
+        font-size: 12.5px;
+    }
+
+    .nudge-badge {
+        padding: 4px 6px;
+    }
+}

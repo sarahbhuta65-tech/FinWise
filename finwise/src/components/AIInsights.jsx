@@ -2,77 +2,98 @@ import "./AIInsights.css";
 import { useEffect, useState } from "react";
 
 function AIInsights() {
+    const [insights, setInsights] = useState([]);
+    const [currentInsight, setCurrentInsight] = useState(0);
 
-  const [insights, setInsights] = useState([]);
-  const [currentInsight, setCurrentInsight] = useState(0);
+    useEffect(() => {
+        if (!insights.length) return;
 
-  useEffect(() => {
-    if (!insights.length) return;
+        const interval = setInterval(() => {
+            setCurrentInsight((prev) => (prev + 1) % insights.length);
+        }, 5000);
 
-    const interval = setInterval(() => {
-      setCurrentInsight((prev) => (prev + 1) % insights.length);
-    }, 5000);
+        return () => clearInterval(interval);
+    }, [insights]);
 
-    return () => clearInterval(interval);
-  }, [insights]);
+    const loadInsights = async () => {
+        try {
+            const user = JSON.parse(localStorage.getItem("user"));
 
-  const loadInsights = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
+            const res = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/ai/insights/${user._id}`
+            );
 
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/ai/insights/${user._id}`
-      );
+            const data = await res.json();
 
-      const data = await res.json();
-      console.log(data);
-      setInsights(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+            setInsights(data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
-  useEffect(() => {
-    loadInsights();
-  }, []);
+    useEffect(() => {
+        loadInsights();
+    }, []);
 
-  return (
-    <div className="ai-insights">
+    return (
+        <div className="ai-insights">
 
-      <div className="story-progress">
-          {insights.map((_, index) => (
-            <div
-              key={index}
-              className={`story-bar ${
-                index === currentInsight ? "active" : ""
-              }`}
-            ></div>
-          ))}
+            <div className="ai-insights-header">
+                <div className="insights-title">
+                    <span className="insights-sparkle">✦</span>
+
+                    <div>
+                        <h3>AI Insights</h3>
+                        <p>Smart tips for your finances</p>
+                    </div>
+                </div>
+
+                <span className="insights-label">AI</span>
+            </div>
+
+            {insights.length > 0 ? (
+                <>
+                    <div className="story-progress">
+                        {insights.map((_, index) => (
+                            <div
+                                key={index}
+                                className={`story-bar ${
+                                    index === currentInsight ? "active" : ""
+                                }`}
+                            />
+                        ))}
+                    </div>
+
+                    <div className="ai-list">
+                        <div
+                            key={currentInsight}
+                            className="insight-card fade-in"
+                        >
+                            <div className="insight-icon">
+                                {insights[currentInsight].icon}
+                            </div>
+
+                            <div className="insight-content">
+                                <span className="insight-label-text">
+                                    Financial Insight
+                                </span>
+
+                                <p>
+                                    {insights[currentInsight].text}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <div className="insight-empty">
+                    <span>✦</span>
+                    <p>Your personalized insights will appear here.</p>
+                </div>
+            )}
+
         </div>
-
-      <div className="ai-header">
-        ✨ AI Insights
-      </div>
-
-      <div className="ai-list">
-
-        {insights.length > 0 && (
-          <div
-            key={currentInsight}
-            className="insight-card fade-in"
-          >
-            <span className="insight-icon">
-              {insights[currentInsight].icon}
-            </span>
-            <span className="insight-text">
-              {insights[currentInsight].text}
-            </span>
-          </div>
-        )}
-      </div>
-
-    </div>
-  );
+    );
 }
 
 export default AIInsights;

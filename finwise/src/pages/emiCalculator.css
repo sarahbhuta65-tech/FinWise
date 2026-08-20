@@ -1,13 +1,50 @@
+
 .emi-container {
-  padding: 40px 50px;
+  --paper: #f6f4ec;
+  --surface: #ffffff;
+  --ink-900: #14181f;
+  --ink-600: #5b6472;
+  --ink-400: #8a92a0;
+  --line: #e3ddcd;
+  --line-strong: #d6cfba;
+  --accent: #1f6d4c;
+  --accent-soft: #e6efe6;
+  --warn: #b3541e;
+  --warn-soft: #f7ece1;
+  --gold: #a9862e;
+  --slate: #3b5a73;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  padding: 40px 44px 60px;
   min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink-900);
+  font-family: var(--font-body);
+}
+
+.emi-container * {
+  box-sizing: border-box;
+}
+
+.mono-figure {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
 }
 
 .emi-container h1 {
-  text-align: center;
-  font-size: 42px;
-  margin-bottom: 35px;
-  color: #111827;
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 26px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--ink-900);
+  color: var(--ink-900);
 }
 
 /* ===== Layout ===== */
@@ -15,172 +52,191 @@
 .emi-bottom-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  margin-bottom: 30px;
+  gap: 22px;
+  margin-bottom: 22px;
 }
 
-/* ===== Shared Card Style ===== */
+/* ===== Shared panel ===== */
 .emi-input-card,
 .emi-result-card,
 .emi-chart-card,
 .emi-insights-card {
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(14px);
-  border-radius: 28px;
-  padding: 30px;
-  box-shadow:
-    0 20px 40px rgba(37, 99, 235, 0.08),
-    0 8px 16px rgba(0, 0, 0, 0.04);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 26px 28px;
 }
 
 .emi-input-card h2,
 .emi-result-card h2,
 .emi-chart-card h2,
 .emi-insights-card h2 {
-  margin-top: 0;
-  margin-bottom: 22px;
+  margin: 0 0 20px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 19px;
+  letter-spacing: -0.01em;
+  color: var(--ink-900);
 }
 
-.emi-input-card {
-  border-top: 6px solid #2563eb;
-}
-
-.emi-result-card {
-  border-top: 6px solid #f59e0b;
-}
-
-.emi-chart-card {
-  border-top: 6px solid #ef4444;
-}
-
-.emi-insights-card {
-  border-top: 6px solid #8b5cf6;
-}
-
+/* ===== Inputs ===== */
 .emi-input-card label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
   font-weight: 600;
-  color: #374151;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-400);
 }
 
 .emi-input-card input {
   width: 100%;
-  box-sizing: border-box;
-  padding: 16px;
-  font-size: 16px;
-  border: 1px solid #dbeafe;
-  border-radius: 14px;
+  padding: 13px 14px;
+  font-size: 14px;
+  font-family: var(--font-body);
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
   margin-bottom: 16px;
-  background: #f8fbff;
+  background: var(--paper);
+  color: var(--ink-900);
 }
 
 .emi-input-card input:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  border-color: var(--accent);
+  background: var(--surface);
 }
 
 .error-message {
-  color: #dc2626;
-  background: #fee2e2;
-  padding: 12px;
-  border-radius: 10px;
-  margin: 15px 0;
-  text-align: center;
+  color: var(--warn);
+  background: var(--warn-soft);
+  padding: 10px 14px;
+  border-radius: 3px;
+  margin: 4px 0 16px;
+  text-align: left;
+  font-size: 13px;
+  border-left: 2px solid var(--warn);
 }
 
-/* Buttons */
+/* ===== Buttons ===== */
 .calculate-btn,
 .clear-btn {
   width: 100%;
-  padding: 16px;
-  border: none;
-  border-radius: 16px;
-  font-size: 16px;
+  padding: 13px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 13px;
   font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: opacity 0.2s ease;
 }
 
 .calculate-btn {
-  background: linear-gradient(135deg, #2563eb, #60a5fa);
-  color: white;
-  margin-top: 10px;
+  background: var(--ink-900);
+  color: var(--paper);
+  border: 1px solid var(--ink-900);
+  margin-top: 4px;
+}
+
+.calculate-btn:hover {
+  opacity: 0.85;
 }
 
 .clear-btn {
-  margin-top: 14px;
-  background: linear-gradient(135deg, #ef4444, #f87171);
-  color: white;
-  border: none;
+  margin-top: 10px;
+  background: transparent;
+  color: var(--warn);
+  border: 1px solid var(--warn);
 }
 
-.calculate-btn:hover,
 .clear-btn:hover {
-  transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+  background: var(--warn-soft);
 }
 
+/* ===== Results ===== */
 .emi-results-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 18px;
+  display: flex;
+  flex-direction: column;
 }
 
 .result-box {
-  padding: 22px;
-  border-radius: 20px;
-  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 4px;
+  border-bottom: 1px dashed var(--line-strong);
 }
 
-.emi-box {
-  background: linear-gradient(135deg, #2563eb, #60a5fa);
+.result-box:last-child {
+  border-bottom: none;
 }
 
-.interest-box {
-  background: linear-gradient(135deg, #ef4444, #f87171);
-}
-
-.payment-box {
-  background: linear-gradient(135deg, #f59e0b, #fbbf24);
-}
+.emi-box { border-left: 3px solid var(--slate); padding-left: 14px; }
+.interest-box { border-left: 3px solid var(--warn); padding-left: 14px; }
+.payment-box { border-left: 3px solid var(--gold); padding-left: 14px; }
 
 .result-box h4 {
-  margin: 0 0 12px 0;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-600);
 }
 
 .result-box h3 {
   margin: 0;
-  font-size: 28px;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink-900);
 }
 
 .empty-state {
-  text-align: center;
-  color: #6b7280;
-  padding: 80px 20px;
+  text-align: left;
+  color: var(--ink-400);
+  padding: 16px 0;
+  font-size: 13.5px;
 }
 
+/* ===== Insights ===== */
 .mini-emi-card {
-  background: #f8fafc;
-  padding: 18px;
-  border-radius: 18px;
-  margin-bottom: 16px;
-  border-left: 5px solid #8b5cf6;
+  background: var(--paper);
+  padding: 15px 16px;
+  border-radius: 3px;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--slate);
+}
+
+.mini-emi-card:last-child {
+  margin-bottom: 0;
 }
 
 .mini-emi-card h4 {
-  margin: 0 0 10px 0;
+  margin: 0 0 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-600);
 }
 
 .mini-emi-card p {
   margin: 0;
-  color: #374151;
+  font-size: 13.5px;
+  color: var(--ink-900);
+  line-height: 1.5;
 }
 
 /* ===== Chart polish ===== */
 .emi-chart-card {
-  min-height: 430px;
+  min-height: 380px;
 }
 
 .emi-chart-card .recharts-wrapper {
@@ -195,45 +251,41 @@
   }
 
   .emi-container {
-    padding: 20px;
+    padding: 24px 18px 40px;
   }
 
   .result-box h3 {
-    font-size: 24px;
+    font-size: 18px;
   }
 
   .emi-container h1 {
-    font-size: 32px;
+    font-size: 26px;
   }
 }
 
-.app.dark .emi-input-card,
-.app.dark .emi-result-card,
-.app.dark .emi-chart-card,
-.app.dark .emi-insights-card {
-  background: #1f2937;
-  color: white;
+/* ===== Dark Mode ===== */
+.app.dark .emi-container {
+  --paper: #0d1218;
+  --surface: #151b23;
+  --ink-900: #f2f0e8;
+  --ink-600: #9aa3b0;
+  --ink-400: #6b7684;
+  --line: #263140;
+  --line-strong: #303c4c;
+  --accent: #3fa980;
+  --accent-soft: rgba(63, 169, 128, 0.12);
+  --warn: #e08a4e;
+  --warn-soft: rgba(224, 138, 78, 0.12);
+  --gold: #d8b65c;
+  --slate: #6a90ab;
 }
 
-.app.dark .emi-container h1{
-  color: white;
+.app.dark .emi-container h1 {
+  border-bottom-color: var(--ink-900);
 }
 
-.app.dark .emi-input-card input {
-  background: #374151;
-  color: white;
-  border: 1px solid #4b5563;
-}
-
-.app.dark .mini-emi-card {
-  background: #374151;
-}
-
-.app.dark .mini-emi-card p,
-.app.dark .emi-input-card label {
-  color: #e5e7eb;
-}
-
-.app.dark .empty-state {
-  color: #cbd5e1;
+.app.dark .calculate-btn {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0d1218;
 }

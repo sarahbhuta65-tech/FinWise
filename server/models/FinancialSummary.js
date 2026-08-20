@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const financialSummarySchema = new mongoose.Schema(
     {
-        user:{
+        user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,
@@ -24,7 +24,7 @@ const financialSummarySchema = new mongoose.Schema(
             required: true,
         },
 
-        dueDate:{
+        dueDate: {
             type: Date,
             required: true,
         },
@@ -39,12 +39,12 @@ const financialSummarySchema = new mongoose.Schema(
             default: false,
         },
 
-        paidDate:{
+        paidDate: {
             type: Date,
             default: null,
         },
 
-        month:{
+        month: {
             type: Number,
             required: true,
         },
@@ -53,10 +53,32 @@ const financialSummarySchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+
+        // Where this commitment came from
+        source: {
+            type: String,
+            enum: ["manual", "sip", "emi", "savings"],
+            default: "manual",
+        },
+
+        // ID of the original SIP / EMI / Goal document
+        sourceId: {
+            type: mongoose.Schema.Types.ObjectId,
+            default: null,
+        },
+
+        // Whether this commitment repeats every month
+        recurring: {
+            type: Boolean,
+            default: false,
+        },
     },
     {
         timestamps: true,
     }
 );
 
-module.exports = mongoose.model("FinancialSummary", financialSummarySchema);
+module.exports = mongoose.model(
+    "FinancialSummary",
+    financialSummarySchema
+);

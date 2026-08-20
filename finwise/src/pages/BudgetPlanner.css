@@ -1,0 +1,1175 @@
+/* =========================================
+   BUDGET PLANNER
+========================================= */
+
+/* Local token set — matches Dashboard.css's scale, with the
+   ink-800 / ink-700 / ink-500 shades added since several rules
+   below reference them but they didn't exist anywhere before. */
+.budget-page {
+    --paper: #f6f4ec;
+    --surface: #ffffff;
+
+    --ink-900: #14181f;
+    --ink-800: #232830;
+    --ink-700: #3a4149;
+    --ink-600: #5b6472;
+    --ink-500: #75808f;
+    --ink-400: #8a92a0;
+
+    --line: #e3ddcd;
+    --line-strong: #d6cfba;
+
+    --accent: #1f6d4c;
+    --accent-soft: #e6efe6;
+    --warn: #b3541e;
+    --warn-soft: #f7ece1;
+
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 35px 30px 60px;
+
+    background: var(--paper);
+    color: var(--ink-900);
+}
+
+.budget-page * {
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.budget-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.budget-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--ink-400);
+}
+
+.budget-header h1 {
+    margin: 7px 0 6px;
+
+    font-family: var(--font-display);
+    font-size: 34px;
+
+    color: var(--ink-900);
+}
+
+.budget-header p {
+    margin: 0;
+
+    color: var(--ink-600);
+
+    font-size: 14px;
+}
+
+.budget-month {
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 5px;
+}
+
+.budget-month span {
+    font-family: var(--font-mono);
+
+    font-size: 9px;
+
+    letter-spacing: 0.14em;
+
+    color: var(--ink-400);
+}
+
+.budget-month strong {
+    font-family: var(--font-mono);
+
+    font-size: 13px;
+
+    color: var(--ink-800);
+}
+
+
+/* =========================================
+   OVERVIEW
+========================================= */
+
+.budget-overview {
+    margin-bottom: 38px;
+}
+
+.budget-main-card {
+    padding: 28px 30px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--line);
+    border-radius: 10px;
+
+    box-shadow:
+        0 8px 25px rgba(20, 24, 31, 0.045);
+}
+
+.budget-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.budget-label {
+    display: block;
+
+    font-family: var(--font-mono);
+
+    font-size: 9px;
+
+    letter-spacing: 0.14em;
+
+    color: var(--ink-400);
+}
+
+.budget-card-top h2 {
+    margin: 8px 0 0;
+
+    font-family: var(--font-mono);
+
+    font-size: 34px;
+
+    font-weight: 600;
+
+    color: var(--ink-900);
+}
+
+.budget-status span {
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-family: var(--font-mono);
+
+    font-size: 9px;
+
+    letter-spacing: 0.04em;
+}
+
+.status-good {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+.status-warning {
+    background: var(--warn-soft);
+    color: var(--warn);
+}
+
+
+/* =========================================
+   MAIN PROGRESS
+========================================= */
+
+.budget-progress-section {
+    margin-top: 28px;
+}
+
+.budget-progress-info {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+    font-family: var(--font-mono);
+
+    font-size: 10px;
+
+    color: var(--ink-500);
+}
+
+.budget-progress {
+    width: 100%;
+    height: 10px;
+
+    overflow: hidden;
+
+    background: var(--line);
+
+    border-radius: 10px;
+}
+
+.budget-progress-fill {
+    height: 100%;
+
+    background: var(--accent);
+
+    border-radius: 10px;
+
+    transition: width 0.7s ease;
+}
+
+.budget-progress-fill.warning {
+    background: var(--warn);
+}
+
+
+/* =========================================
+   CARD FOOTER
+========================================= */
+
+.budget-card-footer {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    margin-top: 25px;
+
+    border-top: 1px solid var(--line);
+
+    padding-top: 20px;
+}
+
+.budget-card-footer div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.budget-card-footer div:not(:first-child) {
+    padding-left: 25px;
+
+    border-left: 1px solid var(--line);
+}
+
+.budget-card-footer span {
+    font-size: 11px;
+
+    color: var(--ink-400);
+}
+
+.budget-card-footer strong {
+    font-family: var(--font-mono);
+
+    font-size: 15px;
+
+    color: var(--ink-800);
+}
+
+
+/* =========================================
+   CATEGORY HEADER
+========================================= */
+
+.budget-section-header {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    margin-bottom: 17px;
+}
+
+.budget-section-header h2 {
+    margin: 7px 0 0;
+
+    font-family: var(--font-display);
+
+    font-size: 22px;
+
+    color: var(--ink-900);
+}
+
+.category-count {
+    font-family: var(--font-mono);
+
+    font-size: 10px;
+
+    color: var(--ink-400);
+}
+
+
+/* =========================================
+   CATEGORY GRID
+========================================= */
+
+.budget-category-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 16px;
+}
+
+.budget-category-card {
+    padding: 22px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--line);
+
+    border-radius: 8px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.budget-category-card:hover {
+    transform: translateY(-2px);
+
+    border-color: var(--line-strong);
+
+    box-shadow:
+        0 10px 28px rgba(20, 24, 31, 0.06);
+}
+
+
+/* =========================================
+   CATEGORY HEADER
+========================================= */
+
+.category-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+}
+
+.category-header h3 {
+    margin: 0 0 4px;
+
+    font-family: var(--font-display);
+
+    font-size: 16px;
+
+    color: var(--ink-900);
+}
+
+.category-header span {
+    font-family: var(--font-mono);
+
+    font-size: 9px;
+
+    color: var(--ink-400);
+}
+
+.category-header > strong {
+    font-family: var(--font-mono);
+
+    font-size: 14px;
+
+    color: var(--accent);
+}
+
+
+/* =========================================
+   CATEGORY PROGRESS
+========================================= */
+
+.category-progress {
+    width: 100%;
+    height: 7px;
+
+    margin: 18px 0;
+
+    overflow: hidden;
+
+    background: var(--line);
+
+    border-radius: 10px;
+}
+
+.category-progress-fill {
+    height: 100%;
+
+    background: var(--accent);
+
+    border-radius: 10px;
+
+    transition: width 0.6s ease;
+}
+
+.category-progress-fill.over-budget {
+    background: var(--warn);
+}
+
+
+/* =========================================
+   CATEGORY DETAILS
+========================================= */
+
+.category-details {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    padding-top: 15px;
+
+    border-top: 1px solid var(--line);
+}
+
+.category-details div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.category-details div:not(:first-child) {
+    padding-left: 15px;
+
+    border-left: 1px solid var(--line);
+}
+
+.category-details span {
+    font-size: 10px;
+
+    color: var(--ink-400);
+}
+
+.category-details strong {
+    font-family: var(--font-mono);
+
+    font-size: 11px;
+
+    color: var(--ink-700);
+}
+
+.over-text {
+    color: var(--warn) !important;
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.budget-empty {
+    padding: 70px 30px;
+
+    text-align: center;
+
+    background: var(--surface);
+
+    border: 1px solid var(--line);
+
+    border-radius: 10px;
+}
+
+.empty-icon {
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 18px;
+
+    border-radius: 50%;
+
+    background: var(--accent-soft);
+
+    color: var(--accent);
+
+    font-family: var(--font-mono);
+
+    font-size: 20px;
+}
+
+.budget-empty h2 {
+    margin: 0 0 8px;
+
+    font-family: var(--font-display);
+
+    color: var(--ink-900);
+}
+
+.budget-empty p {
+    margin: 0 0 20px;
+
+    color: var(--ink-600);
+
+    font-size: 13px;
+}
+
+.create-budget-btn {
+    padding: 10px 18px;
+
+    border: 1px solid var(--line-strong);
+
+    border-radius: 6px;
+
+    background: var(--ink-900);
+
+    color: var(--surface);
+
+    font-family: var(--font-mono);
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================
+   SMART NOTE
+========================================= */
+
+.budget-note {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 14px;
+
+    margin-top: 22px;
+
+    padding: 18px 20px;
+
+    background: var(--accent-soft);
+
+    border: 1px solid var(--line-strong);
+
+    border-left: 3px solid var(--accent);
+
+    border-radius: 6px;
+}
+
+.budget-note-mark {
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--surface);
+
+    color: var(--accent);
+
+    font-family: var(--font-mono);
+
+    font-size: 13px;
+}
+
+.budget-note span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-family: var(--font-mono);
+
+    font-size: 9px;
+
+    letter-spacing: 0.12em;
+
+    color: var(--accent);
+}
+
+.budget-note p {
+    margin: 0;
+
+    color: var(--ink-600);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.budget-loading {
+    min-height: 400px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: var(--ink-500);
+
+    font-family: var(--font-mono);
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 800px) {
+
+    .budget-page {
+        padding: 25px 15px 40px;
+    }
+
+    .budget-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 18px;
+    }
+
+    .budget-month {
+        align-items: flex-start;
+    }
+
+    .budget-category-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 550px) {
+
+    .budget-card-top {
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    .budget-card-top h2 {
+        font-size: 29px;
+    }
+
+    .budget-card-footer {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .budget-card-footer div:not(:first-child) {
+        padding-left: 0;
+
+        padding-top: 15px;
+
+        border-left: none;
+
+        border-top: 1px solid var(--line);
+    }
+
+    .category-details {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+    .category-details div:not(:first-child) {
+        padding-left: 0;
+
+        padding-top: 10px;
+
+        border-left: none;
+
+        border-top: 1px solid var(--line);
+    }
+}
+
+/* =========================================
+   BUDGET HEADER ACTIONS
+========================================= */
+
+.budget-header-actions {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.edit-budget-btn {
+    padding: 10px 17px;
+
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+
+    background: var(--ink-900);
+    color: var(--surface);
+
+    font-family: var(--font-mono);
+    font-size: 10px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.edit-budget-btn:hover {
+    opacity: 0.88;
+}
+
+
+/* =========================================
+   MONTH NAVIGATION
+========================================= */
+
+.budget-month-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 22px;
+
+    margin-bottom: 20px;
+}
+
+.budget-month-navigation strong {
+    min-width: 150px;
+
+    text-align: center;
+
+    font-family: var(--font-display);
+    font-size: 17px;
+
+    color: var(--ink-900);
+}
+
+.budget-month-navigation button {
+    width: 34px;
+    height: 34px;
+
+    border: 1px solid var(--line);
+    border-radius: 50%;
+
+    background: var(--surface);
+    color: var(--ink-700);
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    transition: 0.2s ease;
+}
+
+.budget-month-navigation button:hover {
+    background: var(--line);
+}
+
+
+/* =========================================
+   BUDGET EDITOR
+========================================= */
+
+.budget-editor {
+    background: var(--surface);
+
+    border: 1px solid var(--line);
+    border-radius: 10px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 8px 25px rgba(20, 24, 31, 0.045);
+}
+
+.editor-section {
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+
+    border-bottom: 1px solid var(--line);
+}
+
+.editor-label {
+    display: block;
+
+    margin-bottom: 15px;
+
+    font-family: var(--font-mono);
+    font-size: 9px;
+
+    letter-spacing: 0.14em;
+
+    color: var(--ink-400);
+}
+
+.budget-input-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+}
+
+.budget-input-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.budget-input-group label {
+    font-size: 11px;
+    color: var(--ink-600);
+}
+
+.budget-input-group input,
+.category-editor-row input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    border: 1px solid var(--line);
+    border-radius: 6px;
+
+    background: var(--surface);
+    color: var(--ink-900);
+
+    font-family: var(--font-mono);
+    font-size: 12px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.budget-input-group input:focus,
+.category-editor-row input:focus {
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 3px var(--accent-soft);
+}
+
+
+/* =========================================
+   CATEGORY EDITOR
+========================================= */
+
+.category-editor-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+}
+
+.category-editor-header p {
+    margin: -7px 0 0;
+
+    color: var(--ink-600);
+
+    font-size: 12px;
+}
+
+.add-category-btn {
+    padding: 8px 12px;
+
+    border: 1px solid var(--line-strong);
+    border-radius: 5px;
+
+    background: transparent;
+    color: var(--ink-700);
+
+    font-family: var(--font-mono);
+    font-size: 10px;
+
+    cursor: pointer;
+}
+
+.add-category-btn:hover {
+    background: var(--line);
+}
+
+.category-editor-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+}
+
+.category-editor-row {
+    display: grid;
+
+    grid-template-columns: 1fr 180px 36px;
+
+    gap: 10px;
+
+    align-items: center;
+}
+
+.amount-input {
+    position: relative;
+}
+
+.amount-input span {
+    position: absolute;
+
+    left: 12px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: var(--ink-400);
+
+    font-family: var(--font-mono);
+    font-size: 12px;
+}
+
+.amount-input input {
+    padding-left: 27px;
+}
+
+.remove-category-btn {
+    width: 34px;
+    height: 34px;
+
+    border: 1px solid var(--line);
+    border-radius: 50%;
+
+    background: transparent;
+    color: var(--ink-500);
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+.remove-category-btn:hover {
+    border-color: var(--warn);
+
+    color: var(--warn);
+}
+
+
+/* =========================================
+   LIVE EDITOR SUMMARY
+========================================= */
+
+.budget-editor-summary {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 0;
+
+    padding: 20px;
+
+    background: var(--accent-soft);
+
+    border: 1px solid var(--line-strong);
+
+    border-radius: 7px;
+}
+
+.budget-editor-summary div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.budget-editor-summary div:not(:first-child) {
+    padding-left: 20px;
+
+    border-left: 1px solid var(--line);
+}
+
+.budget-editor-summary span {
+    font-size: 10px;
+    color: var(--ink-400);
+}
+
+.budget-editor-summary strong {
+    font-family: var(--font-mono);
+
+    font-size: 15px;
+
+    color: var(--ink-900);
+}
+
+.unallocated-value {
+    color: var(--accent) !important;
+}
+
+
+/* =========================================
+   EDITOR ACTIONS
+========================================= */
+
+.budget-editor-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+.cancel-budget-btn,
+.save-budget-btn {
+    padding: 10px 18px;
+
+    border-radius: 6px;
+
+    font-family: var(--font-mono);
+
+    font-size: 10px;
+
+    cursor: pointer;
+}
+
+.cancel-budget-btn {
+    border: 1px solid var(--line-strong);
+
+    background: transparent;
+
+    color: var(--ink-700);
+}
+
+.save-budget-btn {
+    border: 1px solid var(--ink-900);
+
+    background: var(--ink-900);
+
+    color: var(--surface);
+}
+
+.cancel-budget-btn:hover {
+    background: var(--line);
+}
+
+.save-budget-btn:hover {
+    opacity: 0.9;
+}
+
+
+/* =========================================
+   MOBILE EDITOR
+========================================= */
+
+@media (max-width: 700px) {
+
+    .budget-header-actions {
+        width: 100%;
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .budget-input-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .category-editor-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .category-editor-row {
+        grid-template-columns: 1fr;
+    }
+
+    .remove-category-btn {
+        width: 100%;
+        height: 34px;
+
+        border-radius: 6px;
+    }
+
+    .budget-editor-summary {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .budget-editor-summary div:not(:first-child) {
+        padding-left: 0;
+        padding-top: 15px;
+
+        border-left: none;
+        border-top: 1px solid var(--line);
+    }
+
+    .budget-editor-actions {
+        flex-direction: column-reverse;
+    }
+
+    .cancel-budget-btn,
+    .save-budget-btn {
+        width: 100%;
+    }
+}
+
+
+/* =========================================
+   DARK MODE
+   Mirrors the scale used in Dashboard.css's
+   .app.dark .dashboard block, extended with
+   the ink-800 / ink-700 / ink-500 steps.
+========================================= */
+
+.app.dark .budget-page {
+    --paper: #0d1218;
+    --surface: #151b23;
+
+    --ink-900: #f2f0e8;
+    --ink-800: #dcd9cf;
+    --ink-700: #b7bcc4;
+    --ink-600: #9aa3b0;
+    --ink-500: #838da0;
+    --ink-400: #6b7684;
+
+    --line: #263140;
+    --line-strong: #303c4c;
+
+    --accent: #3fa980;
+    --accent-soft: rgba(63, 169, 128, 0.12);
+    --warn: #e08a4e;
+    --warn-soft: rgba(224, 138, 78, 0.12);
+}
+
+.app.dark .budget-main-card,
+.app.dark .budget-category-card,
+.app.dark .budget-empty,
+.app.dark .budget-editor {
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.28);
+}
+
+.app.dark .budget-category-card:hover {
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.app.dark .create-budget-btn,
+.app.dark .edit-budget-btn,
+.app.dark .save-budget-btn {
+    color: var(--paper);
+}

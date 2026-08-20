@@ -12,7 +12,14 @@ const [interestRate, setInterestRate] = useState("");
 const [years, setYears] = useState("");
 const [result, setResult] = useState(null);
 const [error, setError] = useState("");
+const [dueDay, setDueDay] = useState(1); // Default due day is 1
+const [paidMonths, setPaidMonths] = useState(0);
+const [totalMonths, setTotalMonths] = useState(0);
+const [monthsRemaining, setMonthsRemaining] = useState(0);
+const [paidAmount, setPaidAmount] = useState(0);
+const [remainingAmount, setRemainingAmount] = useState(0);
 
+const [startDate, setStartDate] = useState(new Date()); // Default start date is today
 const calculateEMI = async () => {
   const P = Number(loanAmount);
   const annualRate = Number(interestRate);
@@ -72,6 +79,8 @@ const calculateEMI = async () => {
       emi,
       totalPayment,
       totalInterest,
+      dueDay,
+      startDate,
     });
     toast.success("EMI saved successfully");
   } catch (error) {
@@ -96,6 +105,29 @@ useEffect(() => {
       setLoanAmount(res.data.loanAmount);
       setInterestRate(res.data.interestRate);
       setYears(res.data.years);
+      setDueDay(res.data.dueDay || 1); // Default to 1 if not set
+      setStartDate(res.data.startDate || new Date()); // Default to current date if not set
+      setPaidMonths(Number(res.data.paidMonths || 0));
+
+      setTotalMonths(
+        Number(res.data.totalMonths || Number(res.data.years) * 12)
+      );
+
+      setMonthsRemaining(
+        Number(
+          res.data.monthsRemaining ??
+          Number(res.data.years) * 12
+        )
+      );
+
+      setPaidAmount(Number(res.data.paidAmount || 0));
+
+      setRemainingAmount(
+        Number(
+          res.data.remainingAmount ??
+          res.data.totalPayment
+        )
+      );
 
       setResult({
         emi: Number(res.data.emi).toFixed(2),
@@ -116,8 +148,12 @@ const clearEMI = () => {
   setYears("");
   setResult(null);
 
-  //localStorage.removeItem("emiData");
-}
+  setPaidMonths(0);
+  setTotalMonths(0);
+  setMonthsRemaining(0);
+  setPaidAmount(0);
+  setRemainingAmount(0);
+};
 
 const pieData = result 
   ? [
@@ -132,7 +168,7 @@ const pieData = result
   ]
   : [];
 
-  const COLORS = ["#2563eb", "#ef4444"];
+  const COLORS = ["#3B5A73", "#B3541E"];
 
   const emiBurden = result
     ? Number(result.emi) > Number(loanAmount) * 0.03
@@ -176,7 +212,14 @@ const pieData = result
                   onChange={(e) => setYears(e.target.value)}
                 />
 
-                {error && <p className="error-message">⚠ {error}</p>}
+                <label>EMI Due Date</label>
+                <InputField
+                  placeholder="Enter EMI due date (1-31)"
+                  value={dueDay}
+                  onChange={(e) => setDueDay(e.target.value)}
+                />
+
+                {error && <p className="error-message">{error}</p>}
 
                 <button className="calculate-btn" onClick={calculateEMI}>
                   Calculate
@@ -193,18 +236,18 @@ const pieData = result
                 {result ? (
                   <div className="emi-results-grid">
                     <div className="result-box emi-box">
-                      <h4>💳 Monthly EMI</h4>
-                      <h3>₹{result.emi}</h3>
+                      <h4>Monthly EMI</h4>
+                      <h3 className="mono-figure">₹{result.emi}</h3>
                     </div>
 
                     <div className="result-box interest-box">
-                      <h4>📈 Total Interest</h4>
-                      <h3>₹{result.totalInterest}</h3>
+                      <h4>Total Interest</h4>
+                      <h3 className="mono-figure">₹{result.totalInterest}</h3>
                     </div>
 
                     <div className="result-box payment-box">
-                      <h4>💰 Total Payment</h4>
-                      <h3>₹{result.totalPayment}</h3>
+                      <h4>Total Payment</h4>
+                      <h3 className="mono-figure">₹{result.totalPayment}</h3>
                     </div>
                   </div>
                 ) : (
@@ -220,13 +263,13 @@ const pieData = result
                 <h2>Payment Breakdown</h2>
 
                 {result ? (
-                  <ResponsiveContainer width="100%" height={350}>
+                  <ResponsiveContainer width="100%" height={320}>
                     <PieChart>
                       <Pie
                         data={pieData}
                         cx="50%"
                         cy="50%"
-                        outerRadius={150}
+                        outerRadius={140}
                         dataKey="value"
                         label
                       >
@@ -234,12 +277,14 @@ const pieData = result
                           <Cell
                             key={`cell-${index}`}
                             fill={COLORS[index % COLORS.length]}
+                            stroke="var(--surface)"
+                            strokeWidth={2}
                           />
                         ))}
                       </Pie>
 
-                      <Tooltip />
-                      <Legend />
+                      <Tooltip contentStyle={{ borderRadius: 4, border: "1px solid #e3ddcd", fontFamily: "var(--font-mono)", fontSize: 12 }} />
+                      <Legend wrapperStyle={{ fontSize: 12, fontFamily: "var(--font-body)" }} />
                     </PieChart>
                   </ResponsiveContainer>
                 ) : (
@@ -248,22 +293,69 @@ const pieData = result
                   </div>
                 )}
               </div>
+
               <div className="emi-insights-card">
                 <h2>Smart Insights</h2>
 
                 <div className="mini-emi-card">
-                  <h4>📊 EMI Burden</h4>
-                  <p>{emiBurden}</p>
+                  <h4>Paid So Far</h4>
+                  <p>
+                    <span className="mono-figure">
+                      ₹{Number(paidAmount).toLocaleString("en-IN")}
+                    </span>
+                  </p>
                 </div>
 
                 <div className="mini-emi-card">
-                  <h4>💡 Recommendation</h4>
+                  <h4>Remaining Amount</h4>
+                  <p>
+                    <span className="mono-figure">
+                      ₹{Number(remainingAmount).toLocaleString("en-IN")}
+                    </span>
+                  </p>
+                </div>
+
+                <div className="mini-emi-card">
+                  <h4>Monthly EMI</h4>
+                  <p>
+                    <span className="mono-figure">
+                      ₹{result ? Number(result.emi).toLocaleString("en-IN") : 0}
+                    </span>
+                    /month
+                  </p>
+                </div>
+
+                <div className="mini-emi-card">
+                  <h4>Paid Months</h4>
+                  <p>
+                    <span className="mono-figure">
+                      {paidMonths} / {totalMonths}
+                    </span>
+                  </p>
+                </div>
+
+                <div className="mini-emi-card">
+                  <h4>Months Remaining</h4>
+                  <p>
+                    <span className="mono-figure">
+                      {monthsRemaining}
+                    </span>{" "}
+                    {monthsRemaining === 1 ? "month" : "months"}
+                  </p>
+                </div>
+
+                <div className="mini-emi-card">
+                  <h4>Interest</h4>
+                  <p>
+                    <span className="mono-figure">
+                      ₹{result ? Number(result.totalInterest).toLocaleString("en-IN") : 0}
+                    </span>
+                  </p>
+                </div>
+
+                <div className="mini-emi-card">
+                  <h4>Recommendation</h4>
                   <p>{recommendation}</p>
-                </div>
-
-                <div className="mini-emi-card">
-                  <h4>🎯 Loan Duration</h4>
-                  <p>{years || 0} years repayment period</p>
                 </div>
               </div>
             </div>

@@ -14,6 +14,13 @@ const blogRoutes = require("./routes/blogRoutes");
 const faqRoutes = require("./routes/faqRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 const financialSummaryRoutes = require("./routes/financialSummaryRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
+const calendarRoutes = require("./routes/calendarRoutes");
+const budgetRoutes = require("./routes/budgetRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
+const financialNudgeRoutes = require(
+    "./routes/financialNudgeRoutes"
+);
 const path = require("path");
 console.log("Mongo URI:", process.env.MONGO_URI);
 connectDB();
@@ -38,6 +45,14 @@ app.use("/api/blogs", blogRoutes);
 app.use("/api/faqs", faqRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/financial-summary", financialSummaryRoutes);
+app.use("/api/notifications",  notificationRoutes);
+app.use("/api/calendar", calendarRoutes);
+app.use("/api/budgets", budgetRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use(
+    "/api/financial-nudges",
+    financialNudgeRoutes
+);
 
 //Test route
 app.get("/", (req, res) => {

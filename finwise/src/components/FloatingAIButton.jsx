@@ -11,17 +11,10 @@ function FloatingAIButton({ onClick }) {
       </span>
 
       <div className="floating-tooltip">
-        👋 Hi Sarah!
-
+        Hi Sarah — I'm FinWise AI.
         <br />
-        I'm FinWise AI.
-
-        <br/>
-
         Let's grow your money smarter.
-
         <br />
-
         Click to chat →
       </div>
     </button>

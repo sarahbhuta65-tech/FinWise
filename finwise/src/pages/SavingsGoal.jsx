@@ -9,23 +9,41 @@ function SavingsGoal() {
   const [goalName, setGoalName] = useState("");
   const [goalAmount, setGoalAmount] = useState("");
   const [savedAmount, setSavedAmount] = useState("");
+  const [totalMonths, setTotalMonths] = useState("");
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState("");
+  const [dueDay, setDueDay] = useState(1);
+  const [paidMonths, setPaidMonths] = useState(0);
+  const [monthsRemaining, setMonthsRemaining] = useState(0);
+  const [monthlyTarget, setMonthlyTarget] = useState(0);
+  
 
   const calculateProgress = async () => {
     const goal = Number(goalAmount);
-    const saved = Number(savedAmount);
+    const saved = Number(savedAmount) || 0;
 
-    if (!goalName || !goalAmount || savedAmount === "") {
-      toast.error("Please fill all fields");
-      setError("Please fill all fields");
+    if (!goalName || !goalAmount) {
+        toast.error("Please fill all fields");
+        setError("Please fill all fields");
+        return;
+    }
+
+    if (goal <= 0) {
+        toast.error("Invalid goal amount");
+        setError("Invalid goal amount");
+        return;
+    }
+
+    if (Number(dueDay) < 1 || Number(dueDay) > 31) {
+      toast.error("Due day must be between 1 and 31");
+      setError("Due day must be between 1 and 31");
       return;
     }
 
-    if (goal <= 0 || saved < 0) {
-      toast.error("Invalid amounts");
-      setError("Invalid amounts");
-      return;
+    if (!totalMonths || Number(totalMonths) <= 0) {
+        toast.error("Please enter a valid target duration");
+        setError("Please enter a valid target duration");
+        return;
     }
 
     setError("");
@@ -46,6 +64,8 @@ function SavingsGoal() {
         goalAmount: goal,
         savedAmount: saved,
         progress: percentage,
+        dueDay: Number(dueDay),
+        totalMonths: Number(totalMonths),
       });
 
       toast.success("Goal saved successfully");
@@ -67,10 +87,32 @@ function SavingsGoal() {
         );
 
         if (res.data) {
-          setGoalName(res.data.goalName);
-          setGoalAmount(res.data.goalAmount);
-          setSavedAmount(res.data.savedAmount);
-          setProgress(res.data.progress);
+            setGoalName(res.data.goalName);
+            setGoalAmount(res.data.goalAmount);
+            setSavedAmount(res.data.savedAmount);
+            setProgress(res.data.progress);
+            setDueDay(res.data.dueDay || 1);
+
+            setPaidMonths(
+                Number(res.data.paidMonths || 0)
+            );
+
+             setMonthsRemaining(
+                Number(res.data.monthsRemaining || 0)
+            );
+
+            setTotalMonths(
+                Number(res.data.totalMonths || 0)
+            );
+
+            const calculatedMonthlyTarget =
+                Number(res.data.totalMonths) > 0
+                    ? Number(res.data.goalAmount) /
+                      Number(res.data.totalMonths)
+                    : 0;
+
+            setMonthlyTarget(calculatedMonthlyTarget);
+
         }
 
       } catch (error) {
@@ -94,6 +136,9 @@ function SavingsGoal() {
       setSavedAmount("");
       setProgress(0);
       setError("");
+      setPaidMonths(0);
+      setTotalMonths(0);
+      setMonthsRemaining(0);
 
     } catch (error) {
       console.error(error);
@@ -102,18 +147,18 @@ function SavingsGoal() {
   };
 
   const remainingAmount = Math.max(Number(goalAmount) - Number(savedAmount), 0);
-  const monthlySuggestion = remainingAmount > 0 ? (remainingAmount / 12).toFixed(0) : 0;
 
-  let goalStatus = "Excellent progress 🚀";
-  if (progress < 30) goalStatus = "Just getting started 🌱";
-  else if (progress < 70) goalStatus = "Good progress 🔥";
 
-  let goalMessage = "Start your savings journey 🚀";
-  if (progress > 0 && progress < 25) goalMessage = "Great start! Keep saving 💪";
-  else if (progress < 50 && progress >= 25) goalMessage = "Nice progress! Moving ahead 🌱";
-  else if (progress < 75 && progress >= 50) goalMessage = "More than halfway there 🔥";
-  else if (progress < 100 && progress >= 75) goalMessage = "Almost there! Don't stop 🎯";
-  else if (progress >= 100) goalMessage = "Goal achieved! Congratulations 🎉";
+  let goalStatus = "Excellent progress";
+  if (progress < 30) goalStatus = "Just getting started";
+  else if (progress < 70) goalStatus = "Good progress";
+
+  let goalMessage = "Start your savings journey";
+  if (progress > 0 && progress < 25) goalMessage = "Great start! Keep saving";
+  else if (progress < 50 && progress >= 25) goalMessage = "Nice progress! Moving ahead";
+  else if (progress < 75 && progress >= 50) goalMessage = "More than halfway there";
+  else if (progress < 100 && progress >= 75) goalMessage = "Almost there! Don't stop";
+  else if (progress >= 100) goalMessage = "Goal achieved! Congratulations";
 
   return (
     <div className="goal-page">
@@ -152,12 +197,29 @@ function SavingsGoal() {
             </div>
 
             <div className="input-container">
-              <label>Already Saved (₹)</label>
+              <label>Target Duration (Months)</label>
+
+              <input
+                  type="number"
+                  min="1"
+                  placeholder="e.g., 12"
+                  value={totalMonths}
+                  onChange={(e) =>
+                      setTotalMonths(e.target.value)
+                  }
+              />
+          </div>
+
+            <div className="input-container">
+              <label>Monthly Due Day</label>
+
               <input
                 type="number"
-                placeholder="e.g., 15000"
-                value={savedAmount}
-                onChange={(e) => setSavedAmount(e.target.value)}
+                min="1"
+                max="31"
+                placeholder="e.g., 15"
+                value={dueDay}
+                onChange={(e) => setDueDay(e.target.value)}
               />
             </div>
           </div>
@@ -174,13 +236,13 @@ function SavingsGoal() {
           </div>
 
           <div className="goal-tip">
-            💡 Small savings daily create big results
+            Small savings daily create big results
           </div>
         </div>
 
         {/* CENTER PANEL */}
         <div className="dashboard-card progress-card">
-          <div className="goal-icon">🎮</div>
+          <div className="goal-icon">🎯</div>
           <h2>{goalName || "Current Goal"}</h2>
           
           <div className="progress-circle-wrapper">
@@ -188,16 +250,16 @@ function SavingsGoal() {
               value={progress}
               text={`${progress.toFixed(0)}%`}
               styles={buildStyles({
-                pathColor: progress < 30 ? "#ef4444" : progress < 70 ? "#f59e0b" : "#10b981",
-                textColor: "#0f172a",
-                trailColor: "#f1f5f9",
+                pathColor: progress < 30 ? "#B3541E" : progress < 70 ? "#A9862E" : "#1F6D4C",
+                textColor: "#14181f",
+                trailColor: "#e3ddcd",
                 strokeLinecap: "round"
               })}
             />
           </div>
 
           <div className="progress-stats">
-            <h3>₹{Number(savedAmount).toLocaleString('en-IN') || 0}</h3>
+            <h3 className="mono-figure">₹{Number(savedAmount).toLocaleString('en-IN') || 0}</h3>
             <p>saved out of ₹{Number(goalAmount).toLocaleString('en-IN') || 0}</p>
           </div>
 
@@ -219,7 +281,7 @@ function SavingsGoal() {
             </div>
 
             <div className="milestone-item">
-              <div className={progress >= 100 ? "milestone active" : "milestone"}>🎯</div>
+              <div className={progress >= 100 ? "milestone active" : "milestone"}>🏁</div>
             </div>
             
           </div>
@@ -244,16 +306,49 @@ function SavingsGoal() {
             </div>
 
             <div className="mini-card">
-              <span className="mini-label">Recommended Monthly Target</span>
-              <h4 className="mini-value text-financial">₹{Number(monthlySuggestion).toLocaleString('en-IN')}/mo</h4>
-            </div>
+              <span className="mini-label">
+                  Months Paid
+              </span>
 
-            <div className="mini-card">
-              <span className="mini-label">Estimated Completion</span>
               <h4 className="mini-value">
-                {progress >= 100 ? "Completed 🎉" : "12 months"}
+                  {progress >= 100
+                      ? totalMonths
+                      : paidMonths}{" "}
+                  {paidMonths === 1 ? "month" : "months"}
               </h4>
-            </div>
+          </div>
+
+          <div className="mini-card">
+              <span className="mini-label">
+                  Monthly Target
+              </span>
+
+              <h4 className="mini-value text-financial">
+                  ₹{Number(monthlyTarget).toLocaleString("en-IN")}
+              </h4>
+          </div>
+
+          <div className="mini-card">
+              <span className="mini-label">
+                  Paid Months
+              </span>
+
+              <h4 className="mini-value">
+                  {paidMonths} / {totalMonths}
+              </h4>
+          </div>
+
+          <div className="mini-card">
+              <span className="mini-label">
+                  Months Remaining
+              </span>
+
+              <h4 className="mini-value">
+                  {progress >= 100
+                      ? "Completed"
+                      : `${monthsRemaining} months`}
+              </h4>
+          </div>
           </div>
         </div>
       </div>
