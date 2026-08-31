@@ -671,3 +671,445 @@
   border-color: var(--accent);
   color: #0d1218;
 }
+
+/* ==========================================
+   FINWISE HOME ANIMATION SYSTEM
+========================================== */
+
+@keyframes heroSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(28px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heroSlideRight {
+    from {
+        opacity: 0;
+        transform: translateX(35px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes cardFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes growBar {
+    from {
+        transform: scaleY(0);
+        transform-origin: bottom;
+    }
+
+    to {
+        transform: scaleY(1);
+        transform-origin: bottom;
+    }
+}
+
+@keyframes scaleReveal {
+    from {
+        opacity: 0;
+        transform: scale(0.94);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* ==========================================
+   HERO ENTRANCE
+========================================== */
+
+.page-loaded .hero-pill {
+    animation: heroSlideUp 0.55s ease-out both;
+}
+
+.page-loaded .hero-copy h1 {
+    animation: heroSlideUp 0.65s ease-out 0.08s both;
+}
+
+.page-loaded .hero-copy > p {
+    animation: heroSlideUp 0.65s ease-out 0.16s both;
+}
+
+.page-loaded .hero-actions {
+    animation: heroSlideUp 0.65s ease-out 0.24s both;
+}
+
+.page-loaded .hero-highlights {
+    animation: heroSlideUp 0.65s ease-out 0.32s both;
+}
+
+
+/* ==========================================
+   PORTFOLIO CARD
+========================================== */
+
+.page-loaded .hero-visual {
+    animation: heroSlideRight 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+.page-loaded .pulse-card {
+    animation:
+        heroSlideRight 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both,
+        cardFloat 5s ease-in-out 1.2s infinite;
+}
+
+
+/* ==========================================
+   CHART BARS
+========================================== */
+
+.page-loaded .card-chart .bar {
+    transform: scaleY(0);
+    animation: growBar 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.page-loaded .bar-1 {
+    animation-delay: 0.55s !important;
+}
+
+.page-loaded .bar-2 {
+    animation-delay: 0.65s !important;
+}
+
+.page-loaded .bar-3 {
+    animation-delay: 0.75s !important;
+}
+
+.page-loaded .bar-4 {
+    animation-delay: 0.85s !important;
+}
+
+.page-loaded .bar-5 {
+    animation-delay: 0.95s !important;
+}
+
+
+/* ==========================================
+   MINI CARDS
+========================================== */
+
+.page-loaded .mini-chip {
+    animation: scaleReveal 0.5s ease-out both;
+}
+
+.page-loaded .mini-chip:nth-child(1) {
+    animation-delay: 0.7s;
+}
+
+.page-loaded .mini-chip:nth-child(2) {
+    animation-delay: 0.8s;
+}
+
+.page-loaded .mini-chip:nth-child(3) {
+    animation-delay: 0.9s;
+}
+
+
+/* ==========================================
+   HOVER INTERACTIONS
+========================================== */
+
+.mini-chip,
+.benefit-card,
+.process-step,
+.quick-link {
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.mini-chip:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--line-strong);
+}
+
+.process-step:hover {
+    transform: translateY(-5px);
+}
+
+.quick-link:hover {
+    transform: translateY(-4px);
+}
+
+
+/* ==========================================
+   BUTTON MICRO INTERACTION
+========================================== */
+
+.btn-primary,
+.btn-secondary {
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary:active,
+.btn-secondary:active {
+    transform: translateY(0);
+}
+
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .home-page *,
+    .home-page *::before,
+    .home-page *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ==========================================
+   LIVING PORTFOLIO CHART
+========================================== */
+
+@keyframes barPulse {
+    0%,
+    100% {
+        transform: scaleY(1);
+    }
+
+    50% {
+        transform: scaleY(5.12);
+    }
+}
+
+.card-chart .bar {
+    transform-origin: bottom;
+    animation: barPulse 3s ease-in-out infinite;
+}
+
+.card-chart .bar-1 {
+    animation-delay: 0s;
+}
+
+.card-chart .bar-2 {
+    animation-delay: 0.35s;
+}
+
+.card-chart .bar-3 {
+    animation-delay: 0.7s;
+}
+
+.card-chart .bar-4 {
+    animation-delay: 1.05s;
+}
+
+.card-chart .bar-5 {
+    animation-delay: 1.4s;
+}
+
+/* =========================
+   Premium Section
+========================= */
+
+.premium-panel {
+  padding: 80px 6%;
+  display: flex;
+  justify-content: center;
+}
+
+.premium-card {
+  width: 100%;
+  max-width: 1050px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  padding: 50px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(245, 247, 255, 0.9)
+  );
+  border: 1px solid rgba(120, 120, 150, 0.18);
+  box-shadow: 0 25px 60px rgba(30, 30, 60, 0.12);
+}
+
+.premium-card::before {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  top: -150px;
+  right: -80px;
+  background: rgba(120, 100, 255, 0.12);
+  filter: blur(10px);
+}
+
+.premium-card::after {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  bottom: -130px;
+  left: -80px;
+  background: rgba(70, 180, 150, 0.1);
+  filter: blur(15px);
+}
+
+.premium-content {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+}
+
+.premium-badge {
+  display: inline-block;
+  padding: 7px 14px;
+  margin-bottom: 18px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  background: rgba(120, 100, 255, 0.1);
+  color: #6b5cff;
+}
+
+.premium-content h2 {
+  margin: 0 0 15px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -1px;
+}
+
+.premium-content > p {
+  max-width: 650px;
+  margin-bottom: 28px;
+  line-height: 1.7;
+  opacity: 0.75;
+}
+
+.premium-features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 25px;
+  margin-bottom: 32px;
+}
+
+.premium-features span {
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.premium-price {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-bottom: 22px;
+}
+
+.premium-price strong {
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+.premium-price span {
+  font-size: 0.9rem;
+  opacity: 0.65;
+}
+
+.premium-card .btn-primary {
+  padding: 13px 25px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.premium-card .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(80, 70, 200, 0.2);
+}
+
+/* =========================
+   Dark Mode
+========================= */
+
+.home-page.dark .premium-card {
+  background: linear-gradient(
+    135deg,
+    rgba(30, 32, 42, 0.96),
+    rgba(22, 24, 32, 0.98)
+  );
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+}
+
+.home-page.dark .premium-badge {
+  background: rgba(140, 125, 255, 0.15);
+  color: #a99dff;
+}
+
+.home-page.dark .premium-content > p {
+  opacity: 0.7;
+}
+
+.home-page.dark .premium-features span {
+  opacity: 0.8;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 700px) {
+  .premium-panel {
+    padding: 55px 5%;
+  }
+
+  .premium-card {
+    padding: 32px 25px;
+    border-radius: 22px;
+  }
+
+  .premium-features {
+    grid-template-columns: 1fr;
+  }
+
+  .premium-content h2 {
+    font-size: 2rem;
+  }
+}

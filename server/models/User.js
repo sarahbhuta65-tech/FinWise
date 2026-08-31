@@ -51,8 +51,52 @@ const userSchema = new mongoose.Schema(
     profilePicture:{
         type:String,
         default:"",
-    }
+    },
 
+    subscription: {
+        plan: {
+            type: String,
+            enum: ["free", "premium"],
+            default: "free",
+        },
+
+        status: {
+            type: String,
+            enum: ["active", "cancelled", "expired", "pending"],
+            default: "active",
+        },
+
+        razorpaySubscriptionId: {
+            type: String,
+            default: null,
+        },
+
+        startDate: {
+            type: Date,
+            default: null,
+        },
+
+        endDate: {
+            type: Date,
+            default: null,
+        },
+    },
+    aiUsage: {
+        count: {
+            type: Number,
+            default: 0,
+        },
+
+        month: {
+            type: Number,
+            default: null,
+        },
+
+        year: {
+            type: Number,
+            default: null,
+        },
+    },
 },
 {
     timestamps:true,

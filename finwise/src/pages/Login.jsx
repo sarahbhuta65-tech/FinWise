@@ -42,9 +42,11 @@ function Login({ setUser }) {
 
             if (res.ok) {
                 if (data && data.user) {
-                    localStorage.setItem("user", JSON.stringify(data.user));
-                    if (setUser) setUser(data.user);
-                } else {
+                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("token", data.token);
+
+                if (setUser) setUser(data.user);
+            } else {
                     // Successful status but no user payload
                     console.warn("Login returned no user payload", { status: res.status, data });
                 }
@@ -92,7 +94,7 @@ function Login({ setUser }) {
 
                 // Save MongoDB user
                 localStorage.setItem("user", JSON.stringify(data.user));
-
+                localStorage.setItem("token", data.token);
                 if (setUser) {
                     setUser(data.user);
                 }

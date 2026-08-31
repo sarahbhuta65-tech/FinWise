@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const askGemini = require("../services/aiService");
-
+const authMiddleware = require("../middlewares/authMiddleware");
 const User = require("../models/User");
 const Expense = require("../models/Expense");
 const Goal = require("../models/Goal");
@@ -10,17 +10,67 @@ const Sip = require("../models/sip");
 const Emi = require("../models/emi");
 const Chat = require("../models/Chat");
 
-router.post("/chat", async (req, res) => {
+router.post("/chat", authMiddleware, async (req, res) => {
   try {
-    const { message, userId, chatId } = req.body;
+    const { message, chatId } = req.body;
 
-    if (!message || !userId) {
-      return res.status(400).json({
-        message: "Message and User ID are required.",
-      });
+      if (!message) {
+          return res.status(400).json({
+              message: "Message is required.",
+          });
+      }
+
+      const userId = req.user.userId;
+
+      const user = await User.findById(userId);
+
+      if (!user) {
+          return res.status(404).json({
+              message: "User not found.",
+          });
+      }
+    
+    // ==========================================
+// AI USAGE LIMIT
+// ==========================================
+
+const currentDate = new Date();
+
+const currentMonth = currentDate.getMonth();
+const currentYear = currentDate.getFullYear();
+
+const isPremium =
+    user.subscription?.plan === "premium" &&
+    user.subscription?.status === "active";
+
+
+    // Free user limit
+    if (!isPremium) {
+
+        // Reset usage when a new month/year starts
+        if (
+            user.aiUsage.month !== currentMonth ||
+            user.aiUsage.year !== currentYear
+        ) {
+            user.aiUsage.count = 0;
+            user.aiUsage.month = currentMonth;
+            user.aiUsage.year = currentYear;
+
+            await user.save();
+        }
+
+
+        // Check monthly limit
+        if (user.aiUsage.count >= 3) {
+            return res.status(403).json({
+                success: false,
+                limitReached: true,
+                message:
+                    "You have used all 3 free AI requests for this month. Upgrade to FinWise Premium for unlimited AI assistance.",
+                remaining: 0,
+            });
+        }
     }
-
-    const user = await User.findById(userId);
 
     const expenses = await Expense.find({ user: userId });
     const goals = await Goal.find({ user: userId });
@@ -84,6 +134,15 @@ router.post("/chat", async (req, res) => {
     `;
 
     const reply = await askGemini(prompt);
+    // ==========================================
+    // INCREASE AI USAGE FOR FREE USERS
+    // ==========================================
+
+    if (!isPremium) {
+        user.aiUsage.count += 1;
+
+        await user.save();
+    }
 
     let chat;
 
@@ -122,8 +181,14 @@ router.post("/chat", async (req, res) => {
     await chat.save();
 
     res.json({
-      reply,
-      chatId: chat._id,
+        success: true,
+        reply,
+        chatId: chat._id,
+        isPremium,
+        remaining:
+            isPremium
+                ? null
+                : Math.max(0, 3 - user.aiUsage.count),
     });
 
   } catch (error) {
@@ -131,6 +196,7 @@ router.post("/chat", async (req, res) => {
 
     res.status(500).json({
       message: "AI Error",
+       error: error.message,
     });
   }
 });
@@ -150,6 +216,37 @@ router.get("/history/:userId", async (req, res) => {
     });
   }
 });
+
+router.get(
+    "/history/chat/:chatId",
+    authMiddleware,
+    async (req, res) => {
+        try {
+            const chat = await Chat.findOne({
+                _id: req.params.chatId,
+                user: req.user.userId,
+            });
+
+            if (!chat) {
+                return res.status(404).json({
+                    message: "Chat not found",
+                });
+            }
+
+            res.json(chat);
+
+        } catch (error) {
+            console.error(
+                "Load Chat Error:",
+                error
+            );
+
+            res.status(500).json({
+                message: "Unable to load chat",
+            });
+        }
+    }
+);
 
 router.get("/insights/:userId", async (req, res) => {
   try {

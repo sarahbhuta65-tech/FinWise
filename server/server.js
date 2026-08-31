@@ -21,6 +21,11 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const financialNudgeRoutes = require(
     "./routes/financialNudgeRoutes"
 );
+const paymentRoutes = require("./routes/paymentRoutes");
+const testRoutes = require("./routes/testRoutes");
+const premiumTestRoutes = require("./routes/premiumTestRoutes");
+const subscriptionRoutes = require("./routes/subscriptionRoutes");
+const premiumRoutes = require("./routes/premiumRoutes");
 const path = require("path");
 console.log("Mongo URI:", process.env.MONGO_URI);
 connectDB();
@@ -53,6 +58,11 @@ app.use(
     "/api/financial-nudges",
     financialNudgeRoutes
 );
+app.use("/api/payments", paymentRoutes);
+app.use("/api/test", testRoutes);
+app.use("/api/premium-test", premiumTestRoutes);
+app.use("/api/subscription", subscriptionRoutes);
+app.use("/api/premium", premiumRoutes);
 
 //Test route
 app.get("/", (req, res) => {

@@ -32,12 +32,7 @@ function ExpenseTracker({darkMode}) {
   const [csvPreview, setCsvPreview] = useState([]);
   const [showCsvPreview, setShowCsvPreview] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
-
-  // Current month's Budget document (same shape returned by
-  // budgetController.getBudget) — used to restrict which
-  // categories can be picked when logging an expense, so an
-  // expense can't be logged against a category the budget
-  // doesn't track.
+  const [isPremium, setIsPremium] = useState(false);
   const [currentBudget, setCurrentBudget] = useState(null);
 
 
@@ -254,12 +249,65 @@ const importCsvTransactions = async () => {
   } finally {
     setIsImporting(false);
   }
+
+  if (!isPremium) {
+  toast.error("CSV Import is a Premium feature.");
+  return;
+}
 };
 
 const cancelCsvImport = () => {
   setCsvFile(null);
   setCsvPreview([]);
   setShowCsvPreview(false);
+};
+
+const exportCsvTransactions = () => {
+  if (!isPremium) {
+    toast.error("CSV Export is a Premium feature.");
+    return;
+  }
+
+  if (expenses.length === 0) {
+    toast.error("No expenses available to export.");
+    return;
+  }
+
+  const headers = ["name", "amount", "category", "date"];
+
+  const rows = expenses.map((expense) => [
+    expense.name,
+    expense.amount,
+    expense.category,
+    new Date(expense.date).toISOString().split("T")[0],
+  ]);
+
+  const csvContent = [
+    headers.join(","),
+    ...rows.map((row) =>
+      row
+        .map((value) => `"${String(value).replace(/"/g, '""')}"`)
+        .join(",")
+    ),
+  ].join("\n");
+
+  const blob = new Blob([csvContent], {
+    type: "text/csv;charset=utf-8;",
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "finwise-expenses.csv";
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  URL.revokeObjectURL(url);
+
+  toast.success("Expenses exported successfully!");
 };
 
   const addExpense = async () => {
@@ -380,11 +428,6 @@ const cancelCsvImport = () => {
     0
   );
 
-  // FIX: this used to reduce over the full, all-time `expenses`
-  // array, so the pie chart, "Top Category", and the recommendation
-  // text were all quietly showing all-time data even though the
-  // panels around them ("This Month" / "Last Month") implied a
-  // monthly view. Now scoped to thisMonthExpenses to match.
   const categoryTotals = thisMonthExpenses.reduce((totals, expense) => {
     if (totals[expense.category]) {
       totals[expense.category] += expense.amount;
@@ -493,20 +536,7 @@ const cancelCsvImport = () => {
     "#6B4E71",
   ];
 
-  // =====================================================
-  // CATEGORY <-> BUDGET LINKING
-  //
-  // If a budget exists for the current month, the expense
-  // form should only offer categories that budget actually
-  // tracks — otherwise you can log an expense against a
-  // category the Budget Planner has no line item for, which
-  // is exactly the kind of "disconnect" that made the two
-  // features feel unrelated.
-  //
-  // If there's no budget yet for this month, we fall back to
-  // showing every saved category so the tracker still works
-  // standalone.
-  // =====================================================
+  
 
   const budgetCategoryNames = (
     currentBudget?.categories || []
@@ -528,6 +558,12 @@ const cancelCsvImport = () => {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
         const userId = user?.id || user?._id;
+
+        const premium =
+          user?.subscription?.plan === "premium" &&
+          user?.subscription?.status === "active";
+
+        setIsPremium(premium);
 
         if (!userId) return;
 
@@ -708,16 +744,28 @@ const cancelCsvImport = () => {
 
                 <div className="import-actions">
 
-                  <label className="import-upload-btn">
-                    + Upload CSV
+                  {isPremium ? (
+                      <label className="import-upload-btn">
+                        + Upload CSV
 
-                    <input
-                      type="file"
-                      accept=".csv"
-                      className="import-file-input"
-                      onChange={handleCsvUpload}
-                    />
-                  </label>
+                        <input
+                          type="file"
+                          accept=".csv"
+                          className="import-file-input"
+                          onChange={handleCsvUpload}
+                        />
+                      </label>
+                    ) : (
+                      <button
+                        type="button"
+                        className="import-upload-btn premium-locked-btn"
+                        onClick={() =>
+                          toast.error("CSV Import is a Premium feature.")
+                        }
+                      >
+                        🔒 Premium
+                      </button>
+                  )}
 
                   <span className="import-file-name">
                     {csvFile ? csvFile.name : "No file selected"}
@@ -728,6 +776,7 @@ const cancelCsvImport = () => {
                     className="import-submit-btn"
                     onClick={importCsvTransactions}
                     disabled={
+                      !isPremium ||
                       isImporting ||
                       csvPreview.filter((row) => row.valid).length === 0
                     }
@@ -922,11 +971,38 @@ const cancelCsvImport = () => {
 
       {/* ROW 4 */}
       <div className="statement-panel expense-history-card">
-        <h2>Expense History</h2>
+
+        <div className="expense-history-header">
+          <div>
+            <h2>Expense History</h2>
+            <p>View and manage your recorded expenses.</p>
+          </div>
+
+          {isPremium ? (
+            <button
+              className="export-csv-btn"
+              onClick={exportCsvTransactions}
+            >
+              📥 Export CSV
+            </button>
+          ) : (
+            <button
+              className="export-csv-btn premium-locked-btn"
+              onClick={() =>
+                toast.error("CSV Export is a Premium feature.")
+              }
+            >
+              🔒 Export CSV
+            </button>
+          )}
+        </div>
 
         <div className="expense-list">
           {expenses.map((expense) => (
-            <div key={expense._id || expense.id} className="expense-item">
+            <div
+              key={expense._id || expense.id}
+              className="expense-item"
+            >
               <div className="expense-name-block">
                 <strong>{expense.name}</strong>
                 <small>{expense.category}</small>
@@ -940,13 +1016,16 @@ const cancelCsvImport = () => {
 
               <button
                 className="delete-btn"
-                onClick={() => deleteExpense(expense._id || expense.id)}
+                onClick={() =>
+                  deleteExpense(expense._id || expense.id)
+                }
               >
                 Delete
               </button>
             </div>
           ))}
         </div>
+
       </div>
 
       {showCsvPreview && (

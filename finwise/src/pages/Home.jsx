@@ -1,16 +1,154 @@
 ﻿import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import "./Home.css";
 
 function Home({ darkMode }) {
   const navigate = useNavigate();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   const scrollToSection = (id) => {
     const section = document.getElementById(id);
     section?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const handlePayment = async () => {
+      try {
+          const token = localStorage.getItem("token");
+
+          if (!token) {
+              alert("Please login to continue.");
+              return;
+          }
+
+          // 1. Create Razorpay order
+          const res = await axios.post(
+              `${import.meta.env.VITE_API_URL}/api/payments/create-order`,
+              {},
+              {
+                  headers: {
+                      Authorization: `Bearer ${token}`,
+                  },
+              }
+          );
+
+          if (!res.data.success) {
+              alert("Unable to create payment order.");
+              return;
+          }
+
+          const order = res.data.order;
+
+          // 2. Open Razorpay
+          const options = {
+              key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+              amount: order.amount,
+              currency: order.currency,
+              name: "FinWise",
+              description: "FinWise Premium",
+              order_id: order.id,
+
+              handler: async function (response) {
+                  try {
+                      console.log("Payment successful:", response);
+
+                      // 3. Verify payment with backend
+                      const verifyRes = await axios.post(
+                          `${import.meta.env.VITE_API_URL}/api/payments/verify-payment`,
+                          {
+                              razorpay_order_id:
+                                  response.razorpay_order_id,
+
+                              razorpay_payment_id:
+                                  response.razorpay_payment_id,
+
+                              razorpay_signature:
+                                  response.razorpay_signature,
+                          },
+                          {
+                              headers: {
+                                  Authorization: `Bearer ${token}`,
+                              },
+                          }
+                      );
+
+                      if (verifyRes.data.success) {
+                        alert(
+                            "Payment successful! You are now a Premium user."
+                        );
+
+                        console.log(
+                            "Premium subscription:",
+                            verifyRes.data.subscription
+                        );
+
+                        const currentUser = JSON.parse(
+                            localStorage.getItem("user")
+                        );
+
+                        const updatedUser = {
+                            ...currentUser,
+                            subscription: verifyRes.data.subscription,
+                        };
+
+                        localStorage.setItem(
+                            "user",
+                            JSON.stringify(updatedUser)
+                        );
+
+                        window.location.reload();
+                    }
+
+                  } catch (error) {
+                      console.error(
+                          "Payment Verification Error:",
+                          error
+                      );
+
+                      alert(
+                          "Payment was completed, but verification failed."
+                      );
+                  }
+              },
+
+              prefill: {
+                  name: "",
+                  email: "",
+                  contact: "",
+              },
+
+              theme: {
+                  color: "#3399cc",
+              },
+          };
+
+          const razorpay = new window.Razorpay(options);
+
+          razorpay.open();
+
+      } catch (error) {
+          console.error("Payment Error:", error);
+
+          if (error.response?.status === 401) {
+              alert("Please login again.");
+          } else {
+              alert(
+                  "Something went wrong while starting the payment."
+              );
+          }
+      }
+  };
+
   return (
-    <div className={`home-page${darkMode ? " dark" : ""}`}>
+    <div
+      className={`home-page${darkMode ? " dark" : ""}${
+        isLoaded ? " page-loaded" : ""
+      }`}
+    >
       <section className="hero-panel">
         <div className="hero-copy">
           <span className="hero-pill">AI-powered personal finance</span>
@@ -104,6 +242,37 @@ function Home({ darkMode }) {
         </div>
       </section>
 
+      <section className="premium-panel">
+        <div className="premium-card">
+          <div className="premium-content">
+            <span className="premium-badge">FINWISE PREMIUM</span>
+
+            <h2>Take your financial planning further.</h2>
+
+            <p>
+              Unlock advanced financial tools and insights designed to help
+              you plan, track, and manage your money more effectively.
+            </p>
+
+            <div className="premium-features">
+              <span>✓ Advanced financial insights</span>
+              <span>✓ Premium financial tools</span>
+              <span>✓ Detailed analytics</span>
+              <span>✓ Enhanced planning experience</span>
+            </div>
+
+            <div className="premium-price">
+              <strong>₹499</strong>
+              <span> one-time</span>
+            </div>
+
+            <button className="btn-primary" onClick={handlePayment}>
+              Upgrade to Premium
+            </button>
+          </div>
+        </div>
+      </section>
+
       <section className="process-panel">
         <div className="process-intro">
           <span>How it works</span>
@@ -166,6 +335,9 @@ function Home({ darkMode }) {
           <button onClick={() => navigate("/blogs")}>Blogs</button>
           <button onClick={() => navigate("/faq")}>FAQs</button>
           <button onClick={() => scrollToSection("benefits")}>Features</button>
+          <button onClick={() => navigate("/privacy-policy")}>
+            Privacy Policy
+        </button>
         </div>
       </section>
     </div>

@@ -187,10 +187,47 @@ const importExpenses = async (req, res) => {
     }
 };
 
+// Export Expenses to CSV
+const exportExpenses = async (req, res) => {
+    try {
+        const userId = req.user.userId;
+
+        const expenses = await Expense.find({ user: userId })
+            .sort({ date: -1 });
+
+        if (expenses.length === 0) {
+            return res.status(404).json({
+                message: "No expenses found to export.",
+            });
+        }
+
+        let csvData = "Name,Amount,Category,Date\n";
+
+        expenses.forEach((expense) => {
+            csvData += `"${expense.name}",${expense.amount},"${expense.category}","${expense.date.toISOString()}"\n`;
+        });
+
+        res.setHeader("Content-Type", "text/csv");
+        res.setHeader(
+            "Content-Disposition",
+            "attachment; filename=finwise-expenses.csv"
+        );
+
+        res.status(200).send(csvData);
+
+    } catch (error) {
+        console.error("Export CSV Error:", error);
+
+        res.status(500).json({
+            message: error.message,
+        });
+    }
+};
 
 module.exports = {
     addExpense,
     getExpenses,
     deleteExpense,
     importExpenses,
+    exportExpenses,
 };

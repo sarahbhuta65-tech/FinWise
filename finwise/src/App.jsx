@@ -26,6 +26,7 @@ import AIDrawer from "./components/AIDrawer";
 import AIAssistant from "./pages/AIAssistant";
 import SmartCalendar from "./pages/SmartCalendar";
 import BudgetPlanner from "./pages/BudgetPlanner";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import "./App.css";
 
 function App() {
@@ -180,6 +181,7 @@ function App() {
                 </ProtectedRoute>
             }
         />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       </Routes>
       {user && (
         <>

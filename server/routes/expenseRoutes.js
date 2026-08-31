@@ -2,12 +2,14 @@ const express = require("express");
 const multer = require("multer");
 
 const router = express.Router();
-
+const authMiddleware = require("../middlewares/authMiddleware");
+const premiumMiddleware = require("../middlewares/premiumMiddleware");
 const {
     addExpense,
     getExpenses,
     deleteExpense,
     importExpenses,
+    exportExpenses,
 } = require("../controllers/expenseController");
 
 
@@ -23,6 +25,12 @@ const upload = multer({
 // Add expense
 router.post("/", addExpense);
 
+router.get(
+    "/export",
+    authMiddleware,
+    premiumMiddleware,
+    exportExpenses
+);
 
 // Get expenses
 router.get("/:user", getExpenses);
@@ -35,9 +43,12 @@ router.delete("/:id", deleteExpense);
 // Import CSV
 router.post(
     "/import",
+    authMiddleware,
+    premiumMiddleware,
     upload.single("file"),
     importExpenses
 );
+
 
 
 module.exports = router;

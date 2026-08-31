@@ -17,6 +17,7 @@ import {
 } from "recharts";
 import axios from "axios";
 import { createPortal } from "react-dom";
+import jsPDF from "jspdf";
 import "./Dashboard.css";
 import FinancialNudge from "../components/FinancialNudge";
 
@@ -48,7 +49,7 @@ function Dashboard() {
     const [recentTransactions, setRecentTransactions] = useState([]);
 
     const [showScoreDetails, setShowScoreDetails] = useState(false);
-
+    const [showPremiumReport, setShowPremiumReport] = useState(false);
     const user = JSON.parse(localStorage.getItem("user"));
 
     const currentHour = new Date().getHours();
@@ -867,6 +868,262 @@ function Dashboard() {
             max: 20,
         },
     ];
+
+
+    /*
+    ============================================================
+    PREMIUM REPORT — DERIVED METRICS
+    (everything below is computed purely from state we already
+    fetch above — no extra API calls needed)
+    ============================================================
+    */
+
+    const savingsRate =
+        monthlyBudget > 0
+            ? Math.round((savingsAmount / monthlyBudget) * 100)
+            : 0;
+
+    const emiRatio =
+        monthlyBudget > 0
+            ? Math.round((monthlyEmi / monthlyBudget) * 100)
+            : 0;
+
+    const topCategory =
+        chartData.length > 0 ? chartData[0] : null;
+
+    const topCategoryPercent =
+        topCategory && totalExpenses > 0
+            ? Math.round((topCategory.value / totalExpenses) * 100)
+            : 0;
+
+    // suggested trim: 10% off the top spending category
+    const potentialMonthlySaving =
+        topCategory ? Math.round(topCategory.value * 0.1) : 0;
+
+    const potentialAnnualSaving =
+        potentialMonthlySaving * 12;
+
+    const avgSixMonthSpend =
+        trendData.length > 0
+            ? Math.round(
+                trendData.reduce((sum, d) => sum + d.amount, 0) /
+                trendData.length
+            )
+            : 0;
+
+    const projectedAnnualSavings =
+        Math.round(savingsAmount * 12);
+
+    const recommendedSavingsRate = 20;
+
+    const riskFlags = useMemo(() => {
+
+        const flags = [];
+
+        if (monthChange !== null && Number(monthChange) > 15) {
+            flags.push(
+                `Spending is up ${monthChange}% vs last month — worth a closer look.`
+            );
+        }
+
+        if (savingsRate < 15) {
+            flags.push(
+                `Your savings rate is ${savingsRate}%, below the ${recommendedSavingsRate}% target.`
+            );
+        }
+
+        if (emiRatio > 40) {
+            flags.push(
+                `EMI is taking up ${emiRatio}% of your budget — that's a heavy debt load.`
+            );
+        }
+
+        if (topCategory && topCategoryPercent > 50) {
+            flags.push(
+                `${topCategory.name} alone accounts for ${topCategoryPercent}% of this month's spending.`
+            );
+        }
+
+        if (sipValue === 0) {
+            flags.push(
+                "No active SIP detected — you're not currently investing."
+            );
+        }
+
+        if (goalData && Number(goalData.progress || 0) < 20) {
+            flags.push(
+                "Your savings goal progress is falling behind schedule."
+            );
+        }
+
+        return flags;
+
+    }, [monthChange, savingsRate, emiRatio, topCategory, topCategoryPercent, sipValue, goalData]);
+
+    const actionPlan = useMemo(() => {
+
+        const actions = [];
+
+        if (topCategory && potentialMonthlySaving > 0) {
+            actions.push(
+                `Trim ${topCategory.name} spending by ₹${potentialMonthlySaving.toLocaleString("en-IN")}/month — that adds up to ₹${potentialAnnualSaving.toLocaleString("en-IN")}/year.`
+            );
+        }
+
+        if (savingsRate < recommendedSavingsRate) {
+            const targetSavings = Math.round(monthlyBudget * (recommendedSavingsRate / 100));
+            actions.push(
+                `Raise monthly savings from ₹${Math.round(savingsAmount).toLocaleString("en-IN")} to ₹${targetSavings.toLocaleString("en-IN")} to hit a ${recommendedSavingsRate}% savings rate.`
+            );
+        }
+
+        if (sipValue === 0) {
+            actions.push(
+                "Start a SIP, even a small one — consistent investing compounds far better than idle savings."
+            );
+        } else {
+            actions.push(
+                "Consider increasing your SIP contribution by ₹1,000/month to accelerate long-term growth."
+            );
+        }
+
+        return actions.slice(0, 3);
+
+    }, [topCategory, potentialMonthlySaving, potentialAnnualSaving, savingsRate, monthlyBudget, savingsAmount, sipValue]);
+
+
+    /*
+    ============================================================
+    PDF EXPORT — Premium Financial Report
+    ============================================================
+    */
+
+    const handleDownloadPDF = () => {
+
+        const doc = new jsPDF({ unit: "pt", format: "a4" });
+
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const marginX = 48;
+        let y = 56;
+
+        const rupee = (value) =>
+            `Rs. ${Number(value || 0).toLocaleString("en-IN")}`;
+
+        const addHeading = (text, size = 14) => {
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(size);
+            doc.setTextColor(20, 60, 45);
+            doc.text(text, marginX, y);
+            y += size * 0.9;
+        };
+
+        const addLine = (text, size = 10.5) => {
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(size);
+            doc.setTextColor(40, 40, 40);
+            const wrapped = doc.splitTextToSize(text, pageWidth - marginX * 2);
+            doc.text(wrapped, marginX, y);
+            y += wrapped.length * (size * 1.15) + 4;
+        };
+
+        const addSpacer = (amount = 10) => {
+            y += amount;
+        };
+
+        const ensureRoom = (needed = 60) => {
+            if (y + needed > doc.internal.pageSize.getHeight() - 40) {
+                doc.addPage();
+                y = 56;
+            }
+        };
+
+        // Title
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+        doc.setTextColor(20, 60, 45);
+        doc.text("FinWise — Premium Financial Report", marginX, y);
+        y += 22;
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(110, 110, 110);
+        doc.text(`Generated for ${user?.name || "User"} on ${statementDate}`, marginX, y);
+        y += 26;
+
+        // Score
+        addHeading(`Financial Health Score: ${healthScore}/100 — ${healthStatus}`);
+        addLine(healthMessage);
+        addSpacer();
+
+        // Executive Summary
+        ensureRoom();
+        addHeading("Executive Summary");
+        addLine(`Budget: ${rupee(monthlyBudget)}   |   Expenses: ${rupee(totalExpenses)}   |   Savings: ${rupee(savingsAmount)} (${savingsRate}% rate)`);
+        addLine(`EMI load: ${emiRatio}% of budget   |   SIP value: ${rupee(sipValue)}`);
+        addSpacer();
+
+        // Spending
+        ensureRoom();
+        addHeading("Spending Analysis");
+        addLine(`Total spend this month: ${rupee(totalExpenses)}`);
+        if (topCategory) {
+            addLine(`Top category: ${topCategory.name} (${topCategoryPercent}% of total spend)`);
+        }
+        addSpacer();
+
+        // Savings & Investment
+        ensureRoom();
+        addHeading("Savings & Investment");
+        addLine(`Available savings this month: ${rupee(savingsAmount)}`);
+        addLine(sipValue > 0
+            ? "You are actively investing through SIP."
+            : "No active SIP — consider starting one to build long-term wealth.");
+        addSpacer();
+
+        // EMI
+        ensureRoom();
+        addHeading("EMI Analysis");
+        addLine(`Monthly EMI: ${rupee(monthlyEmi)}`);
+        addLine(monthlyEmi > 20000
+            ? "EMI burden is relatively high — manage debt carefully."
+            : "Current EMI level appears manageable.");
+        addSpacer();
+
+        // Goal
+        ensureRoom();
+        addHeading("Savings Goal");
+        if (goalData) {
+            addLine(`Goal: ${goalData.goalName} — ${Number(goalData.progress || 0).toFixed(1)}% complete`);
+        } else {
+            addLine("No savings goal has been created yet.");
+        }
+        addSpacer();
+
+        // Trend & Forecast
+        ensureRoom();
+        addHeading("Trend & 12-Month Forecast");
+        addLine(`This month: ${rupee(thisMonthSpent)}   |   Last month: ${rupee(lastMonthSpent)}`);
+        addLine(`6-month average spend: ${rupee(avgSixMonthSpend)}/month`);
+        addLine(`Projected savings over the next 12 months at current pace: ${rupee(projectedAnnualSavings)}`);
+        addSpacer();
+
+        // Risks
+        ensureRoom();
+        addHeading("Financial Risk Check");
+        if (riskFlags.length > 0) {
+            riskFlags.forEach((flag) => addLine(`- ${flag}`));
+        } else {
+            addLine("No major financial risks detected this month.");
+        }
+        addSpacer();
+
+        // Action Plan
+        ensureRoom();
+        addHeading("Your Personalized Action Plan");
+        actionPlan.forEach((action, i) => addLine(`${i + 1}. ${action}`));
+
+        doc.save(`FinWise-Premium-Report-${statementDate.replace(/\s/g, "-")}.pdf`);
+    };
 
 
     /*
@@ -2121,12 +2378,436 @@ function Dashboard() {
 
                             </div>
 
+                            <div className="premium-report-action">
+
+                                {user?.subscription?.plan === "premium" ? (
+                                    <button
+                                        className="premium-report-btn"
+                                        onClick={() => {
+                                            setShowScoreDetails(false);
+                                            setShowPremiumReport(true);
+                                        }}
+                                    >
+                                        View Detailed Financial Report →
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="premium-report-btn"
+                                        onClick={() => {
+                                            alert(
+                                                "Detailed Financial Report is available for Premium users."
+                                            );
+                                        }}
+                                    >
+                                        🔒 Unlock Detailed Financial Report
+                                    </button>
+                                )}
+
+                            </div>
+
+
+
                         </div>
 
                     </div>,
 
                     document.body
                 )}
+
+                {/* =================================================
+                    PREMIUM FINANCIAL REPORT MODAL
+                ================================================= */}
+
+                {showPremiumReport &&
+                    createPortal(
+
+                        <div
+                            className="score-modal-overlay"
+                            onClick={() => setShowPremiumReport(false)}
+                        >
+
+                            <div
+                                className="score-modal premium-report-modal"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+
+                                <button
+                                    className="score-modal-close"
+                                    onClick={() => setShowPremiumReport(false)}
+                                >
+                                    ×
+                                </button>
+
+                                <span className="panel-label">
+                                    PREMIUM FINANCIAL REPORT
+                                </span>
+
+                                <div className="score-modal-header">
+
+                                    <div>
+                                        <span className="score-number">
+                                            {healthScore}
+                                        </span>
+
+                                        <span className="score-total">
+                                            /100
+                                        </span>
+                                    </div>
+
+                                    <div>
+                                        <h3 style={{ color: healthColor }}>
+                                            {healthStatus}
+                                        </h3>
+
+                                        <p>
+                                            A detailed overview of your current
+                                            financial position.
+                                        </p>
+                                    </div>
+
+                                </div>
+
+
+                                <div className="premium-report-download-row">
+
+                                    <button
+                                        className="premium-report-btn"
+                                        onClick={handleDownloadPDF}
+                                    >
+                                        📄 Download PDF Report
+                                    </button>
+
+                                </div>
+
+
+                                <div className="premium-report-grid">
+
+                                    {/* Executive Summary — new */}
+
+                                    <div className="report-card">
+
+                                        <span className="report-icon">
+                                            🧾
+                                        </span>
+
+                                        <h4>
+                                            Executive Summary
+                                        </h4>
+
+                                        <p>
+                                            Budget: <strong>₹{Number(monthlyBudget).toLocaleString("en-IN")}</strong>
+                                        </p>
+
+                                        <p>
+                                            Expenses: <strong>₹{Number(totalExpenses).toLocaleString("en-IN")}</strong>
+                                        </p>
+
+                                        <p>
+                                            Savings: <strong>₹{Number(savingsAmount).toLocaleString("en-IN")}</strong>
+                                            {" "}({savingsRate}% rate)
+                                        </p>
+
+                                        <p>
+                                            EMI load: <strong>{emiRatio}%</strong> of budget
+                                        </p>
+
+                                    </div>
+
+
+                                    {/* Spending */}
+
+                                    <div className="report-card">
+
+                                        <span className="report-icon">
+                                            📊
+                                        </span>
+
+                                        <h4>
+                                            Spending Analysis
+                                        </h4>
+
+                                        <p>
+                                            You spent
+                                            <strong>
+                                                {" "}₹{Number(
+                                                    totalExpenses
+                                                ).toLocaleString("en-IN")}
+                                            </strong>
+                                            {" "}this month.
+                                        </p>
+
+                                        {chartData.length > 0 && (
+                                            <p>
+                                                Your highest spending category is
+                                                <strong>
+                                                    {" "}{chartData[0].name}
+                                                </strong>
+                                                {" "}({topCategoryPercent}% of total spend).
+                                            </p>
+                                        )}
+
+                                    </div>
+
+
+                                    {/* Savings */}
+
+                                    <div className="report-card">
+
+                                        <span className="report-icon">
+                                            💰
+                                        </span>
+
+                                        <h4>
+                                            Savings Analysis
+                                        </h4>
+
+                                        <p>
+                                            Estimated available savings:
+                                        </p>
+
+                                        <strong>
+                                            ₹{Number(
+                                                savingsAmount
+                                            ).toLocaleString("en-IN")}
+                                        </strong>
+
+                                        <p>
+                                            Keep monitoring your monthly
+                                            spending to increase your savings.
+                                        </p>
+
+                                    </div>
+
+
+                                    {/* Investment */}
+
+                                    <div className="report-card">
+
+                                        <span className="report-icon">
+                                            📈
+                                        </span>
+
+                                        <h4>
+                                            Investment Analysis
+                                        </h4>
+
+                                        <p>
+                                            Current SIP value:
+                                        </p>
+
+                                        <strong>
+                                            ₹{Number(
+                                                sipValue
+                                            ).toLocaleString("en-IN")}
+                                        </strong>
+
+                                        <p>
+                                            {sipValue > 0
+                                                ? "You are actively investing through SIP."
+                                                : "Consider starting a SIP to build long-term wealth."}
+                                        </p>
+
+                                    </div>
+
+
+                                    {/* EMI */}
+
+                                    <div className="report-card">
+
+                                        <span className="report-icon">
+                                            💳
+                                        </span>
+
+                                        <h4>
+                                            EMI Analysis
+                                        </h4>
+
+                                        <p>
+                                            Monthly EMI:
+                                        </p>
+
+                                        <strong>
+                                            ₹{Number(
+                                                monthlyEmi
+                                            ).toLocaleString("en-IN")}
+                                        </strong>
+
+                                        <p>
+                                            {monthlyEmi > 20000
+                                                ? "Your EMI burden is relatively high. Consider managing debt carefully."
+                                                : "Your current EMI level appears manageable."}
+                                        </p>
+
+                                    </div>
+
+
+                                    {/* Goal */}
+
+                                    <div className="report-card">
+
+                                        <span className="report-icon">
+                                            🎯
+                                        </span>
+
+                                        <h4>
+                                            Savings Goal
+                                        </h4>
+
+                                        {goalData ? (
+                                            <>
+                                                <p>
+                                                    Goal:
+                                                    <strong>
+                                                        {" "}{goalData.goalName}
+                                                    </strong>
+                                                </p>
+
+                                                <strong>
+                                                    {Number(
+                                                        goalData.progress || 0
+                                                    ).toFixed(1)}%
+                                                </strong>
+
+                                                <p>
+                                                    completed
+                                                </p>
+                                            </>
+                                        ) : (
+                                            <p>
+                                                No savings goal has been created yet.
+                                            </p>
+                                        )}
+
+                                    </div>
+
+
+                                    {/* Monthly Trend */}
+
+                                    <div className="report-card">
+
+                                        <span className="report-icon">
+                                            📅
+                                        </span>
+
+                                        <h4>
+                                            Monthly Trend
+                                        </h4>
+
+                                        <p>
+                                            This month:
+                                            <strong>
+                                                {" "}₹{Number(
+                                                    thisMonthSpent
+                                                ).toLocaleString("en-IN")}
+                                            </strong>
+                                        </p>
+
+                                        <p>
+                                            Last month:
+                                            <strong>
+                                                {" "}₹{Number(
+                                                    lastMonthSpent
+                                                ).toLocaleString("en-IN")}
+                                            </strong>
+                                        </p>
+
+                                    </div>
+
+
+                                    {/* Forecast — new */}
+
+                                    <div className="report-card">
+
+                                        <span className="report-icon">
+                                            🔮
+                                        </span>
+
+                                        <h4>
+                                            12-Month Forecast
+                                        </h4>
+
+                                        <p>
+                                            6-month average spend:
+                                            <strong>
+                                                {" "}₹{avgSixMonthSpend.toLocaleString("en-IN")}/mo
+                                            </strong>
+                                        </p>
+
+                                        <p>
+                                            At your current savings pace, you're on track for
+                                            <strong>
+                                                {" "}₹{projectedAnnualSavings.toLocaleString("en-IN")}
+                                            </strong>
+                                            {" "}saved over the next 12 months.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                {/* Risk Detection — new */}
+
+                                <div className="premium-recommendation">
+
+                                    <span>
+                                        {riskFlags.length > 0 ? "🚨" : "🟢"}
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            Financial Risk Check
+                                        </strong>
+
+                                        {riskFlags.length > 0 ? (
+                                            <ul>
+                                                {riskFlags.map((flag, i) => (
+                                                    <li key={i}>{flag}</li>
+                                                ))}
+                                            </ul>
+                                        ) : (
+                                            <p>
+                                                No major financial risks detected this month.
+                                            </p>
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+
+                                {/* Action Plan — new, replaces the old generic recommendation */}
+
+                                <div className="premium-recommendation">
+
+                                    <span>
+                                        ⭐
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            Your Personalized Action Plan
+                                        </strong>
+
+                                        <ol>
+                                            {actionPlan.map((action, i) => (
+                                                <li key={i}>{action}</li>
+                                            ))}
+                                        </ol>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>,
+
+                        document.body
+                    )
+                }
 
         </div>
     );

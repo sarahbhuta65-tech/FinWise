@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const upload = require("../middlewares/upload");
+const jwt = require("jsonwebtoken");
 
 router.post("/signup", async (req, res) => {
   try {
@@ -41,6 +42,7 @@ router.post("/signup", async (req, res) => {
         dob: newUser.dob,
         bio: newUser.bio,
         profilePicture: newUser.profilePicture,
+        subscription: newUser.subscription,
       },
     });
 
@@ -80,23 +82,30 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
     res.status(200).json({
       message: "Login successful",
+      token,
       user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      number: user.number,
-      occupation: user.occupation,
-      city: user.city,
-      dob: user.dob,
-      bio: user.bio,
-      profilePicture: user.profilePicture,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    },
-    });
-
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          number: user.number,
+          occupation: user.occupation,
+          city: user.city,
+          dob: user.dob,
+          bio: user.bio,
+          profilePicture: user.profilePicture,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          subscription: user.subscription,
+      },
+  });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -126,8 +135,15 @@ router.post("/google-login", async (req, res) => {
       });
     }
 
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
     res.status(200).json({
       message: "Google Login Successful",
+      token,
       user: {
         _id: user._id,
         name: user.name,
@@ -138,6 +154,7 @@ router.post("/google-login", async (req, res) => {
         dob: user.dob,
         bio: user.bio,
         profilePicture: user.profilePicture,
+        subscription: user.subscription,
       },
     });
 
