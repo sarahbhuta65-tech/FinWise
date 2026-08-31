@@ -1,4 +1,4 @@
-import "./privacyPolicy.css";
+import "./PrivacyPolicy.css";
 
 function PrivacyPolicy() {
     return (
