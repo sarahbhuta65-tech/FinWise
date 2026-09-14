@@ -6,7 +6,7 @@ const getCalendarEvents = async (req, res) => {
 
         const month = req.query.month
             ? Number(req.query.month)
-            : new Date().getMonth();
+            : new Date().getMonth() + 1;
 
         const year = req.query.year
             ? Number(req.query.year)

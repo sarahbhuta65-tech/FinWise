@@ -574,11 +574,32 @@ const exportCsvTransactions = () => {
         const user = JSON.parse(localStorage.getItem("user"));
         const userId = user?.id || user?._id;
 
-        const premium =
-          user?.subscription?.plan === "premium" &&
-          user?.subscription?.status === "active";
+        try {
+          const subscriptionRes = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/subscription/status`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
 
-        setIsPremium(premium);
+          const subscription = subscriptionRes.data.subscription;
+          const premium =
+            subscription?.plan === "premium" &&
+            subscription?.status === "active" &&
+            (!subscription.currentPeriodEnd ||
+              new Date(subscription.currentPeriodEnd) > new Date());
+
+          setIsPremium(premium);
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ ...user, subscription })
+          );
+        } catch (subscriptionError) {
+          console.error("Failed to refresh subscription status:", subscriptionError);
+          setIsPremium(false);
+        }
 
         if (!userId) return;
 
@@ -605,12 +626,17 @@ const exportCsvTransactions = () => {
 
         setExpenses(res.data);
 
-        // Fetch categories
-        const categoryRes = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/categories/${userId}`
-        );
-
-        setCategories(categoryRes.data);
+        let categoryData = [];
+        try {
+          const categoryRes = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/categories/${userId}`
+          );
+          categoryData = Array.isArray(categoryRes.data) ? categoryRes.data : [];
+          setCategories(categoryData);
+        } catch (categoryError) {
+          console.error("Failed to fetch categories:", categoryError);
+          setCategories([]);
+        }
 
         // Fetch this month's budget so the category dropdown
         // can be restricted to categories the budget tracks.
@@ -640,19 +666,19 @@ const exportCsvTransactions = () => {
 
         const linkedCategories =
           budgetNames.length > 0
-            ? categoryRes.data.filter((item) =>
+            ? categoryData.filter((item) =>
                 budgetNames.some(
                   (name) =>
                     name.toLowerCase() ===
                     item.name.toLowerCase()
                 )
               )
-            : categoryRes.data;
+            : categoryData;
 
         if (linkedCategories.length > 0) {
           setCategory(linkedCategories[0].name);
-        } else if (categoryRes.data.length > 0) {
-          setCategory(categoryRes.data[0].name);
+        } else if (categoryData.length > 0) {
+          setCategory(categoryData[0].name);
         }
 
       } catch (error) {

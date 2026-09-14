@@ -56,6 +56,41 @@ function App() {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
 
+  useEffect(() => {
+    const syncSubscription = async () => {
+      const token = localStorage.getItem("token");
+      const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+
+      if (!token || !storedUser) return;
+
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/subscription/status`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const updatedUser = {
+          ...storedUser,
+          subscription: data.subscription,
+        };
+
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        setUser(updatedUser);
+      } catch (error) {
+        console.error("Failed to sync subscription status:", error);
+      }
+    };
+
+    syncSubscription();
+  }, []);
+
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
