@@ -401,7 +401,12 @@ function Dashboard() {
 
                     const sipRes =
                         await axios.get(
-                            `${import.meta.env.VITE_API_URL}/api/sip/${currentUser._id}`
+                            `${import.meta.env.VITE_API_URL}/api/sip/${currentUser._id}`,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                                },
+                            }
                         );
 
                     if (sipRes.data) {
@@ -437,7 +442,12 @@ function Dashboard() {
 
                     const emiRes =
                         await axios.get(
-                            `${import.meta.env.VITE_API_URL}/api/emi/${currentUser._id}`
+                            `${import.meta.env.VITE_API_URL}/api/emi/${currentUser._id}`,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                                },
+                            }
                         );
 
                     if (emiRes.data) {
@@ -634,7 +644,7 @@ function Dashboard() {
             ? Number(goalData.monthlyBudget)
             : user?.monthlyIncome
                 ? Number(user.monthlyIncome)
-                : 60000;
+                : 0;
 
 
     /*
