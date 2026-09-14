@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import "./sipCalculator.css";
 import axios from "axios";
@@ -13,6 +14,7 @@ import {
 } from "recharts";
 
 function SipCalculator(){
+const navigate = useNavigate();
 const [monthlyInvestment, setMonthlyInvestment] = useState("");
 const [interestRate, setInterestRate] = useState("");
 const [years, setYears] = useState("");
@@ -95,6 +97,12 @@ const calculateSIP = async () => {
     toast.success("SIP saved successfully");
   } catch (error) {
     console.error(error);
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      navigate("/login", { replace: true });
+      return;
+    }
     toast.error("Failed to save SIP");
   }
 };
@@ -152,6 +160,11 @@ const calculateSIP = async () => {
           });
         } catch (error) {
           console.error(error);
+          if (error.response?.status === 401) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            navigate("/login", { replace: true });
+          }
         }
       };
 

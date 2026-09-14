@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import CalculatorCard from "../components/CalculatorCard";
 import "./emiCalculator.css";
@@ -7,6 +8,7 @@ import toast from "react-hot-toast";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer,} from "recharts";
 
 function EmiCalculator(){
+const navigate = useNavigate();
 const [loanAmount, setLoanAmount] = useState("");
 const [interestRate, setInterestRate] = useState("");
 const [years, setYears] = useState("");
@@ -88,6 +90,12 @@ const calculateEMI = async () => {
     toast.success("EMI saved successfully");
   } catch (error) {
     console.error(error);
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      navigate("/login", { replace: true });
+      return;
+    }
     toast.error("Failed to save EMI");
   }
 };
@@ -144,6 +152,11 @@ useEffect(() => {
       });
     } catch (error) {
       console.error(error);
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login", { replace: true });
+      }
     }
   };
 
