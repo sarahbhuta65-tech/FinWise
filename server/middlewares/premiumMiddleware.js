@@ -13,7 +13,9 @@ const premiumMiddleware = async (req, res, next) => {
 
         const isPremium =
             user.subscription?.plan === "premium" &&
-            user.subscription?.status === "active";
+            user.subscription?.status === "active" &&
+            (!user.subscription.currentPeriodEnd ||
+                user.subscription.currentPeriodEnd > new Date());
 
         if (!isPremium) {
             return res.status(403).json({

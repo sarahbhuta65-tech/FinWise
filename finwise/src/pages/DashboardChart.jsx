@@ -31,17 +31,37 @@ function DashboardChart({ blogs, faqs }) {
             <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data}>
 
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid
+                        stroke="var(--admin-line-strong)"
+                        strokeDasharray="3 3"
+                    />
 
-                    <XAxis dataKey="name" />
+                    <XAxis
+                        dataKey="name"
+                        tick={{ fill: "var(--admin-muted)", fontSize: 13 }}
+                        axisLine={{ stroke: "var(--admin-line-strong)" }}
+                        tickLine={{ stroke: "var(--admin-line-strong)" }}
+                    />
 
-                    <YAxis />
+                    <YAxis
+                        tick={{ fill: "var(--admin-muted)", fontSize: 13 }}
+                        axisLine={{ stroke: "var(--admin-line-strong)" }}
+                        tickLine={{ stroke: "var(--admin-line-strong)" }}
+                    />
 
-                    <Tooltip />
+                    <Tooltip
+                        contentStyle={{
+                            border: "1px solid var(--admin-line)",
+                            borderRadius: "4px",
+                            background: "var(--admin-surface)",
+                            color: "var(--admin-ink)",
+                        }}
+                    />
 
                     <Bar
                         dataKey="total"
-                        radius={[8,8,0,0]}
+                        fill="var(--admin-accent)"
+                        radius={[6, 6, 0, 0]}
                     />
 
                 </BarChart>

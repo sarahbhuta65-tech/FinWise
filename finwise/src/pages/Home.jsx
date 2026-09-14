@@ -6,6 +6,7 @@ import "./Home.css";
 function Home({ darkMode }) {
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [billingCycle, setBillingCycle] = useState("monthly");
 
   useEffect(() => {
     setIsLoaded(true);
@@ -25,10 +26,10 @@ function Home({ darkMode }) {
               return;
           }
 
-          // 1. Create Razorpay order
+            // 1. Create a recurring Razorpay subscription
           const res = await axios.post(
-              `${import.meta.env.VITE_API_URL}/api/payments/create-order`,
-              {},
+              `${import.meta.env.VITE_API_URL}/api/payments/create-subscription`,
+              { billingCycle },
               {
                   headers: {
                       Authorization: `Bearer ${token}`,
@@ -37,37 +38,34 @@ function Home({ darkMode }) {
           );
 
           if (!res.data.success) {
-              alert("Unable to create payment order.");
+              alert("Unable to start Premium subscription.");
               return;
           }
 
-          const order = res.data.order;
+          const subscription = res.data.subscription;
 
           // 2. Open Razorpay
           const options = {
               key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-              amount: order.amount,
-              currency: order.currency,
               name: "FinWise",
-              description: "FinWise Premium",
-              order_id: order.id,
+              description: `FinWise Premium - ${billingCycle}`,
+              subscription_id: subscription.id,
 
               handler: async function (response) {
                   try {
                       console.log("Payment successful:", response);
 
-                      // 3. Verify payment with backend
+                        // 3. Verify the recurring subscription with backend
                       const verifyRes = await axios.post(
-                          `${import.meta.env.VITE_API_URL}/api/payments/verify-payment`,
+                          `${import.meta.env.VITE_API_URL}/api/payments/verify-subscription`,
                           {
-                              razorpay_order_id:
-                                  response.razorpay_order_id,
-
                               razorpay_payment_id:
                                   response.razorpay_payment_id,
-
+                            razorpay_subscription_id:
+                              response.razorpay_subscription_id,
                               razorpay_signature:
                                   response.razorpay_signature,
+                            billingCycle,
                           },
                           {
                               headers: {
@@ -122,7 +120,7 @@ function Home({ darkMode }) {
               },
 
               theme: {
-                  color: "#3399cc",
+                  color: "#1f6d4c",
               },
           };
 
@@ -261,9 +259,26 @@ function Home({ darkMode }) {
               <span>✓ Enhanced planning experience</span>
             </div>
 
+            <div className="premium-cycle-toggle" role="group" aria-label="Billing cycle">
+              <button
+                type="button"
+                className={billingCycle === "monthly" ? "active" : ""}
+                onClick={() => setBillingCycle("monthly")}
+              >
+                Monthly
+              </button>
+              <button
+                type="button"
+                className={billingCycle === "yearly" ? "active" : ""}
+                onClick={() => setBillingCycle("yearly")}
+              >
+                Yearly
+              </button>
+            </div>
+
             <div className="premium-price">
-              <strong>₹499</strong>
-              <span> one-time</span>
+              <strong>{billingCycle === "monthly" ? "₹149" : "₹1,499"}</strong>
+              <span> / {billingCycle === "monthly" ? "month" : "year"}</span>
             </div>
 
             <button className="btn-primary" onClick={handlePayment}>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function ExpTracker(){
     const [title, setTitle] = useState("");
@@ -28,7 +28,28 @@ function ExpTracker(){
 
         setExpenses(updatedExpenses);
     }
+    
 
+    function Users() {
+        const [users, setUsers] = useState([]);
+        useEffect(() => {
+            const getUsers = async () => {
+                    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+                    const data = await response.json();
+                    setUsers(data);
+                };
+            getUsers();
+        }, []);
+
+    return (
+        <div>
+            {users.map((user) => {
+                return <h3 key={user.id}>{user.name}</h3>;
+            })}
+        </div>
+    );
+       
+    }
     return (
        <div>
         <h1>Expense Tracker</h1>

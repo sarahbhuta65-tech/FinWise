@@ -9,6 +9,7 @@ function Login({ setUser }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
     const Navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
@@ -51,7 +52,8 @@ function Login({ setUser }) {
                     console.warn("Login returned no user payload", { status: res.status, data });
                 }
                 toast.success("Login successful");
-                Navigate("/dashboard");
+                setSuccess(true);
+                setTimeout(() => Navigate("/dashboard"), 750);
             } else {
                 const message = data && data.message ? data.message : `Login failed (status ${res.status})`;
                 toast.error(message);
@@ -100,8 +102,8 @@ function Login({ setUser }) {
                 }
 
                 toast.success(`Welcome ${data.user.name} 👋`);
-
-                Navigate("/dashboard");
+                setSuccess(true);
+                setTimeout(() => Navigate("/dashboard"), 750);
 
             } catch (error) {
                 console.error(error);
@@ -113,45 +115,75 @@ function Login({ setUser }) {
         return (
             <div className="auth-page">
               <div className="auth-left">
-                <h1>Finwise</h1>
-                <p>Smart finance management made simple.</p>
+                <p className="auth-kicker">FinWise</p>
+                <h1>Every rupee,<br />on the record.</h1>
+                <p className="auth-sub">Smart finance management made simple.</p>
 
-                <div className="auth-features">
-                    <div>📊 Track expenses easily</div>
-                    <div>💰 Plan savings goals</div>
-                    <div>🤖 AI financial guidance</div>
+                <div className="ledger-strip">
+                    <div className="ledger-row" style={{ animationDelay: "0.55s" }}>
+                        <span>Expense tracking</span>
+                        <span className="ledger-amt">— live</span>
+                    </div>
+                    <div className="ledger-row" style={{ animationDelay: "0.7s" }}>
+                        <span>Savings goals</span>
+                        <span className="ledger-amt">— planned</span>
+                    </div>
+                    <div className="ledger-row" style={{ animationDelay: "0.85s" }}>
+                        <span>AI financial guidance</span>
+                        <span className="ledger-amt">— on call</span>
+                    </div>
                 </div>
               </div>
 
               <div className="auth-right">
                 <div className="auth-card">
+                    {success && (
+                        <div className="stamp-overlay" role="status" aria-live="polite">
+                            <div className="stamp">
+                                <span>Verified</span>
+                            </div>
+                        </div>
+                    )}
+
                     <h2>Welcome Back</h2>
                     <p>Login to continue</p>
 
                     <form onSubmit={handleLogin}>
-                        <input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        />
+                        <div className="field">
+                            <input
+                            id="login-email"
+                            type="email"
+                            placeholder=" "
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            />
+                            <label htmlFor="login-email">Email</label>
+                            <span className="field-underline"></span>
+                        </div>
 
-                        <div className="password-box">
+                        <div className="field password-box">
                           <input
+                            id="login-password"
                             type={showPassword ? "text" : "password"}
-                            placeholder="Password"
+                            placeholder=" "
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            required
                          />
+                         <label htmlFor="login-password">Password</label>
+                         <span className="field-underline"></span>
 
-                         <span 
+                         <span
                            className="toggle-password"
                            onClick={() => setShowPassword(!showPassword)}
+                           role="button"
+                           aria-label={showPassword ? "Hide password" : "Show password"}
                          >
                             {showPassword ? "🙈" : "👁"}
-                        </span> 
-                        </div>    
-                        
+                        </span>
+                        </div>
+
                         <button type="submit" disabled={loading} className={loading ? "login-btn loading" : "login-btn"}>
                           {loading ? (
                             <>

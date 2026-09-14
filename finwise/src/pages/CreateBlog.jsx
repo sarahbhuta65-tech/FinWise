@@ -11,16 +11,30 @@ function CreateBlog() {
     const [description, setDescription] = useState("");
     const [thumbnail, setThumbnail] = useState("");
     const [content, setContent] = useState("");
-    const author = "Sarah";
+    const author = "FinWise Team";
     const navigate = useNavigate();
     const { id } = useParams();
 
     const handleSave = async (status) => {
 
-        if (!title || !category || !description || !content) {
+        if (!title || !category || !description || !thumbnail || !content) {
             toast.error("Please fill all required fields.");
             return;
         }
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+            toast.error("Your admin session has expired. Please log in again.");
+            navigate("/admin-login");
+            return;
+        }
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
         try {
             if (id) {
 
@@ -35,7 +49,8 @@ function CreateBlog() {
                         author,
                         status,
                         publishDate: new Date().toLocaleDateString(),
-                    }
+                    },
+                    config
                 );
 
                 toast.success("Blog updated successfully");
@@ -53,7 +68,8 @@ function CreateBlog() {
                         author,
                         status,
                         publishDate: new Date().toLocaleDateString(),
-                    }
+                    },
+                    config
                 );
 
                 toast.success("Blog created successfully");
@@ -99,7 +115,7 @@ function CreateBlog() {
                         onClick={() => navigate("/admin/blogs")}>
                     ← Back to blogs
                 </button>
-                <h2>Create New BLog</h2>
+                <h2>{id ? "Edit Blog" : "Create New Blog"}</h2>
            </div>
             <div className="form-page">
                 <p>Write and publish a new blog for FinWise users.</p>
@@ -124,6 +140,9 @@ function CreateBlog() {
                     <option>Savings Goals</option>
                     <option>Financial Tips</option>
                     <option>Investment</option>
+                    <option>Budget</option>
+                    <option>Smart Calendar</option>
+                    <option>Financial Dashboard</option>
                     <option>Others</option>
                 </select>
 

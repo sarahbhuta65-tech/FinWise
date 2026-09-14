@@ -11,10 +11,12 @@ function Signup() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
     const Navigate = useNavigate();
 
     const handleSignup = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         try{
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
@@ -29,7 +31,8 @@ function Signup() {
             if (res.ok) {
                localStorage.setItem("user", JSON.stringify(data.user));
                 toast.success("Account Created");
-                Navigate("/login");
+                setSuccess(true);
+                setTimeout(() => Navigate("/login"), 750);
             } else {
                 toast.error(data.message);
             }
@@ -72,8 +75,10 @@ function Signup() {
             }
 
             localStorage.setItem("user", JSON.stringify(data.user));
+            localStorage.setItem("token", data.token);
             toast.success(`Welcome ${data.user.name} 👋`);
-            Navigate("/dashboard");
+            setSuccess(true);
+            setTimeout(() => Navigate("/dashboard"), 750);
           } catch (error) {
             console.error(error);
             toast.error("Google Signup Failed");
@@ -85,54 +90,97 @@ function Signup() {
         return (
             <div className="auth-page">
               <div className="auth-left">
-                <h1>FinWise</h1>
-                <p>Smart finance management made simple.</p>
+                <p className="auth-kicker">FinWise</p>
+                <h1>Open a ledger<br />that pays attention.</h1>
+                <p className="auth-sub">Smart finance management made simple.</p>
 
-                <div className="auth-features">
-                    <div>📊 Track expenses easily</div>
-                    <div>💰 Plan savings goals</div>
-                    <div>🤖 AI financial guidance</div>
+                <div className="ledger-strip">
+                    <div className="ledger-row" style={{ animationDelay: "0.55s" }}>
+                        <span>Expense tracking</span>
+                        <span className="ledger-amt">— live</span>
+                    </div>
+                    <div className="ledger-row" style={{ animationDelay: "0.7s" }}>
+                        <span>Savings goals</span>
+                        <span className="ledger-amt">— planned</span>
+                    </div>
+                    <div className="ledger-row" style={{ animationDelay: "0.85s" }}>
+                        <span>AI financial guidance</span>
+                        <span className="ledger-amt">— on call</span>
+                    </div>
                 </div>
               </div>
 
               <div className="auth-right">
                 <div className="auth-card">
+                    {success && (
+                        <div className="stamp-overlay" role="status" aria-live="polite">
+                            <div className="stamp">
+                                <span>Account Opened</span>
+                            </div>
+                        </div>
+                    )}
+
                     <h2>Create Account</h2>
                     <p>Join FinWise today</p>
 
                     <form onSubmit={handleSignup}>
-                        <input
-                        type="text"
-                        placeholder="Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        />
+                        <div className="field">
+                            <input
+                            id="signup-name"
+                            type="text"
+                            placeholder=" "
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                            />
+                            <label htmlFor="signup-name">Name</label>
+                            <span className="field-underline"></span>
+                        </div>
 
-                        <input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        />
+                        <div className="field">
+                            <input
+                            id="signup-email"
+                            type="email"
+                            placeholder=" "
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            />
+                            <label htmlFor="signup-email">Email</label>
+                            <span className="field-underline"></span>
+                        </div>
 
-                        <div className="password-box">
+                        <div className="field password-box">
                           <input
-                            type="password"
-                            placeholder="Password"
+                            id="signup-password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder=" "
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            required
                          />
+                         <label htmlFor="signup-password">Password</label>
+                         <span className="field-underline"></span>
 
-                         <span 
+                         <span
                            className="toggle-password"
                            onClick={() => setShowPassword(!showPassword)}
+                           role="button"
+                           aria-label={showPassword ? "Hide password" : "Show password"}
                          >
                             {showPassword ? "🙈" : "👁"}
-                        </span> 
-                        </div> 
-                        
-                        <button type="submit" disabled={loading}>
-                          {loading ? "Creating account..." : "Signup"}
+                        </span>
+                        </div>
+
+                        <button type="submit" disabled={loading} className={loading ? "login-btn loading" : "login-btn"}>
+                          {loading ? (
+                            <>
+                              <span className="spinner"></span>
+                              Creating account...
+                            </>
+                          ) : (
+                            "Signup"
+                          )}
                         </button>
 
                         <div className="divider">
@@ -150,7 +198,7 @@ function Signup() {
                     </form>
 
                     <span>
-                        Already have a account? <Link to="/login">Login</Link>
+                        Already have an account? <Link to="/login">Login</Link>
                     </span>
                 </div>
               </div>

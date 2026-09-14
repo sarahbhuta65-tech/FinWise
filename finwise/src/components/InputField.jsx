@@ -1,4 +1,5 @@
 function InputField({
+  id,
   type = "text",
   placeholder,
   value,
@@ -6,6 +7,7 @@ function InputField({
 }) {
   return (
     <input
+      id={id}
       className="input-field"
       type={type}
       placeholder={placeholder}

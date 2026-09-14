@@ -202,6 +202,7 @@
 }
 
 .calendar-day {
+    position: relative;
     min-height: 115px;
 
     padding: 12px;
@@ -398,6 +399,69 @@
 .calendar-day.has-events:hover {
     background: var(--accent-soft);
 }
+
+.calendar-hover-preview {
+    position: absolute;
+    z-index: 10;
+    top: 48px;
+    left: 10px;
+    min-width: 190px;
+    max-width: 240px;
+    padding: 9px;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    background: var(--surface);
+    box-shadow: 0 12px 24px rgba(20, 24, 31, 0.16);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.calendar-day.has-events:hover .calendar-hover-preview,
+.calendar-day.has-events:focus-within .calendar-hover-preview {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.calendar-hover-event {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 4px;
+    color: var(--ink-900);
+    font-size: 11px;
+}
+
+.calendar-hover-event + .calendar-hover-event {
+    border-top: 1px solid var(--line);
+}
+
+.calendar-hover-event strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.calendar-hover-event > span:last-child {
+    color: var(--ink-600);
+    font-family: var(--font-mono);
+    font-size: 10px;
+}
+
+.hover-event-type {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.hover-event-type.sip { color: var(--accent); }
+.hover-event-type.emi { color: var(--warn); }
+.hover-event-type.savings { color: var(--gold); }
+.hover-event-type.bill { color: var(--slate); }
 
 
 /* =========================================

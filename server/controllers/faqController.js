@@ -16,6 +16,21 @@ const getFaqs = async (req, res) => {
     }
 };
 
+// Get all FAQs for admin dashboard
+const getAdminFaqs = async (req, res) => {
+    try {
+        const faqs = await Faq.find().sort({
+            createdAt: -1,
+        });
+
+        res.json(faqs);
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+        });
+    }
+};
+
 // Get FAQ by ID
 const getFaqById = async (req, res) => {
     try {
@@ -84,6 +99,7 @@ const deleteFaq = async (req, res) => {
 
 module.exports = {
     getFaqs,
+    getAdminFaqs,
     getFaqById,
     createFaq,
     updateFaq,

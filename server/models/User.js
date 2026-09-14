@@ -17,6 +17,12 @@ const userSchema = new mongoose.Schema(
         type: String,
         default: null,
     },
+
+    isAdmin: {
+        type: Boolean,
+        default: false,
+    },
+    
     provider: {
         type: String,
         enum: ["local", "google"],
@@ -52,12 +58,22 @@ const userSchema = new mongoose.Schema(
         type:String,
         default:"",
     },
+    gmailRefreshToken: {
+        type: String,
+        default: null,
+    },
 
     subscription: {
         plan: {
             type: String,
             enum: ["free", "premium"],
             default: "free",
+        },
+
+        billingCycle: {
+            type: String,
+            enum: ["monthly", "yearly"],
+            default: null,
         },
 
         status: {
@@ -79,6 +95,16 @@ const userSchema = new mongoose.Schema(
         endDate: {
             type: Date,
             default: null,
+        },
+
+        currentPeriodEnd: {
+            type: Date,
+            default: null,
+        },
+
+        cancelAtPeriodEnd: {
+            type: Boolean,
+            default: false,
         },
     },
     aiUsage: {

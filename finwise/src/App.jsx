@@ -8,6 +8,10 @@ import ManageBlogs from "./pages/ManageBlogs";
 import ManageFAQs from "./pages/ManageFAQs";
 import CreateBlog from "./pages/CreateBlog";
 import CreateFAQs from "./pages/CreateFAQs";
+import ManagePlans from "./pages/ManagePlans";
+import ManageSubscribers from "./pages/ManageSubscribers";
+import ManageUsers from "./pages/ManageUsers";
+import AdminShell from "./pages/AdminShell";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import SipCalculator from "./pages/sipCalculator";
@@ -27,9 +31,13 @@ import AIAssistant from "./pages/AIAssistant";
 import SmartCalendar from "./pages/SmartCalendar";
 import BudgetPlanner from "./pages/BudgetPlanner";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import AdminLogin from "./pages/AdminLogin";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
+import ManagePayments from "./pages/ManagePayments";
 import "./App.css";
 
 function App() {
+  const location = useLocation();
   const [darkMode, setDarkMode] = useState(false);
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user"))
@@ -48,20 +56,24 @@ function App() {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
 
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
   return (
     <div className={darkMode ? "app dark" : "app"}>
-      <Navbar
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
-        user={user}
-        setUser={setUser}
-        sidebarOpen={sidebarOpen}
-        setSidebarOpen={setSidebarOpen}
-      />
+      {!isAdminRoute && (
+        <Navbar
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+          user={user}
+          setUser={setUser}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
+      )}
 
       {/* Sidebar overlay and hamburger are handled inside Navbar to avoid duplicates */}
 
-      <main className={`page-content ${sidebarOpen ? "sidebar-open" : ""}`}>
+        <main className={isAdminRoute ? "admin-route-content" : `page-content ${sidebarOpen ? "sidebar-open" : ""}`}>
         <Toaster
           position="top-right"
           reverseOrder={false}
@@ -158,13 +170,149 @@ function App() {
           }
         />
 
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/blogs" element={<ManageBlogs />} />
-        <Route path="/admin/blogs/create" element={<CreateBlog />} />
-        <Route path="/admin/blogs/edit/:id" element={<CreateBlog />} />
-        <Route path="/admin/faqs" element={<ManageFAQs />} />
-        <Route path="/admin/faqs/create" element={<CreateFAQs />} />
-        <Route path="/admin/faqs/edit/:id" element={<CreateFAQs />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboard
+                darkMode={darkMode}
+                setDarkMode={setDarkMode}
+              />
+            </AdminProtectedRoute>
+          }
+        />
+
+        <Route
+            path="/admin-dashboard"
+            element={
+                <AdminProtectedRoute>
+                    <AdminDashboard
+                      darkMode={darkMode}
+                      setDarkMode={setDarkMode}
+                    />
+                </AdminProtectedRoute>
+            }
+        />
+
+        <Route
+            path="/admin/blogs"
+            element={
+                <AdminProtectedRoute>
+                    <AdminShell darkMode={darkMode} setDarkMode={setDarkMode}>
+                        <ManageBlogs />
+                    </AdminShell>
+                </AdminProtectedRoute>
+            }
+        />
+
+        <Route
+            path="/admin/blogs/create"
+            element={
+                <AdminProtectedRoute>
+                    <AdminShell darkMode={darkMode} setDarkMode={setDarkMode}>
+                        <CreateBlog />
+                    </AdminShell>
+                </AdminProtectedRoute>
+            }
+        />
+
+        <Route
+            path="/admin/blogs/edit/:id"
+            element={
+                <AdminProtectedRoute>
+                    <AdminShell darkMode={darkMode} setDarkMode={setDarkMode}>
+                        <CreateBlog />
+                    </AdminShell>
+                </AdminProtectedRoute>
+            }
+        />
+
+        <Route
+            path="/admin/faqs"
+            element={
+                <AdminProtectedRoute>
+                    <AdminShell darkMode={darkMode} setDarkMode={setDarkMode}>
+                        <ManageFAQs />
+                    </AdminShell>
+                </AdminProtectedRoute>
+            }
+        />
+
+        <Route
+            path="/admin/faqs/create"
+            element={
+                <AdminProtectedRoute>
+                    <AdminShell darkMode={darkMode} setDarkMode={setDarkMode}>
+                        <CreateFAQs />
+                    </AdminShell>
+                </AdminProtectedRoute>
+            }
+        />
+
+        <Route
+            path="/admin/faqs/edit/:id"
+            element={
+                <AdminProtectedRoute>
+                    <AdminShell darkMode={darkMode} setDarkMode={setDarkMode}>
+                        <CreateFAQs />
+                    </AdminShell>
+                </AdminProtectedRoute>
+            }
+        />
+
+        <Route
+            path="/admin/users"
+            element={
+                <AdminProtectedRoute>
+                    <AdminShell darkMode={darkMode} setDarkMode={setDarkMode}>
+                        <ManageUsers />
+                    </AdminShell>
+                </AdminProtectedRoute>
+            }
+        />
+
+        <Route
+            path="/admin/subscriptions/plans"
+            element={
+                <AdminProtectedRoute>
+                    <AdminShell darkMode={darkMode} setDarkMode={setDarkMode}>
+                        <ManagePlans />
+                    </AdminShell>
+                </AdminProtectedRoute>
+            }
+        />
+
+        <Route
+            path="/admin/subscriptions/subscribers"
+            element={
+                <AdminProtectedRoute>
+                    <AdminShell darkMode={darkMode} setDarkMode={setDarkMode}>
+                        <ManageSubscribers />
+                    </AdminShell>
+                </AdminProtectedRoute>
+            }
+        />
+        <Route
+          path="/admin/subscriptions/payments"
+          element={
+              <AdminProtectedRoute>
+                  <AdminShell darkMode={darkMode} setDarkMode={setDarkMode}>
+                      <ManagePayments />
+                  </AdminShell>
+              </AdminProtectedRoute>
+          }
+      />
+
+      <Route
+          path="/admin/premium-users"
+          element={
+              <AdminProtectedRoute>
+                  <AdminShell darkMode={darkMode} setDarkMode={setDarkMode}>
+                      <ManageSubscribers />
+                  </AdminShell>
+              </AdminProtectedRoute>
+          }
+      />
         <Route
           path="/calendar"
           element={
@@ -181,9 +329,13 @@ function App() {
                 </ProtectedRoute>
             }
         />
+        <Route
+            path="/admin-login"
+            element={<AdminLogin />}
+        />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       </Routes>
-      {user && (
+      {user && !isAdminRoute && (
         <>
           <FloatingAIButton
             onClick={() => setOpenAI(true)}

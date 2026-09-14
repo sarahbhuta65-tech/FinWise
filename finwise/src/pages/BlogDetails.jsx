@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import "./Blogs.css";
+import "./BlogDetails.css";
 import axios from "axios";
 
 function BlogDetails() {
@@ -29,62 +29,94 @@ function BlogDetails() {
 
     if (!blog) {
         return (
-            <div className="blogs-page">
-                <h2>Blog not found.</h2>
+            <div className="ledger-page">
+                <div className="ledger-notfound">
+                    <span className="ledger-notfound-code">404 / NOT FOUND</span>
+                    <h2>This entry doesn't exist in the ledger.</h2>
+                    <button className="ledger-back-btn" onClick={() => navigate("/blogs")}>
+                        ← Back to Blogs
+                    </button>
+                </div>
             </div>
         );
     }
 
+    const readMins = Math.ceil(
+        blog.content.replace(/<[^>]+>/g, "").split(" ").length / 200
+    );
+
     return (
 
-        <div className="blog-details-page">
+        <div className="ledger-page">
 
-            <button
-                className="back-btn"
-                onClick={() => navigate("/blogs")}
-            >
-                ← Back to Blogs
-            </button>
+            <div className="ledger-details">
 
-            <div className="blog-details-content">
+                <button
+                    className="ledger-back-btn"
+                    onClick={() => navigate("/blogs")}
+                >
+                    ← Back to Blogs
+                </button>
 
-                <span className="category-badge">
-                    {blog.category}
-                </span>
+                <article className="ledger-entry">
 
-                <h1>{blog.title}</h1>
+                    {/* ENTRY HEADER */}
+                    <header className="ledger-entry-header">
 
-                <div className="blog-meta">
+                        <div className="ledger-entry-top">
+                            <span className="ledger-category-stamp">
+                                {blog.category}
+                            </span>
+                            <span className="ledger-entry-id">
+                                ENTRY №{(blog._id || blog.id || "").toString().slice(-6).toUpperCase() || "000000"}
+                            </span>
+                        </div>
 
-                    <span>👤 {blog.author}</span>
+                        <h1>{blog.title}</h1>
 
-                    <span>📅 {blog.publishDate}</span>
+                        <p className="ledger-short-desc">
+                            {blog.description}
+                        </p>
 
-                    <span>⏱ {Math.ceil(blog.content.replace(/<[^>]+>/g, "").split(" ").length / 200)} min read</span>
+                        <div className="ledger-meta-row">
+                            <span className="ledger-meta-item">
+                                <span className="ledger-meta-label">AUTHOR</span>
+                                {blog.author}
+                            </span>
+                            <span className="ledger-meta-divider" />
+                            <span className="ledger-meta-item">
+                                <span className="ledger-meta-label">DATE</span>
+                                {blog.publishDate}
+                            </span>
+                            <span className="ledger-meta-divider" />
+                            <span className="ledger-meta-item">
+                                <span className="ledger-meta-label">READ</span>
+                                {readMins} min
+                            </span>
+                        </div>
 
-                </div>
+                    </header>
 
-                <p className="blog-short-desc">
-                    {blog.description}
-                </p>
+                    <div className="ledger-tear-line" />
 
-                <hr />
-                 {blog.thumbnail && (
+                    {blog.thumbnail && (
+                        <figure className="ledger-banner-wrap">
+                            <img
+                                src={blog.thumbnail}
+                                alt={blog.title}
+                                className="ledger-banner"
+                            />
+                        </figure>
+                    )}
 
-                    <img
-                        src={blog.thumbnail}
-                        alt={blog.title}
-                        className="blog-banner"
+                    <div
+                        className="ledger-rich-content"
+                        dangerouslySetInnerHTML={{
+                            __html: blog.content,
+                        }}
                     />
 
-                )}
-
-                <div
-                    className="blog-rich-content"
-                    dangerouslySetInnerHTML={{
-                        __html: blog.content,
-                    }}
-                />
+                </article>
 
             </div>
 

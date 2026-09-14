@@ -1040,6 +1040,34 @@
   margin-bottom: 22px;
 }
 
+.premium-cycle-toggle {
+  display: inline-flex;
+  gap: 3px;
+  margin-bottom: 14px;
+  padding: 3px;
+  border: 1px solid rgba(31, 109, 76, 0.25);
+  border-radius: 6px;
+  background: rgba(31, 109, 76, 0.06);
+}
+
+.premium-cycle-toggle button {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #53645d;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.premium-cycle-toggle button.active,
+.premium-cycle-toggle button:hover {
+  background: #1f6d4c;
+  color: #fff;
+}
+
 .premium-price strong {
   font-size: 2.2rem;
   font-weight: 800;

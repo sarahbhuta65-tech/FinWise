@@ -1,6 +1,7 @@
 :root {
     color-scheme: light;
 
+    --background: #f6f4ec;
     --paper: #f6f4ec;
     --surface: #ffffff;
     --ink-900: #14181f;
@@ -17,17 +18,33 @@
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
+.app.dark {
+    color-scheme: dark;
+
+    --background: #0d1218;
+    --paper: #0d1218;
+    --surface: #151b23;
+    --ink-900: #f2f0e8;
+    --ink-600: #9aa3b0;
+    --ink-400: #6b7684;
+    --line: #263140;
+    --line-strong: #303c4c;
+    --accent: #3fa980;
+    --accent-soft: rgba(63, 169, 128, 0.12);
+    --warn: #d97706;
+}
+
 html,
 body,
 #root {
     min-height: 100%;
     margin: 0;
     padding: 0;
-    background: var(--paper);
+    background: var(--background);
 }
 
 body {
-    background: var(--paper);
+    background: var(--background);
     font-family: var(--font-body);
 }
 
@@ -399,6 +416,10 @@ body {
     }
 
     .page-content {
+        margin-left: 0;
+    }
+
+    .page-content.sidebar-open {
         margin-left: 0;
     }
 

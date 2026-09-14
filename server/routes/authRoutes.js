@@ -83,10 +83,13 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user._id },
+      {
+          userId: user._id,
+          isAdmin: user.isAdmin,
+      },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
-    );
+  );
 
     res.status(200).json({
       message: "Login successful",
@@ -104,6 +107,7 @@ router.post("/login", async (req, res) => {
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
           subscription: user.subscription,
+          isAdmin: user.isAdmin,
       },
   });
   } catch (error) {
@@ -136,7 +140,10 @@ router.post("/google-login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user._id },
+      {
+          userId: user._id,
+          isAdmin: user.isAdmin,
+      },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -155,6 +162,7 @@ router.post("/google-login", async (req, res) => {
         bio: user.bio,
         profilePicture: user.profilePicture,
         subscription: user.subscription,
+        isAdmin: user.isAdmin,
       },
     });
 

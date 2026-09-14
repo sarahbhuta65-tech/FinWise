@@ -232,6 +232,20 @@ function SmartCalendar() {
                                             ))}
 
                                         </div>
+
+                                        {getEventsForDay(day).length > 0 && (
+                                            <div className="calendar-hover-preview">
+                                                {getEventsForDay(day).map((event) => (
+                                                    <div className="calendar-hover-event" key={event._id}>
+                                                        <span className={`hover-event-type ${event.type.toLowerCase()}`}>
+                                                            {event.type}
+                                                        </span>
+                                                        <strong>{event.title}</strong>
+                                                        <span>₹{Number(event.amount).toLocaleString("en-IN")}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
                                     </>
                                 )}
                             </div>

@@ -21,11 +21,16 @@ function ExpenseTracker({darkMode}) {
   const [expenseName, setExpenseName] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Food");
+  const [expenseDate, setExpenseDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [expenses, setExpenses] = useState([]);
   const [budget, setBudget] = useState("");
   const [error, setError] = useState("");
+  const [loadError, setLoadError] = useState("");
+  const [isLoadingExpenses, setIsLoadingExpenses] = useState(true);
+  const [isAddingExpense, setIsAddingExpense] = useState(false);
   const [chartView, setChartView] = useState("daily");
   const [categories, setCategories] = useState([]);
+  const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
   const [newCategory, setNewCategory] = useState("");
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [csvFile, setCsvFile] = useState(null);
@@ -34,7 +39,10 @@ function ExpenseTracker({darkMode}) {
   const [isImporting, setIsImporting] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
   const [currentBudget, setCurrentBudget] = useState(null);
-
+  const [detectedTransaction, setDetectedTransaction] = useState(null);
+  const [isFetchingTransaction, setIsFetchingTransaction] = useState(false);
+  const [isAddingTransaction, setIsAddingTransaction] = useState(false);
+  const [gmailConnected, setGmailConnected] = useState(false);
 
   const addCategory = async () => {
     if (!newCategory.trim()) {
@@ -191,6 +199,11 @@ const importCsvTransactions = async () => {
     return;
   }
 
+  if (!isPremium) {
+    toast.error("CSV Import is a Premium feature.");
+    return;
+  }
+
   try {
     setIsImporting(true);
 
@@ -250,10 +263,6 @@ const importCsvTransactions = async () => {
     setIsImporting(false);
   }
 
-  if (!isPremium) {
-  toast.error("CSV Import is a Premium feature.");
-  return;
-}
 };
 
 const cancelCsvImport = () => {
@@ -330,6 +339,7 @@ const exportCsvTransactions = () => {
     }
 
     setError("");
+    setIsAddingExpense(true);
 
     try {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -348,18 +358,22 @@ const exportCsvTransactions = () => {
           name: expenseName,
           amount: Number(amount),
           category,
+          date: expenseDate,
         }
       );
 
-      setExpenses([res.data, ...expenses]);
+      setExpenses((prevExpenses) => [res.data, ...prevExpenses]);
 
       setExpenseName("");
       setAmount("");
-      setCategory("Food");
+      setExpenseDate(new Date().toISOString().split("T")[0]);
+      toast.success("Expense added successfully");
 
     } catch (error) {
       console.error(error);
       setError("Failed to add expense.");
+    } finally {
+      setIsAddingExpense(false);
     }
   };
 
@@ -556,6 +570,7 @@ const exportCsvTransactions = () => {
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
+        setLoadError("");
         const user = JSON.parse(localStorage.getItem("user"));
         const userId = user?.id || user?._id;
 
@@ -566,6 +581,22 @@ const exportCsvTransactions = () => {
         setIsPremium(premium);
 
         if (!userId) return;
+
+        try {
+          const gmailStatus = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/gmail/status`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+
+          setGmailConnected(Boolean(gmailStatus.data.connected));
+        } catch (gmailStatusError) {
+          console.error("Failed to check Gmail status:", gmailStatusError);
+          setGmailConnected(false);
+        }
 
         // Fetch expenses
         const res = await axios.get(
@@ -626,12 +657,183 @@ const exportCsvTransactions = () => {
 
       } catch (error) {
         console.error("Failed to fetch expenses/categories:", error);
+        setLoadError("We couldn't load your expenses. Please try again.");
         toast.error("Failed to load expense data");
+      } finally {
+        setIsLoadingExpenses(false);
       }
     };
 
     fetchExpenses();
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("gmail") === "connected") {
+      toast.success("Gmail connected successfully");
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
   }, []);
+
+  const getSuggestedCategory = (merchant) => {
+    if (!merchant) return null;
+
+    const merchantName = merchant.toLowerCase();
+
+    const categoryRules = {
+        Shopping: [
+            "meesho",
+            "amazon",
+            "flipkart",
+            "myntra",
+            "ajio",
+            "nykaa",
+            "snapdeal",
+        ],
+
+        Food: [
+            "swiggy",
+            "zomato",
+            "dominos",
+            "pizza hut",
+            "mcdonald",
+            "kfc",
+            "blinkit",
+            "zepto",
+            "instamart",
+        ],
+
+        Transport: [
+            "uber",
+            "ola",
+            "rapido",
+            "irctc",
+            "makemytrip",
+            "redbus",
+        ],
+
+        Entertainment: [
+            "netflix",
+            "spotify",
+            "prime video",
+            "hotstar",
+            "youtube",
+            "bookmyshow",
+        ],
+
+        Bills: [
+            "jio",
+            "airtel",
+            "vi ",
+            "vodafone",
+            "bsnl",
+            "electricity",
+            "torrent power",
+        ],
+    };
+
+    for (const [categoryName, merchants] of Object.entries(categoryRules)) {
+        const matched = merchants.some((name) =>
+            merchantName.includes(name.toLowerCase())
+        );
+
+        if (matched) {
+            // Find the category in the user's actual categories
+            const existingCategory = dropdownCategories.find(
+                (category) =>
+                    category.name.toLowerCase() ===
+                    categoryName.toLowerCase()
+            );
+
+            if (existingCategory) {
+                return existingCategory.name;
+            }
+        }
+    }
+
+    return null;
+};
+
+  const fetchGmailTransaction = async () => {
+    try {
+        setIsFetchingTransaction(true);
+
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userId = user?._id || user?.id;
+
+        if (!userId) {
+            toast.error("User not found. Please login again.");
+            return;
+        }
+
+        const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/gmail/messages`,
+            {
+                params: {
+                    userId: userId,
+                },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            }
+        );
+
+        const transactionEmail = response.data.messages.find(
+            (message) =>
+                message.isTransaction &&
+                message.transaction &&
+                message.transaction.amount &&
+                message.transaction.merchant
+        );
+
+        if (transactionEmail) {
+            const transaction = transactionEmail.transaction;
+
+            setDetectedTransaction(transaction);
+
+            // Suggest a category based on the merchant
+            const suggestedCategory = getSuggestedCategory(
+                transaction.merchant
+            );
+
+            if (suggestedCategory) {
+                setCategory(suggestedCategory);
+
+                toast.success(
+                    `Transaction detected! Category suggested: ${suggestedCategory}`
+                );
+            } else {
+                toast.success("Transaction detected from Gmail!");
+            }
+
+        } else {
+            setDetectedTransaction(null);
+
+            toast("No new transaction found.");
+        }
+
+    } catch (error) {
+        console.error("Gmail transaction error:", error);
+
+        toast.error("Failed to fetch Gmail transactions.");
+    } finally {
+        setIsFetchingTransaction(false);
+    }
+};
+
+  const connectGmail = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?._id || user?.id;
+
+    if (!userId) {
+        toast.error("User not found. Please login again.");
+        return;
+    }
+
+    const authUrl = new URL(
+        `${import.meta.env.VITE_API_URL}/api/gmail/auth`
+    );
+    authUrl.searchParams.set("userId", userId);
+    window.location.href = authUrl.toString();
+  };
 
   return (
     <div className={`expense-page ${darkMode ? "dark" : ""}`}>
@@ -646,32 +848,66 @@ const exportCsvTransactions = () => {
         <div className="statement-panel expense-form-card">
           <h2>Add Expense</h2>
 
+          <label htmlFor="expense-name">Expense name</label>
           <InputField
+            id="expense-name"
             placeholder="Expense Name"
             value={expenseName}
             onChange={(e) => setExpenseName(e.target.value)}
           />
 
+          <label htmlFor="expense-amount">Amount</label>
           <InputField
+            id="expense-amount"
+            type="number"
             placeholder="Amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
 
+          <label htmlFor="expense-date">Date</label>
+          <InputField
+            id="expense-date"
+            type="date"
+            value={expenseDate}
+            onChange={(e) => setExpenseDate(e.target.value)}
+          />
+
+          <label htmlFor="expense-category">Category</label>
           <div className="category-input-row">
-              <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-              >
-                  {dropdownCategories.map((item) => (
-                      <option
-                          key={item._id}
-                          value={item.name}
+              <div className={`category-menu ${categoryMenuOpen ? "is-open" : ""}`}>
+                <button
+                  type="button"
+                  id="expense-category"
+                  className="category-menu-trigger"
+                  aria-haspopup="listbox"
+                  aria-expanded={categoryMenuOpen}
+                  onClick={() => setCategoryMenuOpen((open) => !open)}
+                >
+                  <span>{category || "Choose a category"}</span>
+                  <span className="category-menu-chevron">⌄</span>
+                </button>
+
+                {categoryMenuOpen && (
+                  <div className="category-menu-options" role="listbox" aria-label="Expense category">
+                    {dropdownCategories.map((item) => (
+                      <button
+                        type="button"
+                        role="option"
+                        aria-selected={category === item.name}
+                        className={category === item.name ? "is-selected" : ""}
+                        key={item._id}
+                        onClick={() => {
+                          setCategory(item.name);
+                          setCategoryMenuOpen(false);
+                        }}
                       >
-                          {item.name}
-                      </option>
-                  ))}
-              </select>
+                        {item.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               {!hasBudgetCategories && (
                   <button
@@ -712,9 +948,10 @@ const exportCsvTransactions = () => {
 
           {error && <p className="error-message">{error}</p>}
 
-          <button className="add-expense-btn" onClick={addExpense}>
-            Add Expense
+          <button className="add-expense-btn" onClick={addExpense} disabled={isAddingExpense}>
+            {isAddingExpense ? "Saving..." : "Add Expense"}
           </button>
+          
           {/* IMPORT TRANSACTIONS */}
           <div className="import-transactions-card">
 
@@ -816,6 +1053,208 @@ const exportCsvTransactions = () => {
               </h3>
             </div>
           </div>
+          <div className="statement-panel gmail-transaction-card">
+
+              <div className="gmail-card-header">
+                  <div className="gmail-card-icon">
+                      📧
+                  </div>
+
+                  <div>
+                      <h2>Gmail Transactions</h2>
+                      <p>
+                          Automatically detect recent transactions from your Gmail.
+                      </p>
+                  </div>
+              </div>
+
+                {!gmailConnected && (
+                  <button
+                      type="button"
+                      onClick={connectGmail}
+                      className="gmail-connect-btn"
+                  >
+                      Connect Gmail
+                  </button>
+                )}
+
+                {gmailConnected && (
+                  <div className="gmail-connected-status">
+                    <span className="gmail-status-dot"></span>
+                    Gmail Connected
+                  </div>
+                )}
+
+              <button
+                  type="button"
+                  onClick={fetchGmailTransaction}
+                  disabled={!gmailConnected || isFetchingTransaction}
+                  className="gmail-transaction-btn"
+              >
+                  {isFetchingTransaction
+                      ? "Checking Gmail..."
+                      : gmailConnected
+                        ? "🔍 Check Gmail for Transactions"
+                        : "Connect Gmail to check transactions"}
+              </button>
+
+              {!gmailConnected && (
+                <p className="gmail-helper-text">
+                  FinWise only checks Gmail after you give permission. You can disconnect access from your Google account at any time.
+                </p>
+              )}
+
+              {detectedTransaction && (
+                  <div className="detected-transaction-card">
+
+                      <div className="transaction-detected-header">
+                          <div>
+                              <span className="transaction-status-dot"></span>
+                              <span>New Transaction Found</span>
+                          </div>
+
+                          <span className="transaction-type-badge">
+                              {detectedTransaction.type}
+                          </span>
+                      </div>
+
+                      <div className="transaction-main-info">
+
+                          <div className="transaction-merchant">
+                              <div className="merchant-icon">
+                                  🛍️
+                              </div>
+
+                              <div>
+                                  <span>Merchant</span>
+                                  <strong>
+                                      {detectedTransaction.merchant}
+                                  </strong>
+                              </div>
+                          </div>
+
+                          <div className="transaction-amount">
+                              <span>Amount</span>
+                              <strong>
+                                  ₹{detectedTransaction.amount}
+                              </strong>
+                          </div>
+
+                      </div>
+
+                      <div className="transaction-extra-details">
+
+                          <div>
+                              <span>📅 Date</span>
+                              <strong>
+                                  {detectedTransaction.date}
+                              </strong>
+                          </div>
+
+                          <div>
+                              <span>💳 Type</span>
+                              <strong>
+                                  {detectedTransaction.type}
+                              </strong>
+                          </div>
+
+                      </div>
+
+                      <div className="detected-transaction-actions">
+
+                          <button
+                              type="button"
+                              className="gmail-ignore-btn"
+                              onClick={() => setDetectedTransaction(null)}
+                          >
+                              Ignore
+                          </button>
+
+                          <button
+                              type="button"
+                              className="gmail-add-btn"
+                              onClick={async () => {
+                                  try {
+                                      setIsAddingTransaction(true);
+
+                                      const user = JSON.parse(
+                                          localStorage.getItem("user")
+                                      );
+
+                                      const userId = user?._id || user?.id;
+
+                                      if (!userId) {
+                                          toast.error(
+                                              "User not found. Please login again."
+                                          );
+                                          return;
+                                      }
+
+                                      let formattedDate = new Date();
+
+                                        if (detectedTransaction.date) {
+                                            const [day, month, year] =
+                                                detectedTransaction.date.split("/");
+
+                                            formattedDate = new Date(
+                                                `${year}-${month}-${day}`
+                                            );
+                                        }
+
+                                      const response = await axios.post(
+                                          `${import.meta.env.VITE_API_URL}/api/expenses`,
+                                          {
+                                              user: userId,
+                                              name: detectedTransaction.merchant,
+                                              amount: Number(
+                                                  detectedTransaction.amount
+                                              ),
+                                              category: category,
+                                              date: formattedDate,
+                                              sourceMessageId:
+                                                  detectedTransaction.messageId,
+                                          }
+                                      );
+
+                                      setExpenses((prevExpenses) => [
+                                          response.data,
+                                          ...prevExpenses,
+                                      ]);
+
+                                      setDetectedTransaction(null);
+
+                                      toast.success(
+                                          "Transaction added to expenses!"
+                                      );
+
+                                  } catch (error) {
+                                      console.error(
+                                          "Error adding Gmail transaction:",
+                                          error
+                                      );
+
+                                      toast.error(
+                                          "Failed to add transaction."
+                                      );
+
+                                  } finally {
+                                      setIsAddingTransaction(false);
+                                  }
+                              }}
+                              disabled={isAddingTransaction}
+                          >
+                              {isAddingTransaction
+                                  ? "Adding..."
+                                  : "✓ Add to Expenses"}
+                          </button>
+
+                      </div>
+
+                  </div>
+              )}
+
+          </div>
+
         </div>
       </div>
 
@@ -916,8 +1355,16 @@ const exportCsvTransactions = () => {
               : "Monthly Spending Trend"}
           </h2>
 
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={chartData}>
+          {isLoadingExpenses ? (
+            <div className="empty-state chart-empty-state">Loading spending data...</div>
+          ) : chartData.length === 0 ? (
+            <div className="empty-state chart-empty-state">
+              <p>No spending data yet.</p>
+              <span>Add an expense to see your trend here.</span>
+            </div>
+          ) : (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" vertical={false} />
               <XAxis dataKey="label" tick={{ fontSize: 11, fill: "var(--ink-400)", fontFamily: "var(--font-mono)" }} axisLine={{stroke:"var(--line-strong)"}} tickLine={false} />
               <YAxis tick={{ fontSize: 11, fill: "var(--ink-400)", fontFamily: "var(--font-mono)" }} axisLine={false} tickLine={false} />
@@ -929,8 +1376,9 @@ const exportCsvTransactions = () => {
                 strokeWidth={2}
                 dot={{ r: 3, fill: "#1F6D4C" }}
               />
-            </LineChart>
-          </ResponsiveContainer>
+              </LineChart>
+            </ResponsiveContainer>
+          )}
         </div>
 
         <div className="statement-panel expense-pie-card">
@@ -997,8 +1445,23 @@ const exportCsvTransactions = () => {
           )}
         </div>
 
-        <div className="expense-list">
-          {expenses.map((expense) => (
+        {loadError ? (
+          <div className="empty-state history-empty-state">
+            <p>{loadError}</p>
+            <button type="button" className="retry-btn" onClick={() => window.location.reload()}>
+              Try again
+            </button>
+          </div>
+        ) : isLoadingExpenses ? (
+          <div className="empty-state history-empty-state">Loading expenses...</div>
+        ) : expenses.length === 0 ? (
+          <div className="empty-state history-empty-state">
+            <p>No expenses recorded yet.</p>
+            <span>Your new transactions will appear here.</span>
+          </div>
+        ) : (
+          <div className="expense-list">
+            {expenses.map((expense) => (
             <div
               key={expense._id || expense.id}
               className="expense-item"
@@ -1023,8 +1486,9 @@ const exportCsvTransactions = () => {
                 Delete
               </button>
             </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
       </div>
 

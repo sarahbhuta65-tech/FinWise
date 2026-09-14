@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const expenseSchema = new mongoose.Schema(
     {
         user: {
@@ -8,7 +9,7 @@ const expenseSchema = new mongoose.Schema(
             required: true,
         },
 
-        name:{
+        name: {
             type: String,
             required: true,
             trim: true,
@@ -29,6 +30,12 @@ const expenseSchema = new mongoose.Schema(
             type: Date,
             default: Date.now,
         },
+
+        sourceMessageId: {
+            type: String,
+            sparse: true,
+            unique: true,
+        },
     },
     {
         timestamps: true,
@@ -36,4 +43,3 @@ const expenseSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("Expense", expenseSchema);
-

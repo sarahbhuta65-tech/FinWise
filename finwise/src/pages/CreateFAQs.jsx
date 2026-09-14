@@ -16,6 +16,20 @@ function CreateFAQs() {
             toast.error("Please fill all required fields");
             return;
         }
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+            toast.error("Your admin session has expired. Please log in again.");
+            navigate("/admin-login");
+            return;
+        }
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
         try {
             const faqData = {
                 question,
@@ -26,13 +40,15 @@ function CreateFAQs() {
             if (id) {
                 await axios.put(
                     `${import.meta.env.VITE_API_URL}/api/faqs/${id}`,
-                    faqData
+                    faqData,
+                    config
                 );
                 toast.success("FAQ updated successfully!");
             } else {
                 await axios.post(
                     `${import.meta.env.VITE_API_URL}/api/faqs`,
-                    faqData
+                    faqData,
+                    config
                 );
                 toast.success("FAQ created successfully!");
             }
@@ -97,6 +113,9 @@ function CreateFAQs() {
                     <option>Savings Goals</option>
                     <option>Financial Tips</option>
                     <option>Investment</option>
+                    <option>Budget</option>
+                    <option>Smart Calendar</option>
+                    <option>Financial Summary</option>
                     <option>Others</option>
                 </select>
 

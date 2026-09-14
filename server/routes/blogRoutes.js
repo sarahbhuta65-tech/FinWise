@@ -1,18 +1,26 @@
 const express = require("express");
+
 const router = express.Router();
 
 const {
-  getBlogs,
-  getBlogById,
-  createBlog,
-  updateBlog,
-  deleteBlog,
+    getBlogs,
+    getBlogById,
+    createBlog,
+    updateBlog,
+    deleteBlog,
+    getAdminBlogs,
 } = require("../controllers/blogController");
 
+const adminMiddleware = require("../middlewares/adminMiddleware");
+
+// Public routes
 router.get("/", getBlogs);
-router.post("/", createBlog);
-router.delete("/:id", deleteBlog);
 router.get("/:id", getBlogById);
-router.put("/:id", updateBlog);
+
+// Admin-only routes
+router.get("/admin/all", adminMiddleware, getAdminBlogs);
+router.post("/", adminMiddleware, createBlog);
+router.put("/:id", adminMiddleware, updateBlog);
+router.delete("/:id", adminMiddleware, deleteBlog);
 
 module.exports = router;

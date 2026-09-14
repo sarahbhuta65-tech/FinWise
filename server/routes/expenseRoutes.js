@@ -12,7 +12,6 @@ const {
     exportExpenses,
 } = require("../controllers/expenseController");
 
-
 // Multer configuration
 const upload = multer({
     dest: "uploads/",
@@ -20,7 +19,6 @@ const upload = multer({
         fileSize: 5 * 1024 * 1024, // 5 MB
     },
 });
-
 
 // Add expense
 router.post("/", addExpense);
@@ -35,10 +33,8 @@ router.get(
 // Get expenses
 router.get("/:user", getExpenses);
 
-
 // Delete expense
 router.delete("/:id", deleteExpense);
-
 
 // Import CSV
 router.post(
@@ -48,7 +44,5 @@ router.post(
     upload.single("file"),
     importExpenses
 );
-
-
 
 module.exports = router;

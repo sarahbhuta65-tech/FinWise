@@ -5,7 +5,27 @@ const fs = require("fs");
 // Add Expense
 const addExpense = async (req, res) => {
     try {
-        const { user, name, amount, category, date } = req.body;
+        const {
+            user,
+            name,
+            amount,
+            category,
+            date,
+            sourceMessageId
+        } = req.body;
+
+        if (sourceMessageId) {
+            const existingExpense = await Expense.findOne({
+                sourceMessageId,
+            });
+
+            if (existingExpense) {
+                return res.status(409).json({
+                    message:
+                        "This Gmail transaction has already been added.",
+                });
+            }
+        }
 
         const expense = await Expense.create({
             user,
@@ -13,9 +33,11 @@ const addExpense = async (req, res) => {
             amount,
             category,
             date,
+            sourceMessageId,
         });
 
         res.status(201).json(expense);
+
     } catch (error) {
         res.status(500).json({
             message: error.message,

@@ -34,16 +34,16 @@ function Faq() {
     );
 
     return (
-        <div className="faq-page">
+        <div className="ledger-faq-page">
 
             {/* Hero */}
-            <section className="faq-hero">
+            <section className="ledger-faq-hero">
 
-                <div className="faq-icon">
+                <div className="ledger-faq-icon">
                     ?
                 </div>
 
-                <span className="faq-eyebrow">
+                <span className="ledger-faq-eyebrow">
                     FINWISE SUPPORT
                 </span>
 
@@ -57,9 +57,9 @@ function Faq() {
                 </p>
 
                 {/* Search */}
-                <div className="faq-search-wrapper">
+                <div className="ledger-faq-search-wrapper">
 
-                    <span className="faq-search-icon">
+                    <span className="ledger-faq-search-icon">
                         ⌕
                     </span>
 
@@ -68,12 +68,12 @@ function Faq() {
                         placeholder="Search questions, topics or keywords..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="faq-search"
+                        className="ledger-faq-search"
                     />
 
                     {search && (
                         <button
-                            className="faq-search-clear"
+                            className="ledger-faq-search-clear"
                             onClick={() => setSearch("")}
                             aria-label="Clear search"
                         >
@@ -84,7 +84,7 @@ function Faq() {
                 </div>
 
                 {search && (
-                    <div className="faq-result-count">
+                    <div className="ledger-faq-result-count">
                         {filteredFaqs.length}{" "}
                         {filteredFaqs.length === 1 ? "result" : "results"} found
                     </div>
@@ -93,13 +93,13 @@ function Faq() {
             </section>
 
             {/* FAQ List */}
-            <section className="faq-container">
+            <section className="ledger-faq-container">
 
                 {filteredFaqs.length === 0 ? (
 
-                    <div className="empty-faq">
+                    <div className="ledger-empty-faq">
 
-                        <div className="empty-faq-icon">
+                        <div className="ledger-empty-faq-icon">
                             🔎
                         </div>
 
@@ -113,7 +113,7 @@ function Faq() {
 
                         {search && (
                             <button
-                                className="clear-search-btn"
+                                className="ledger-clear-search-btn"
                                 onClick={() => setSearch("")}
                             >
                                 Clear Search
@@ -124,32 +124,32 @@ function Faq() {
 
                 ) : (
 
-                    filteredFaqs.map((faq) => {
+                    filteredFaqs.map((faq, index) => {
 
                         const isOpen = openFaq === faq._id;
 
                         return (
                             <article
-                                className={`faq-card ${isOpen ? "faq-card-open" : ""}`}
+                                className={`ledger-faq-card ${isOpen ? "ledger-faq-card-open" : ""}`}
                                 key={faq._id}
                             >
 
                                 <button
-                                    className="faq-question"
+                                    className="ledger-faq-question"
                                     onClick={() => toggleFaq(faq._id)}
                                     aria-expanded={isOpen}
                                 >
 
-                                    <div className="faq-question-left">
+                                    <div className="ledger-faq-question-left">
 
-                                        <div className="faq-number">
-                                            ?
+                                        <div className="ledger-faq-number">
+                                            {String(index + 1).padStart(2, "0")}
                                         </div>
 
-                                        <div className="faq-question-text">
+                                        <div className="ledger-faq-question-text">
 
                                             {faq.category && (
-                                                <span className="faq-category">
+                                                <span className="ledger-faq-category">
                                                     {faq.category}
                                                 </span>
                                             )}
@@ -163,7 +163,7 @@ function Faq() {
                                     </div>
 
                                     <span
-                                        className={`faq-toggle ${
+                                        className={`ledger-faq-toggle ${
                                             isOpen ? "open" : ""
                                         }`}
                                     >
@@ -173,11 +173,11 @@ function Faq() {
                                 </button>
 
                                 <div
-                                    className={`faq-answer-wrapper ${
+                                    className={`ledger-faq-answer-wrapper ${
                                         isOpen ? "open" : ""
                                     }`}
                                 >
-                                    <div className="faq-answer">
+                                    <div className="ledger-faq-answer">
                                         <p>{faq.answer}</p>
                                     </div>
                                 </div>
@@ -191,13 +191,13 @@ function Faq() {
             </section>
 
             {/* Bottom Help Card */}
-            <section className="faq-help-card">
+            <section className="ledger-faq-help-card">
 
-                <div className="faq-help-icon">
+                <div className="ledger-faq-help-icon">
                     💬
                 </div>
 
-                <div className="faq-help-content">
+                <div className="ledger-faq-help-content">
 
                     <h3>
                         Still have questions?
@@ -211,7 +211,7 @@ function Faq() {
                 </div>
 
                 <button
-                    className="faq-help-btn"
+                    className="ledger-faq-help-btn"
                     onClick={() => {
                         window.location.href = "/ai-assistant";
                     }}

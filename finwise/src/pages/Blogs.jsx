@@ -36,12 +36,12 @@ function Blogs() {
     });
 
     return (
-        <div className="blogs-page">
+        <div className="ledger-blogs-page">
 
             {/* HERO */}
-            <section className="blogs-hero">
+            <section className="ledger-blogs-hero">
 
-                <div className="blogs-eyebrow">
+                <div className="ledger-blogs-eyebrow">
                     FINANCIAL KNOWLEDGE
                 </div>
 
@@ -54,7 +54,7 @@ function Blogs() {
                     invest better and build stronger financial habits.
                 </p>
 
-                <div className="blogs-search">
+                <div className="ledger-blogs-search">
                     <span>⌕</span>
 
                     <input
@@ -69,12 +69,12 @@ function Blogs() {
 
 
             {/* BLOG SECTION */}
-            <section className="blogs-section">
+            <section className="ledger-blogs-section">
 
-                <div className="blogs-section-header">
+                <div className="ledger-blogs-section-header">
 
                     <div>
-                        <span className="section-eyebrow">
+                        <span className="ledger-section-eyebrow">
                             FINWISE INSIGHTS
                         </span>
 
@@ -83,7 +83,7 @@ function Blogs() {
                         </h2>
                     </div>
 
-                    <span className="blog-count">
+                    <span className="ledger-blog-count">
                         {filteredBlogs.length} articles
                     </span>
 
@@ -92,9 +92,9 @@ function Blogs() {
 
                 {filteredBlogs.length === 0 ? (
 
-                    <div className="blog-empty-state">
+                    <div className="ledger-blog-empty-state">
 
-                        <div className="empty-icon">
+                        <div className="ledger-empty-icon">
                             🔎
                         </div>
 
@@ -116,16 +116,16 @@ function Blogs() {
 
                 ) : (
 
-                    <div className="blogs-grid">
+                    <div className="ledger-blogs-grid">
 
-                        {filteredBlogs.map((blog) => {
+                        {filteredBlogs.map((blog, index) => {
 
                             const blogId = blog._id || blog.id;
 
                             return (
 
                                 <article
-                                    className="blog-card"
+                                    className="ledger-blog-card"
                                     key={blogId}
                                     onClick={() => {
 
@@ -143,26 +143,30 @@ function Blogs() {
 
                                     {/* IMAGE */}
 
-                                    <div className="blog-image-wrapper">
+                                    <div className="ledger-blog-image-wrapper">
 
                                         {blog.thumbnail ? (
 
                                             <img
                                                 src={blog.thumbnail}
                                                 alt={blog.title}
-                                                className="blog-image"
+                                                className="ledger-blog-image"
                                             />
 
                                         ) : (
 
-                                            <div className="blog-image-placeholder">
+                                            <div className="ledger-blog-image-placeholder">
                                                 FinWise
                                             </div>
 
                                         )}
 
-                                        <span className="blog-category">
+                                        <span className="ledger-blog-category">
                                             {blog.category}
+                                        </span>
+
+                                        <span className="ledger-blog-index">
+                                            №{String(index + 1).padStart(2, "0")}
                                         </span>
 
                                     </div>
@@ -170,7 +174,7 @@ function Blogs() {
 
                                     {/* CONTENT */}
 
-                                    <div className="blog-card-content">
+                                    <div className="ledger-blog-card-content">
 
                                         <h3>
                                             {blog.title}
@@ -186,21 +190,23 @@ function Blogs() {
                                         </p>
 
 
-                                        <div className="blog-card-footer">
+                                        <div className="ledger-blog-card-footer">
 
-                                            <div className="blog-meta">
+                                            <div className="ledger-blog-meta">
 
                                                 <span>
-                                                    👤 {blog.author}
+                                                    {blog.author}
                                                 </span>
 
+                                                <span className="ledger-blog-meta-divider" />
+
                                                 <span>
-                                                    📅 {blog.publishDate}
+                                                    {blog.publishDate}
                                                 </span>
 
                                             </div>
 
-                                            <span className="read-more">
+                                            <span className="ledger-read-more">
                                                 Read article →
                                             </span>
 

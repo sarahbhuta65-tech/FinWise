@@ -1,0 +1,403 @@
+/* =========================================
+   DASHBOARD — GROWTH LEDGER
+   Extends the bank-ledger tokens set on .admin-layout in Admin.css
+========================================= */
+
+.ledger-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-line);
+    border-radius: 4px;
+    border-top: 3px solid var(--admin-accent);
+}
+
+.ledger-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 22px 24px;
+    border-left: 1px solid var(--admin-line);
+}
+
+.ledger-entry:first-child {
+    border-left: none;
+}
+
+.ledger-label {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--admin-faint);
+}
+
+.ledger-value {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--admin-ink);
+    line-height: 1;
+}
+
+.ledger-delta {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.ledger-delta.up {
+    color: var(--admin-accent);
+}
+
+.ledger-delta.down {
+    color: #b3492f;
+}
+
+.ledger-delta.neutral {
+    color: var(--admin-muted);
+}
+
+/* Content stats, demoted to a quieter secondary row */
+.admin-cards--secondary {
+    margin-top: 22px;
+}
+
+.admin-cards--secondary .admin-card {
+    padding: 16px 18px;
+    border-top-width: 2px;
+}
+
+.admin-cards--secondary .admin-card h1 {
+    font-size: 26px;
+    margin: 8px 0;
+}
+
+.admin-cards--secondary .admin-card h3 {
+    font-size: 10px;
+}
+
+/* ---- Growth chart + plan ledger, side by side ---- */
+.growth-row {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 22px;
+    margin-top: 22px;
+}
+
+.growth-chart-card,
+.plan-ledger-card {
+    margin-top: 0;
+}
+
+.growth-chart-card h2,
+.plan-ledger-card h2 {
+    margin: 0 0 18px;
+    color: var(--admin-ink);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.chart-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 260px;
+    color: var(--admin-faint);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12px;
+}
+
+.trend-tooltip {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 12px;
+    background: var(--admin-surface, #fff);
+    border: 1px solid var(--admin-line, #e3ddcd);
+    border-radius: 4px;
+    box-shadow: 0 8px 18px rgba(20, 24, 31, .1);
+}
+
+.trend-tooltip-month {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--admin-faint, #8a92a0);
+}
+
+.trend-tooltip-value {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--admin-ink, #14181f);
+}
+
+.plan-ledger-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.plan-ledger-table th {
+    padding: 0 0 10px;
+    text-align: left;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--admin-faint);
+    border-bottom: 1px solid var(--admin-line);
+}
+
+.plan-ledger-table td {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--admin-line);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 13px;
+    color: var(--admin-ink);
+}
+
+.plan-ledger-table tr:last-child td {
+    border-bottom: none;
+}
+
+.plan-chip {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.plan-chip.monthly {
+    background: var(--admin-accent-soft);
+    color: var(--admin-accent);
+}
+
+.plan-chip.yearly {
+    background: var(--admin-accent-soft);
+    color: var(--admin-accent-strong);
+    border: 1px solid var(--admin-accent);
+}
+
+.plan-chip.free {
+    background: var(--admin-paper);
+    color: var(--admin-faint);
+    border: 1px solid var(--admin-line-strong);
+}
+
+@media (max-width: 1050px) {
+    .ledger-strip {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ledger-entry:nth-child(3) {
+        border-left: none;
+    }
+
+    .growth-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 620px) {
+    .ledger-strip {
+        grid-template-columns: 1fr;
+    }
+
+    .ledger-entry {
+        border-left: none;
+        border-top: 1px solid var(--admin-line);
+    }
+
+    .ledger-entry:first-child {
+        border-top: none;
+    }
+}
+
+/* Shared dashboard surface styles */
+
+.dashboard-content {
+    padding: 34px 38px 60px;
+}
+
+.admin-cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 0;
+}
+
+.admin-card,
+.activity-card,
+.quick-actions,
+.chart-card {
+    border: 1px solid var(--admin-line);
+    border-radius: 10px;
+    background: var(--admin-surface);
+    box-shadow: 0 8px 24px rgba(8, 66, 45, 0.06);
+}
+
+.admin-card {
+    padding: 22px;
+    border-top: 3px solid var(--admin-accent);
+}
+
+.admin-card:hover,
+.activity-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(20, 24, 31, .06);
+}
+
+.admin-card h3,
+.admin-card h1,
+.activity-content h4 {
+    color: var(--admin-ink);
+}
+
+.admin-card h3 {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.admin-card h1 {
+    margin: 13px 0;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 36px;
+}
+
+.activity-card,
+.quick-actions,
+.chart-card {
+    margin-top: 22px;
+    padding: 24px;
+}
+
+.activity-item {
+    padding: 14px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background: var(--admin-paper);
+}
+
+.activity-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 3px;
+    background: var(--admin-accent-soft);
+    color: var(--admin-accent);
+    font-size: 18px;
+}
+
+.activity-content p {
+    margin: 8px 0;
+    color: var(--admin-accent);
+}
+
+.action-buttons button {
+    border: 1px solid var(--admin-accent);
+    border-radius: 3px;
+    background: var(--admin-accent);
+    color: var(--admin-ink);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+}
+
+.action-buttons button:hover {
+    background: #18563c;
+}
+
+.activity-card:empty,
+.quick-actions:empty {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    .dashboard-content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 1050px) {
+    .admin-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .admin-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dark mode */
+.app.dark .ledger-strip,
+.app.dark .admin-card,
+.app.dark .activity-card,
+.app.dark .quick-actions,
+.app.dark .chart-card,
+.app.dark .growth-chart-card,
+.app.dark .plan-ledger-card {
+    background: #083527;
+    border-color: #263140;
+}
+
+.app.dark .ledger-entry {
+    border-left-color: #263140;
+}
+
+.app.dark .admin-card h3,
+.app.dark .admin-card h1,
+.app.dark .activity-content h4,
+.app.dark .activity-content p {
+    color: #f9fafb;
+}
+
+.app.dark .activity-item {
+    background: #1f2937;
+    color: #f9fafb;
+}
+
+.app.dark .activity-item:hover {
+    background: #374151;
+}
+
+.app.dark .action-buttons button {
+    background: var(--admin-surface, #1f2937);
+}
+
+.app.dark .ledger-value,
+.app.dark .growth-chart-card h2,
+.app.dark .plan-ledger-card h2,
+.app.dark .plan-ledger-table td {
+    color: #f9fafb;
+}
+
+.app.dark .plan-ledger-table th,
+.app.dark .plan-ledger-table td {
+    border-bottom-color: #263140;
+}
+
+/* Keep the dashboard readable when the global dark-mode class is present. */
+.app.dark .admin-layout .ledger-strip,
+.app.dark .admin-layout .admin-card,
+.app.dark .admin-layout .activity-card,
+.app.dark .admin-layout .quick-actions,
+.app.dark .admin-layout .chart-card,
+.app.dark .admin-layout .growth-chart-card,
+.app.dark .admin-layout .plan-ledger-card {
+    background: var(--admin-surface);
+    border-color: var(--admin-line);
+}

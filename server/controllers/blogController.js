@@ -15,6 +15,21 @@ const getBlogs = async (req, res) => {
   }
 };
 
+// Get all blogs for admin dashboard
+const getAdminBlogs = async (req, res) => {
+  try {
+    const blogs = await Blog.find().sort({
+      createdAt: -1,
+    });
+
+    res.json(blogs);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 const getBlogById = async (req, res) => {
     try {
         const blog = await Blog.findById(req.params.id);
@@ -87,6 +102,7 @@ const deleteBlog = async (req, res) => {
 
 module.exports = {
   getBlogs,
+  getAdminBlogs,
   getBlogById,
   createBlog,
   updateBlog,

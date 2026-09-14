@@ -1,0 +1,469 @@
+/* =========================================
+   LEDGER — BLOG DETAILS
+   Warm paper, hairline rules, monospace meta
+========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Source+Serif+4:wght@400;600;700&display=swap');
+
+.ledger-page {
+    min-height: 100vh;
+    padding: 50px 24px 90px;
+    box-sizing: border-box;
+
+    background-color: #f6f3ea;
+    background-image:
+        repeating-linear-gradient(
+            to bottom,
+            transparent,
+            transparent 37px,
+            rgba(17, 24, 39, 0.045) 38px
+        );
+
+    color: #1c1a16;
+}
+
+
+/* =========================================
+   BACK BUTTON
+========================================= */
+
+.ledger-back-btn {
+    display: inline-flex;
+    align-items: center;
+
+    margin-bottom: 26px;
+
+    padding: 0;
+
+    background: none;
+    border: none;
+
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+
+    color: #5b5646;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+.ledger-back-btn:hover {
+    color: #1f7a52;
+}
+
+
+/* =========================================
+   ENTRY CARD
+========================================= */
+
+.ledger-details {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.ledger-entry {
+    background: #fdfcf7;
+
+    border: 1px solid rgba(28, 26, 22, 0.14);
+    border-radius: 6px;
+
+    box-shadow:
+        0 1px 0 rgba(28, 26, 22, 0.04),
+        0 18px 40px rgba(28, 26, 22, 0.07);
+
+    padding: 46px 50px 54px;
+}
+
+
+/* =========================================
+   ENTRY HEADER
+========================================= */
+
+.ledger-entry-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.ledger-category-stamp {
+    display: inline-flex;
+
+    padding: 5px 12px;
+
+    border: 1px solid #1f7a52;
+    border-radius: 3px;
+
+    color: #1f7a52;
+
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.ledger-entry-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+
+    color: #a19b87;
+}
+
+.ledger-entry-header h1 {
+    margin: 0 0 14px;
+
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+
+    color: #1c1a16;
+}
+
+.ledger-short-desc {
+    margin: 0 0 22px;
+
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+
+    color: #5b5646;
+}
+
+
+/* =========================================
+   META ROW (LEDGER LINE)
+========================================= */
+
+.ledger-meta-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 16px;
+
+    padding: 14px 0;
+
+    border-top: 1px solid rgba(28, 26, 22, 0.12);
+    border-bottom: 1px solid rgba(28, 26, 22, 0.12);
+}
+
+.ledger-meta-item {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #1c1a16;
+}
+
+.ledger-meta-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    color: #a19b87;
+}
+
+.ledger-meta-divider {
+    width: 1px;
+    height: 14px;
+
+    background: rgba(28, 26, 22, 0.15);
+}
+
+
+/* =========================================
+   TEAR LINE
+========================================= */
+
+.ledger-tear-line {
+    position: relative;
+
+    height: 1px;
+
+    margin: 34px 0;
+
+    background-image: repeating-linear-gradient(
+        to right,
+        rgba(28, 26, 22, 0.25) 0,
+        rgba(28, 26, 22, 0.25) 6px,
+        transparent 6px,
+        transparent 12px
+    );
+}
+
+
+/* =========================================
+   BANNER IMAGE
+========================================= */
+
+.ledger-banner-wrap {
+    margin: 0 0 34px;
+}
+
+.ledger-banner {
+    width: 100%;
+    height: 320px;
+
+    object-fit: cover;
+
+    border: 1px solid rgba(28, 26, 22, 0.14);
+    border-radius: 4px;
+}
+
+
+/* =========================================
+   RICH CONTENT
+========================================= */
+
+.ledger-rich-content {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.85;
+
+    color: #2c2a24;
+}
+
+.ledger-rich-content h1,
+.ledger-rich-content h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 700;
+
+    color: #1c1a16;
+
+    margin-top: 38px;
+    margin-bottom: 14px;
+
+    padding-bottom: 8px;
+
+    border-bottom: 1px solid rgba(28, 26, 22, 0.12);
+}
+
+.ledger-rich-content p {
+    margin: 0 0 18px;
+}
+
+.ledger-rich-content img {
+    max-width: 100%;
+
+    border: 1px solid rgba(28, 26, 22, 0.14);
+    border-radius: 4px;
+
+    margin: 26px 0;
+}
+
+.ledger-rich-content blockquote {
+    margin: 26px 0;
+
+    padding: 16px 22px;
+
+    border-left: 3px solid #1f7a52;
+
+    background: #f6f3ea;
+
+    font-style: italic;
+
+    color: #5b5646;
+}
+
+.ledger-rich-content pre {
+    padding: 18px 20px;
+
+    overflow-x: auto;
+
+    background: #1c1a16;
+    color: #f6f3ea;
+
+    border-radius: 4px;
+
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+}
+
+.ledger-rich-content code {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+
+/* =========================================
+   NOT FOUND
+========================================= */
+
+.ledger-notfound {
+    max-width: 480px;
+
+    margin: 80px auto;
+
+    padding: 46px 36px;
+
+    text-align: center;
+
+    background: #fdfcf7;
+
+    border: 1px solid rgba(28, 26, 22, 0.14);
+    border-radius: 6px;
+}
+
+.ledger-notfound-code {
+    display: inline-block;
+
+    margin-bottom: 14px;
+
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+
+    color: #a19b87;
+}
+
+.ledger-notfound h2 {
+    margin: 0 0 22px;
+
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: #1c1a16;
+}
+
+.ledger-notfound .ledger-back-btn {
+    margin-bottom: 0;
+}
+
+
+/* =========================================
+   DARK MODE
+========================================= */
+
+.app.dark .ledger-page {
+    background-color: #0e0d0a;
+    background-image:
+        repeating-linear-gradient(
+            to bottom,
+            transparent,
+            transparent 37px,
+            rgba(246, 243, 234, 0.035) 38px
+        );
+
+    color: #f0ede3;
+}
+
+.app.dark .ledger-back-btn {
+    color: #a8a290;
+}
+
+.app.dark .ledger-back-btn:hover {
+    color: #3ddc91;
+}
+
+.app.dark .ledger-entry,
+.app.dark .ledger-notfound {
+    background: #17150f;
+
+    border-color: rgba(240, 237, 227, 0.14);
+
+    box-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.3),
+        0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.app.dark .ledger-category-stamp {
+    border-color: #3ddc91;
+    color: #3ddc91;
+}
+
+.app.dark .ledger-entry-id,
+.app.dark .ledger-meta-label,
+.app.dark .ledger-notfound-code {
+    color: #7d7862;
+}
+
+.app.dark .ledger-entry-header h1,
+.app.dark .ledger-rich-content h1,
+.app.dark .ledger-rich-content h2,
+.app.dark .ledger-notfound h2 {
+    color: #f6f3ea;
+}
+
+.app.dark .ledger-short-desc {
+    color: #b6b09c;
+}
+
+.app.dark .ledger-meta-row {
+    border-color: rgba(240, 237, 227, 0.12);
+}
+
+.app.dark .ledger-meta-item {
+    color: #f0ede3;
+}
+
+.app.dark .ledger-meta-divider {
+    background: rgba(240, 237, 227, 0.15);
+}
+
+.app.dark .ledger-tear-line {
+    background-image: repeating-linear-gradient(
+        to right,
+        rgba(240, 237, 227, 0.22) 0,
+        rgba(240, 237, 227, 0.22) 6px,
+        transparent 6px,
+        transparent 12px
+    );
+}
+
+.app.dark .ledger-banner,
+.app.dark .ledger-rich-content img {
+    border-color: rgba(240, 237, 227, 0.14);
+}
+
+.app.dark .ledger-rich-content {
+    color: #d8d3c4;
+}
+
+.app.dark .ledger-rich-content h1,
+.app.dark .ledger-rich-content h2 {
+    border-color: rgba(240, 237, 227, 0.12);
+}
+
+.app.dark .ledger-rich-content blockquote {
+    background: #1c1a16;
+    color: #b6b09c;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .ledger-page {
+        padding: 32px 16px 60px;
+    }
+
+    .ledger-entry {
+        padding: 30px 22px 38px;
+    }
+
+    .ledger-entry-header h1 {
+        font-size: 29px;
+    }
+
+    .ledger-banner {
+        height: 210px;
+    }
+
+    .ledger-meta-row {
+        gap: 12px;
+    }
+}
