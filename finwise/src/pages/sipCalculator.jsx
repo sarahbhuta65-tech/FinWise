@@ -79,7 +79,6 @@ const calculateSIP = async () => {
 
   try {
     await axios.post(`${import.meta.env.VITE_API_URL}/api/sip`, {
-      user: user._id,
       monthlyInvestment: Number(monthlyInvestment),
       interestRate: Number(interestRate),
       years: Number(years),
@@ -88,6 +87,10 @@ const calculateSIP = async () => {
       totalValue: maturityAmount, 
       dueDay: Number(dueDay),
       startDate: new Date(),
+    }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     });
     toast.success("SIP saved successfully");
   } catch (error) {
@@ -104,7 +107,12 @@ const calculateSIP = async () => {
           if(!user || !user._id) return;
 
           const res = await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/sip/${user._id}`
+            `${import.meta.env.VITE_API_URL}/api/sip/${user._id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
           );
 
           console.log(res.data);

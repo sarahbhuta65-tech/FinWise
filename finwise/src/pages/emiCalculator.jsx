@@ -72,7 +72,6 @@ const calculateEMI = async () => {
 
   try {
     await axios.post(`${import.meta.env.VITE_API_URL}/api/emi`, {
-      user: user._id,
       loanAmount: Number(loanAmount),
       interestRate: Number(interestRate),
       years: Number(years),
@@ -81,6 +80,10 @@ const calculateEMI = async () => {
       totalInterest,
       dueDay,
       startDate,
+    }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     });
     toast.success("EMI saved successfully");
   } catch (error) {
@@ -97,7 +100,12 @@ useEffect(() => {
       if (!user || !user._id) return;
 
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/emi/${user._id}`
+        `${import.meta.env.VITE_API_URL}/api/emi/${user._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
 
       if (!res.data) return;

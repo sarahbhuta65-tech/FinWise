@@ -57,8 +57,8 @@ const syncSipWithFinancialSummary = async (sipId) => {
 // Add or Update SIP
 const saveSip = async (req, res) => {
   try {
+    const userId = req.user.userId;
     const {
-      user,
       monthlyInvestment,
       interestRate,
       years,
@@ -68,9 +68,11 @@ const saveSip = async (req, res) => {
       dueDay,
       startDate,
     } = req.body;
+    const totalMonths = Number(years) * 12;
+    const totalPlannedInvestment = Number(monthlyInvestment) * totalMonths;
 
     // Check if user already has SIP data
-    let sip = await Sip.findOne({ user });
+    let sip = await Sip.findOne({ user: userId });
 
     if (sip) {
       sip.monthlyInvestment = monthlyInvestment;
@@ -88,7 +90,7 @@ const saveSip = async (req, res) => {
       await sip.save();
     } else {
       sip = await Sip.create({
-        user,
+        user: userId,
         monthlyInvestment,
         interestRate,
         years,
@@ -118,7 +120,7 @@ const saveSip = async (req, res) => {
 const getSip = async (req, res) => {
   try {
     const sip = await Sip.findOne({
-      user: req.params.user,
+      user: req.user.userId,
     });
 
     if (!sip) {

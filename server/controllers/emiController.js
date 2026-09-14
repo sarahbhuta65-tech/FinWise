@@ -57,8 +57,8 @@ const syncEmiWithFinancialSummary = async (emiId) => {
 // Save / Update EMI
 const saveEmi = async (req, res) => {
   try {
+    const userId = req.user.userId;
     const {
-      user,
       loanAmount,
       interestRate,
       years,
@@ -68,8 +68,9 @@ const saveEmi = async (req, res) => {
       dueDay,
       startDate,
     } = req.body;
+    const totalMonths = Number(years) * 12;
 
-    let emiData = await Emi.findOne({ user });
+    let emiData = await Emi.findOne({ user: userId });
 
     if (emiData) {
       emiData.loanAmount = loanAmount;
@@ -86,7 +87,7 @@ const saveEmi = async (req, res) => {
       await emiData.save();
     } else {
       emiData = await Emi.create({
-        user,
+        user: userId,
         loanAmount,
         interestRate,
         years,
@@ -116,7 +117,7 @@ const saveEmi = async (req, res) => {
 const getEmi = async (req, res) => {
   try {
     const emiData = await Emi.findOne({
-      user: req.params.user,
+      user: req.user.userId,
     });
 
     if (!emiData) {
