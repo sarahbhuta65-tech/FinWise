@@ -1,7 +1,7 @@
 const FinancialNudge = require("../models/FinancialNudge");
 const Expense = require("../models/Expense");
 const Emi = require("../models/emi");
-const Sip = require("../models/Sip");
+const Sip = require("../models/sip");
 const Goal = require("../models/Goal");
 
 const generateNudge = async (req, res) => {
