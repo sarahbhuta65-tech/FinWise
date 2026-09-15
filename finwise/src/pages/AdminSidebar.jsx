@@ -6,7 +6,6 @@ import {
     MdCardMembership,
     MdArticle,
     MdQuestionAnswer,
-    MdSettings,
     MdLogout,
     MdExpandMore,
     MdExpandLess,
@@ -27,8 +26,6 @@ function AdminSidebar() {
             location.pathname.includes("/admin/blogs") ||
             location.pathname.includes("/admin/faqs"),
 
-        settings:
-            location.pathname.includes("/admin/settings"),
     });
 
     const toggleGroup = (group) => {
@@ -193,44 +190,6 @@ function AdminSidebar() {
                         >
                             <MdQuestionAnswer />
                             <span>FAQs</span>
-                        </NavLink>
-
-                    </div>
-                )}
-
-
-                {/* Settings */}
-                <div className="menu-section-title">
-                    System
-                </div>
-
-                <button
-                    type="button"
-                    className="menu-item group-toggle"
-                    onClick={() => toggleGroup("settings")}
-                >
-                    <MdSettings />
-
-                    <span>Settings</span>
-
-                    {openGroups.settings ? (
-                        <MdExpandLess className="chevron" />
-                    ) : (
-                        <MdExpandMore className="chevron" />
-                    )}
-                </button>
-
-                {openGroups.settings && (
-                    <div className="submenu">
-
-                        <NavLink
-                            to="/admin/settings/site-configuration"
-                            className={({ isActive }) =>
-                                `submenu-item${isActive ? " active" : ""}`
-                            }
-                        >
-                            <MdSettings />
-                            <span>Site Configuration</span>
                         </NavLink>
 
                     </div>

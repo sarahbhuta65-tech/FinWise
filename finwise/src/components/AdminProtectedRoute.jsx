@@ -1,7 +1,5 @@
 import { Navigate } from "react-router-dom";
 
-let adminSessionStarted = false;
-
 function AdminProtectedRoute({ children }) {
     let user = null;
 
@@ -11,12 +9,11 @@ function AdminProtectedRoute({ children }) {
         localStorage.removeItem("user");
     }
 
-    if (sessionStorage.getItem("adminLoginHandoff") === "true") {
-        sessionStorage.removeItem("adminLoginHandoff");
-        adminSessionStarted = true;
-    }
+    const hasAdminSession =
+        localStorage.getItem("adminLoggedIn") === "true" &&
+        Boolean(localStorage.getItem("token"));
 
-    if (!user || !adminSessionStarted) {
+    if (!user || !hasAdminSession) {
         return <Navigate to="/admin-login" replace />;
     }
 

@@ -81,8 +81,6 @@ function AdminLogin() {
                 "true"
             );
 
-            sessionStorage.setItem("adminLoginHandoff", "true");
-
             setSuccess(true);
 
             toast.success("Admin login successful");

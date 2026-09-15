@@ -13,8 +13,10 @@ function ManageFAQs() {
     useEffect(() => {
         const fetchFaqs = async () => {
             try {
+                const token = localStorage.getItem("token");
                 const res = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/api/faqs`
+                    `${import.meta.env.VITE_API_URL}/api/faqs/admin/all`,
+                    { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setFaqs(res.data);
             } catch (error) {
@@ -26,8 +28,10 @@ function ManageFAQs() {
 
     const handleDelete = async () => {
         try {
+            const token = localStorage.getItem("token");
             await axios.delete(
-                `${import.meta.env.VITE_API_URL}/api/faqs/${selectedFaq._id}`
+                `${import.meta.env.VITE_API_URL}/api/faqs/${selectedFaq._id}`,
+                { headers: { Authorization: `Bearer ${token}` } }
             );
             setFaqs(
                 faqs.filter(

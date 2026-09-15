@@ -13,8 +13,10 @@ function ManageBlogs() {
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
+                const token = localStorage.getItem("token");
                 const res = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/api/blogs`
+                    `${import.meta.env.VITE_API_URL}/api/blogs/admin/all`,
+                    { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setBlogs(res.data);
             } catch (error) {
@@ -26,8 +28,10 @@ function ManageBlogs() {
 
     const handleDelete = async () => {
         try {
+            const token = localStorage.getItem("token");
             await axios.delete(
-                `${import.meta.env.VITE_API_URL}/api/blogs/${selectedBlog._id}`
+                `${import.meta.env.VITE_API_URL}/api/blogs/${selectedBlog._id}`,
+                { headers: { Authorization: `Bearer ${token}` } }
             );
             setBlogs(
                 blogs.filter(
