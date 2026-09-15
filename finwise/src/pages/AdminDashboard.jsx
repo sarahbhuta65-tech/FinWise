@@ -39,7 +39,7 @@ function AdminDashboard({ darkMode, setDarkMode }) {
 
                 setBlogs(blogsData);
                 setFaqs(faqsData);
-                setUsers((usersData.users || []).filter((user) => !user.isAdmin));
+                setUsers(usersData.users || []);
             } catch (error) {
                 console.error("Admin dashboard fetch error:", error);
                 toast.error("Failed to load dashboard data");

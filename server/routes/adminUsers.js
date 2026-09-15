@@ -7,7 +7,7 @@ const adminMiddleware = require("../middlewares/adminMiddleware");
 router.get("/", adminMiddleware, async (req, res) => {
     try {
         const users = await User.find({})
-            .select("name email createdAt subscription isAdmin")
+            .select("name email createdAt subscription")
             .sort({ createdAt: -1 });
 
         res.json({ success: true, users });
