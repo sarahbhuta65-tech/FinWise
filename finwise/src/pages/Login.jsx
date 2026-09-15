@@ -73,6 +73,9 @@ function Login({ setUser }) {
                 const googleUser = result.user;
 
                 const apiBase = import.meta.env.VITE_API_URL;
+                if (!apiBase) {
+                    throw new Error("VITE_API_URL is not configured in the production build.");
+                }
 
                 // Send Google user to backend
                 const res = await fetch(`${apiBase}/api/auth/google-login`, {
@@ -87,11 +90,16 @@ function Login({ setUser }) {
                     }),
                 });
 
-                const data = await res.json();
+                const responseText = await res.text();
+                let data;
+                try {
+                    data = responseText ? JSON.parse(responseText) : null;
+                } catch {
+                    throw new Error(`Google login API returned a non-JSON response (${res.status}).`);
+                }
 
                 if (!res.ok) {
-                    toast.error(data.message || "Google Login Failed");
-                    return;
+                    throw new Error(data?.message || `Google login API failed (${res.status}).`);
                 }
 
                 // Save MongoDB user
@@ -107,7 +115,10 @@ function Login({ setUser }) {
 
             } catch (error) {
                 console.error(error);
-                toast.error("Google Login Failed");
+                const message = error?.code
+                    ? `Google sign-in failed: ${error.code}`
+                    : error?.message || "Google Login Failed";
+                toast.error(message);
             }
         };
 

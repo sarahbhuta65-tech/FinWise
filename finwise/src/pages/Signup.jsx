@@ -68,10 +68,15 @@ function Signup() {
               }),
             });
 
-            const data = await res.json();
+            const responseText = await res.text();
+            let data;
+            try {
+              data = responseText ? JSON.parse(responseText) : null;
+            } catch {
+              throw new Error(`Google signup API returned a non-JSON response (${res.status}).`);
+            }
             if (!res.ok) {
-              toast.error(data.message || "Google Signup Failed");
-              return;
+              throw new Error(data?.message || `Google signup API failed (${res.status}).`);
             }
 
             localStorage.setItem("user", JSON.stringify(data.user));
@@ -81,7 +86,10 @@ function Signup() {
             setTimeout(() => Navigate("/dashboard"), 750);
           } catch (error) {
             console.error(error);
-            toast.error("Google Signup Failed");
+            const message = error?.code
+              ? `Google sign-in failed: ${error.code}`
+              : error?.message || "Google Signup Failed";
+            toast.error(message);
           } finally {
             setLoading(false);
           }
