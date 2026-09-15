@@ -65,6 +65,8 @@ app.use("/api/gmail", gmailRoutes);
 app.use("/api/admin/subscriptions", require("./routes/adminSubscriptions"));
 app.use("/api/admin/users", require("./routes/adminUsers"));
 app.use("/api/admin/dashboard", adminDashboardRoutes);
+app.use("/api/plans", require("./routes/planRoutes"));
+app.use("/api/admin/activity", require("./routes/adminActivity"));
 
 // Test route
 app.get("/", (req, res) => {

@@ -17,7 +17,7 @@ function AdminTopbar({ darkMode, setDarkMode }) {
     const [showProfile, setShowProfile] = useState(false);
     const [showProfileModal, setShowProfileModal] = useState(false);
     const [showSettingsModal, setShowSettingsModal] = useState(false);
-
+    const [activity, setActivity] = useState([]);
     const [notificationsEnabled, setNotificationsEnabled] = useState(() => {
         const savedNotifications =
             localStorage.getItem("adminNotifications");
@@ -118,6 +118,22 @@ function AdminTopbar({ darkMode, setDarkMode }) {
         navigate("/admin-login");
     };
 
+    useEffect(() => {
+        const fetchActivity = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const res = await axios.get(
+                    `${import.meta.env.VITE_API_URL}/api/admin/activity`,
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+                setActivity(res.data.items || []);
+            } catch (error) {
+                console.error("Failed to load activity:", error);
+            }
+        };
+        fetchActivity();
+    }, []);
+
 
     return (
         <div className="admin-topbar">
@@ -205,59 +221,30 @@ function AdminTopbar({ darkMode, setDarkMode }) {
 
                             <div className="notification-header">
                                 <h4>Notifications</h4>
-
-                                <span>
-                                    3 new
-                                </span>
+                                <span>{activity.length} recent</span>
                             </div>
 
-                            <div className="notification-item">
-                                <span className="notification-icon">
-                                    📝
-                                </span>
-
-                                <div>
-                                    <strong>
-                                        New blog created
-                                    </strong>
-
-                                    <small>
-                                        Blog content was added successfully.
-                                    </small>
+                            {activity.length === 0 ? (
+                                <div className="notification-item">
+                                    <span className="notification-icon">👋</span>
+                                    <div>
+                                        <strong>No recent activity</strong>
+                                        <small>You're all caught up.</small>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div className="notification-item">
-                                <span className="notification-icon">
-                                    ❓
-                                </span>
-
-                                <div>
-                                    <strong>
-                                        FAQ added
-                                    </strong>
-
-                                    <small>
-                                        A new FAQ was added successfully.
-                                    </small>
-                                </div>
-                            </div>
-
-                            <div className="notification-item">
-                                <span className="notification-icon">
-                                    👋
-                                </span>
-
-                                <div>
-                                    <strong>
-                                        Welcome back
-                                    </strong>
-
-                                    <small>
-                                        Good to see you again, Admin.
-                                    </small>
-                                </div>
-                            </div>
+                            ) : (
+                                activity.map((item, i) => (
+                                    <div className="notification-item" key={i}>
+                                        <span className="notification-icon">
+                                            {item.type === "blog" ? "📝" : item.type === "faq" ? "❓" : "👤"}
+                                        </span>
+                                        <div>
+                                            <strong>{item.text}</strong>
+                                            <small>{new Date(item.date).toLocaleDateString()}</small>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
 
                         </div>
                     )}

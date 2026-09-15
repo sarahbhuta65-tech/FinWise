@@ -5,15 +5,50 @@ const Razorpay = require("razorpay");
 const User = require("../models/User");
 const Payment = require("../models/Payment");
 const adminMiddleware = require("../middlewares/adminMiddleware");
-const plans = require("../config/plans");
+
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-router.get("/plans", adminMiddleware, (req, res) => {
-    res.json({ success: true, plans: Object.values(plans) });
+const Plan = require("../models/Plan");
+
+router.get("/plans", adminMiddleware, async (req, res) => {
+    try {
+        const plans = await Plan.find({}).sort({ price: 1 });
+        res.json({ success: true, plans });
+    } catch (error) {
+        console.error("Admin Plans Error:", error);
+        res.status(500).json({ success: false, message: "Unable to fetch plans" });
+    }
+});
+
+router.patch("/plans/:billingCycle", adminMiddleware, async (req, res) => {
+    try {
+        const { billingCycle } = req.params;
+        const allowedFields = ["name", "price", "description", "features"];
+        const updates = {};
+
+        for (const key of allowedFields) {
+            if (req.body[key] !== undefined) updates[key] = req.body[key];
+        }
+
+        const updatedPlan = await Plan.findOneAndUpdate(
+            { billingCycle },
+            updates,
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedPlan) {
+            return res.status(404).json({ success: false, message: "Plan not found" });
+        }
+
+        res.json({ success: true, plan: updatedPlan });
+    } catch (error) {
+        console.error("Admin Update Plan Error:", error);
+        res.status(500).json({ success: false, message: "Unable to update plan" });
+    }
 });
 
 router.get("/subscribers", adminMiddleware, async (req, res) => {

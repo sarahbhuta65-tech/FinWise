@@ -7,7 +7,7 @@ function Home({ darkMode }) {
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
   const [billingCycle, setBillingCycle] = useState("monthly");
-
+  const [plans, setPlans] = useState({});
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -141,6 +141,22 @@ function Home({ darkMode }) {
       }
   };
 
+  useEffect(() => {
+      const fetchPlans = async () => {
+          try {
+              const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/plans`);
+              const plansByCycle = {};
+              (res.data.plans || []).forEach((p) => {
+                  plansByCycle[p.billingCycle] = p;
+              });
+              setPlans(plansByCycle);
+          } catch (error) {
+              console.error("Failed to load plans:", error);
+          }
+      };
+      fetchPlans();
+  }, []);
+  
   return (
     <div
       className={`home-page${darkMode ? " dark" : ""}${
@@ -253,10 +269,9 @@ function Home({ darkMode }) {
             </p>
 
             <div className="premium-features">
-              <span>✓ Advanced financial insights</span>
-              <span>✓ Premium financial tools</span>
-              <span>✓ Detailed analytics</span>
-              <span>✓ Enhanced planning experience</span>
+                {(plans[billingCycle]?.features || []).map((feature, i) => (
+                    <span key={i}>✓ {feature}</span>
+                ))}
             </div>
 
             <div className="premium-cycle-toggle" role="group" aria-label="Billing cycle">
@@ -277,8 +292,8 @@ function Home({ darkMode }) {
             </div>
 
             <div className="premium-price">
-              <strong>{billingCycle === "monthly" ? "₹149" : "₹1,499"}</strong>
-              <span> / {billingCycle === "monthly" ? "month" : "year"}</span>
+                <strong>₹{plans[billingCycle]?.price ?? "—"}</strong>
+                <span> / {billingCycle === "monthly" ? "month" : "year"}</span>
             </div>
 
             <button className="btn-primary" onClick={handlePayment}>

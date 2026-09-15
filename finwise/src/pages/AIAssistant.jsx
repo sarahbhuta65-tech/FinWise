@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import "./AIAssistant.css";
 
 function AIAssistant({ selectedChatId }) {
+    const navigate = useNavigate();
+
     // Get logged-in user safely
     const storedUser = localStorage.getItem("user");
     const user = storedUser ? JSON.parse(storedUser) : null;
@@ -105,6 +108,13 @@ Ask me anything about your finances and I'll help you plan smarter.`,
             const data = await res.json();
 
             if (!res.ok) {
+
+                if (res.status === 401) {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                    navigate("/login", { replace: true });
+                    return;
+                }
 
                 if (data.limitReached) {
 

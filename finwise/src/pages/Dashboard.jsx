@@ -1200,37 +1200,6 @@ function Dashboard() {
                         {subtitle}
                     </p>
 
-
-                    {/* BUDGET PROGRESS */}
-
-                    <div className="hero-budget-progress">
-
-                        <div className="hero-budget-progress-row">
-
-                            <span>
-                                ₹{Number(totalExpenses).toLocaleString("en-IN")} of ₹{Number(monthlyBudget).toLocaleString("en-IN")} spent
-                            </span>
-
-                            <span className="hero-budget-progress-remaining">
-                                ₹{budgetRemaining.toLocaleString("en-IN")} left
-                            </span>
-
-                        </div>
-
-                        <div className="hero-budget-progress-track">
-
-                            <div
-                                className="hero-budget-progress-fill"
-                                style={{
-                                    width: `${budgetUsedPercent}%`,
-                                    background: budgetBarColor,
-                                }}
-                            />
-
-                        </div>
-
-                    </div>
-
                 </div>
 
 
